@@ -1,0 +1,3373 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="LUPANA"/>
+<title>LUPANA</title>
+<style>
+/* === LUPANA — Modern Dark UI === */
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0B0F1A;color:#E8EDF5;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;max-width:560px;margin:0 auto;min-height:100vh;font-size:15px;line-height:1.5}
+input,select,textarea,button{font-family:inherit;outline:none}
+input,select,textarea{background:#141926;border:1.5px solid #1E2B3C;border-radius:10px;color:#E8EDF5;padding:11px 14px;font-size:16px;width:100%;transition:border-color 0.15s}
+input:focus,select:focus,textarea:focus{border-color:#3B82F6}
+input::placeholder,textarea::placeholder{color:#3A4D65}
+button{cursor:pointer}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#0B0F1A}::-webkit-scrollbar-thumb{background:#1E2B3C;border-radius:2px}
+.card{background:#111827;border-radius:16px;padding:16px;border:1.5px solid #182032;margin-bottom:10px;transition:all 0.18s;box-shadow:0 2px 10px rgba(0,0,0,0.25)}
+.card.selected{border-color:#3B82F6;background:#0D1A2E;box-shadow:0 4px 20px rgba(59,130,246,0.18)}
+.card:hover{border-color:#243550}
+.card.drag-active{opacity:0.3;transform:scale(0.97)}
+.card.drag-over{border-top:2.5px solid #3B82F6!important;margin-top:-1px}
+.card-ghost{pointer-events:none;position:fixed;z-index:9999;opacity:0.92;box-shadow:0 12px 40px rgba(0,0,0,0.6);transform:scale(1.03) rotate(-1deg);border-radius:16px;transition:none;background:#111827;border:1.5px solid #3B82F6;padding:16px}
+.btn{border:none;border-radius:10px;padding:9px 18px;font-size:14px;font-weight:600;transition:all 0.15s}
+.btn-primary{background:#2563EB;color:#fff;box-shadow:0 2px 10px rgba(37,99,235,0.35)}
+.btn-primary:active{background:#1D4ED8;transform:translateY(1px)}
+.btn-danger{background:#141926;border:1.5px solid #1E2B3C;color:#5B7090;font-size:13px;padding:8px 14px}
+.topbar{display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid #141E30;background:rgba(11,15,26,0.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:sticky;top:0;z-index:10;gap:8px}
+.topbar-title{flex:1;font-weight:700;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-0.2px}
+.back-btn{background:none;border:none;color:#4A6585;font-size:14px;padding:6px 0;flex-shrink:0;font-weight:500}
+.tabs{display:flex;border-bottom:1px solid #141E30;background:rgba(11,15,26,0.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:sticky;top:49px;z-index:9;overflow-x:auto;scrollbar-width:none;padding:0 4px}
+.tab{flex:1;background:none;border:none;border-bottom:2.5px solid transparent;color:#3A4D65;font-size:11px;padding:11px 2px;font-weight:700;white-space:nowrap;min-width:50px;letter-spacing:0.3px;transition:color 0.15s}
+.tab.active{color:#60A5FA;border-bottom-color:#3B82F6}
+.info-card{margin:12px 16px;background:#111827;border-radius:14px;border:1.5px solid #182032;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.2)}
+.info-card-title{color:#3A4D65;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;padding:13px 16px 0;font-weight:700}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid #141E30}
+.info-row:last-child{border-bottom:none}
+.info-label{color:#3A4D65;font-size:13px;font-weight:500}
+.info-val{color:#7A9AB8;font-size:14px;text-align:right;max-width:60%}
+.info-val.big{color:#E8EDF5;font-weight:700;font-size:16px}
+.section{margin:0 16px 16px}
+.section-title{color:#3A4D65;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;display:flex;align-items:center;gap:6px;font-weight:700}
+.section-body{background:#111827;border-radius:14px;padding:4px 16px;border:1.5px solid #182032;box-shadow:0 2px 10px rgba(0,0,0,0.2)}
+.field{flex:1;padding:10px 0}
+.field label{color:#3A4D65;font-size:10px;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:7px;font-weight:700}
+.row2{display:flex;gap:12px}
+.pill-row{display:flex;gap:6px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}
+.pill{background:#111827;border:1.5px solid #182032;border-radius:20px;color:#3A4D65;font-size:12px;padding:6px 14px;white-space:nowrap;display:flex;align-items:center;flex-shrink:0;font-weight:600;cursor:pointer;transition:all 0.15s}
+.pill.active{background:#1E3A5F;color:#60A5FA;border-color:#3B82F6}
+.summary-grid{display:flex;gap:8px;padding:0 16px 12px;flex-wrap:wrap}
+.summary-card{background:#111827;border-radius:13px;padding:12px 11px;border:1.5px solid #182032;flex:1;min-width:0;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.summary-card .lbl{color:#3A4D65;font-size:9px;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
+.summary-card .val{font-weight:700;font-size:14px;letter-spacing:-0.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.action-bar{margin-top:12px;border-top:1px solid #182032;padding-top:10px;display:flex;align-items:center;gap:6px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+.action-bar::-webkit-scrollbar{display:none}
+.icon-btn{background:#141926;border:1.5px solid #1E2B3C;border-radius:10px;color:#3A4D65;font-size:16px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0;transition:all 0.15s}
+.badge{position:absolute;top:-5px;right:-5px;background:#EF4444;color:#fff;font-size:10px;font-weight:700;border-radius:50%;width:17px;height:17px;display:flex;align-items:center;justify-content:center;line-height:1;border:2px solid #0B0F1A}
+.status-banner{padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:100;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+.modal-box{background:#141926;border-radius:22px 22px 0 0;padding:26px 24px;width:100%;max-width:560px;border:1.5px solid #1E2B3C;border-bottom:none;box-shadow:0 -8px 40px rgba(0,0,0,0.45)}
+.log-box{margin:0 16px 12px;background:#141926;border-radius:13px;padding:16px;border:1.5px solid #1E2B3C}
+.time-entry{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #141E30}
+.del-btn{background:none;border:none;color:#2E3F58;font-size:14px;padding:4px 8px;transition:color 0.15s}
+.del-btn:hover{color:#EF4444}
+.note-card{background:#141926;border-radius:13px;padding:13px 14px;margin-bottom:8px;border:1.5px solid #1E2B3C;display:flex;gap:10px;align-items:flex-start}
+.checkbox{width:22px;height:22px;border-radius:7px;border:2px solid #253548;background:transparent;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all 0.15s}
+.checkbox.checked{border-color:#10B981;background:#10B981}
+.dropdown{position:absolute;top:100%;left:0;margin-top:8px;background:#141926;border:1.5px solid #1E2B3C;border-radius:14px;overflow:hidden;z-index:50;min-width:210px;box-shadow:0 12px 36px rgba(0,0,0,0.6)}
+.dropdown-item{width:100%;background:none;border:none;border-bottom:1px solid #1A283C;color:#C5D3E5;font-size:14px;padding:14px 18px;text-align:left;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background 0.1s;font-weight:500}
+.dropdown-item:last-child{border-bottom:none}
+.dropdown-item:hover{background:#1A283C}
+.progress-bar{background:#141926;border-radius:8px;height:20px;overflow:hidden;border:1px solid #1E2B3C}
+.progress-fill{height:100%;border-radius:8px;transition:width 0.5s ease}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<!-- Firebase compat -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
+<script>
+// ═══════════════════════════════════
+// FIREBASE
+// ═══════════════════════════════════
+firebase.initializeApp({
+  apiKey:"AIzaSyBa7GKMgliNEcEVYVIOy3_kpFV3y8HiExA",
+  authDomain:"zakazky-bf19b.firebaseapp.com",
+  projectId:"zakazky-bf19b",
+  storageBucket:"zakazky-bf19b.firebasestorage.app",
+  messagingSenderId:"649607449738",
+  appId:"1:649607449738:web:bb9dcf92448c3078afb173"
+});
+const db = firebase.firestore();
+const storage = firebase.storage();
+let saveTimer = null;
+let syncStatus = 'ok';
+
+function saveToFirebase(data) {
+  if(saveTimer) clearTimeout(saveTimer);
+  syncStatus = 'saving';
+  renderApp();
+  saveTimer = setTimeout(()=>{
+    db.collection('lupana').doc('data').set({payload: JSON.stringify(data)})
+      .then(()=>{ syncStatus='ok'; renderApp(); })
+      .catch(()=>{ syncStatus='error'; renderApp(); });
+  }, 1500);
+}
+
+// ═══════════════════════════════════
+// STATE
+// ═══════════════════════════════════
+const APP_PASSWORD = "1155";
+const KEY = "zakazky-pro-v1";
+
+let appState = {
+  authed: !!sessionStorage.getItem('lupana-auth'),
+  page: 'list', // list|new|edit|detail
+  subPage: null, // calendar|yearly|customers|archive|backup|nakup
+  selId: null,
+  tab: 'info',
+  filterStatus: 'all',
+  search: '',
+  showMenu: false,
+  selectedCard: null,
+  cennik: {}, // {materialCode: pricePerPanel}
+  porezSkrinka: null, // ID vybranej skrinky v porez tab (napr. "G1", "D3")
+  showTimeLog: false,
+  showMatForm: false,
+  timeH:'', timeM:'', timeNote:'', timeDate: today(), timeCategory:'nakres', timeWorker:'ja',
+  noteText:'',
+  matName:'', matCost:'', matNote:'',
+  nakupSelected:[], // orders selected for merged view
+  nakupMergeChecked:{}, // checked state for merged shopping view
+  nakupOrderId:null, // which order's list we're editing
+  nakupInput:'', // input for order-specific list
+  calYear: new Date().getFullYear(),
+  calMonth: new Date().getMonth(),
+  confirmDelete: null,
+  smsModal: null,
+  pwInput:'', pwError:false,
+  data: loadData(),
+};
+
+function loadData(){
+  try{ return JSON.parse(localStorage.getItem(KEY)) || {orders:[]}; }catch{ return {orders:[]}; }
+}
+function persist(d){ try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch{} }
+function today(){ return new Date().toISOString().slice(0,10); }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+
+// ── Blum kalkulátor (pánty + Aventos) ─────────────────────────────
+const HUSTOTA_DREVO = 12.48; // kg/m² (18mm drevo Blum štandard)
+const PANTY_RULES = [
+  {pocet:2, min:0,  max:6},
+  {pocet:3, min:6,  max:12},
+  {pocet:4, min:12, max:17},
+  {pocet:5, min:17, max:22},
+];
+const AVENTOS_TYPES = [
+  { id:'HK_S',   name:'HK S',   priority:1, vyska_min:186, sirka_max:553,
+    cats:[{n:'Slabý',lo:220,hi:500},{n:'Stredný',lo:400,hi:1000},{n:'Silný',lo:960,hi:2215}] },
+  { id:'HK_TOP', name:'HK TOP', priority:2, vyska_min:205, sirka_max:1800,
+    cats:[{n:'Slabý',lo:420,hi:1610},{n:'Stredný',lo:930,hi:2800},{n:'Silný',lo:1730,hi:5200},{n:'Najsilnejší',lo:3200,hi:9000}] },
+  { id:'HK_XS',  name:'HK XS',  priority:3, vyska_min:240, sirka_max:Infinity,
+    cats:[{n:'Slabý',lo:180,hi:800},{n:'Stredný',lo:500,hi:1200},{n:'Silný',lo:800,hi:1600}] },
+];
+function blumPanty(vyska, sirka){
+  if(!vyska||!sirka) return null;
+  const hm = (vyska * sirka / 1e6) * HUSTOTA_DREVO;
+  const rule = PANTY_RULES.find(r => hm >= r.min && hm <= r.max);
+  return rule ? {pocet: rule.pocet, hm} : null;
+}
+function blumAventos(vyska, sirka){
+  if(!vyska||!sirka) return null;
+  const hm = (vyska * sirka / 1e6) * HUSTOTA_DREVO;
+  const sila = hm * vyska;
+  // Rovnaká logika ako Aventos app: priorita 1=HK S, 2=HK TOP, HK XS sa nikdy nevracia ako odporúčanie
+  const candidates = [];
+  for(const t of AVENTOS_TYPES){
+    if(t.priority > 2) continue;  // HK XS vynechaj
+    if(vyska < t.vyska_min || sirka > t.sirka_max) continue;
+    const cat = t.cats.find(c => sila >= c.lo && sila <= c.hi);
+    if(cat) candidates.push({type: t.name, cat: cat.n, sila: Math.round(sila), priority: t.priority});
+  }
+  if(!candidates.length) return null;
+  candidates.sort((a,b) => a.priority - b.priority);
+  return candidates[0];
+}
+// ──────────────────────────────────────────────────────────────────
+
+// ── Attachment helpers (Firestore-based, no Storage needed) ────────
+function compressImage(file, maxDim, quality){
+  return new Promise(resolve=>{
+    const img=new Image();
+    const blobUrl=URL.createObjectURL(file);
+    img.onload=()=>{
+      let w=img.width,h=img.height;
+      if(w>maxDim||h>maxDim){
+        if(w>h){h=Math.round(h*maxDim/w);w=maxDim;}
+        else{w=Math.round(w*maxDim/h);h=maxDim;}
+      }
+      const c=document.createElement('canvas');
+      c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      URL.revokeObjectURL(blobUrl);
+      resolve(c.toDataURL('image/jpeg',quality));
+    };
+    img.onerror=()=>{URL.revokeObjectURL(blobUrl);resolve(null);};
+    img.src=blobUrl;
+  });
+}
+function fileToDataUrl(file){
+  return new Promise((resolve,reject)=>{
+    const r=new FileReader();
+    r.onload=e=>resolve(e.target.result);
+    r.onerror=reject;
+    r.readAsDataURL(file);
+  });
+}
+const ATT_CHUNK_SIZE=700000; // 700K znakov base64 na chunk (bezpečne pod 1MB Firestore limit)
+
+async function saveAttData(attId,orderId,dataUrl){
+  if(dataUrl.length<=ATT_CHUNK_SIZE){
+    // Malý súbor — jeden dokument
+    await db.collection('lupana_att').doc(attId).set({orderId,data:dataUrl,uploadedAt:Date.now()});
+  } else {
+    // Veľký súbor — rozdeliť na chunky
+    const chunks=[];
+    for(let i=0;i<dataUrl.length;i+=ATT_CHUNK_SIZE) chunks.push(dataUrl.slice(i,i+ATT_CHUNK_SIZE));
+    for(let i=0;i<chunks.length;i++){
+      await db.collection('lupana_att').doc(`${attId}_c${i}`).set({data:chunks[i]});
+    }
+    await db.collection('lupana_att').doc(attId).set({orderId,chunks:chunks.length,uploadedAt:Date.now()});
+  }
+}
+
+async function loadAttData(attId){
+  try{
+    const doc=await db.collection('lupana_att').doc(attId).get();
+    if(!doc.exists) return null;
+    const d=doc.data();
+    if(!d.chunks) return d.data; // jednoduchý dokument
+    // Poskladaj chunky
+    let result='';
+    for(let i=0;i<d.chunks;i++){
+      const c=await db.collection('lupana_att').doc(`${attId}_c${i}`).get();
+      if(!c.exists) return null;
+      result+=c.data().data;
+    }
+    return result;
+  }catch(e){ console.error('loadAttData error:',e); }
+  return null;
+}
+async function openAttachment(att){
+  // Zobraz prílohu v internom overlay (obchádza popup blocker mobilných prehliadačov)
+  const isImg=/^image\//i.test(att.type||'');
+  const isPdf=/pdf/i.test(att.type||att.name||'');
+
+  // Vytvor overlay okamžite (synchrónne) s loading indikátorom
+  const overlay=document.createElement('div');
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.97);z-index:9999;display:flex;flex-direction:column;';
+  const topBar=document.createElement('div');
+  topBar.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:12px 16px;flex-shrink:0;border-bottom:1px solid #1E2B3C;';
+  const nameEl=document.createElement('span');
+  nameEl.textContent=att.name||'Príloha';
+  nameEl.style.cssText='color:#E8EDF5;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;margin-right:12px;';
+  const closeBtn=document.createElement('button');
+  closeBtn.textContent='✕';
+  closeBtn.style.cssText='background:none;border:none;color:#9CA3AF;font-size:22px;cursor:pointer;padding:4px 8px;flex-shrink:0;';
+  closeBtn.onclick=()=>{ if(overlay.parentNode) document.body.removeChild(overlay); };
+  topBar.append(nameEl,closeBtn);
+  overlay.appendChild(topBar);
+  const content=document.createElement('div');
+  content.style.cssText='flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;padding:8px;';
+  content.innerHTML='<div style="color:#4A6585;font-size:14px;">Načítavam...</div>';
+  overlay.appendChild(content);
+  document.body.appendChild(overlay);
+
+  // Načítaj dáta
+  let dataUrl=att.url||null;
+  if(!dataUrl) dataUrl=await loadAttData(att.id);
+  if(!dataUrl){
+    content.innerHTML='<div style="color:#EF4444;font-size:14px;">Príloha sa nenašla.</div>';
+    return;
+  }
+  content.innerHTML='';
+
+  if(isImg){
+    const img=document.createElement('img');
+    img.src=dataUrl;
+    img.style.cssText='max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;';
+    content.appendChild(img);
+  } else if(isPdf){
+    const iframe=document.createElement('iframe');
+    iframe.src=dataUrl;
+    iframe.style.cssText='width:100%;height:100%;border:none;border-radius:4px;';
+    content.appendChild(iframe);
+  } else {
+    // Iný typ — ponúkni stiahnutie
+    const a=document.createElement('a');
+    a.href=dataUrl;
+    a.download=att.name||'priloha';
+    a.style.cssText='color:#34D399;font-size:16px;text-decoration:none;padding:14px 24px;background:#0D2B1F;border:1px solid #10B981;border-radius:10px;';
+    a.textContent='⬇ Stiahnuť '+  (att.name||'prílohu');
+    content.appendChild(a);
+  }
+}
+// ──────────────────────────────────────────────────────────────────
+
+// Listen to Firebase — orders
+db.collection('lupana').doc('data').onSnapshot(snap=>{
+  if(snap.exists){
+    const remote = snap.data().payload;
+    if(remote){
+      const parsed = JSON.parse(remote);
+      appState.data = parsed;
+      persist(parsed);
+      renderApp();
+    }
+  }
+});
+
+// Listen to Firebase — cenník
+db.collection('lupana').doc('cennik').onSnapshot(snap=>{
+  if(snap.exists && snap.data().payload){
+    try{ appState.cennik = JSON.parse(snap.data().payload); }catch{}
+    renderApp();
+  }
+});
+
+function setState(patch){
+  // Vždy ulož scroll ak sme na zozname (pred akoukoľvek zmenou)
+  const onList=!appState.subPage&&appState.page==='list';
+  if(onList) appState.listScrollY=window.scrollY;
+  Object.assign(appState, patch);
+  renderApp();
+  // Obnov scroll ak sme stále (alebo sme sa vrátili) na zozname
+  const nowOnList=!appState.subPage&&appState.page==='list';
+  if(nowOnList&&appState.listScrollY!=null){
+    requestAnimationFrame(()=>window.scrollTo(0,appState.listScrollY));
+  }
+}
+
+let cennikTimer=null;
+function saveCennik(){
+  if(cennikTimer) clearTimeout(cennikTimer);
+  cennikTimer=setTimeout(()=>{
+    db.collection('lupana').doc('cennik').set({payload:JSON.stringify(appState.cennik)});
+  },800);
+}
+function setCennikPrice(mat,price){
+  if(price===''||price===null){ delete appState.cennik[mat]; }
+  else { appState.cennik[mat]=parseFloat(price)||0; }
+  saveCennik();
+  renderApp();
+}
+
+function setData(fn){
+  const newData = fn(appState.data);
+  appState.data = newData;
+  persist(newData);
+  saveToFirebase(newData);
+  renderApp();
+}
+
+// ═══════════════════════════════════
+// DATABÁZA MATERIÁLOV (z Aventos app)
+// ═══════════════════════════════════
+const DEKORY = [
+  {kod:'W960 SM',    nazov:'Biela hladká',                     cena:56.79},
+  {kod:'W960 ST7',   nazov:'Biela perlička',                   cena:56.79},
+  {kod:'W1000 ST9',  nazov:'Biela prémium',                    cena:74.47},
+  {kod:'W1000 ST19', nazov:'Biela prém+',                      cena:115.85},
+  {kod:'W1000 ST38', nazov:'Biela prém++',                     cena:133.76},
+  {kod:'W1100 ST9',  nazov:'Alpská biela',                     cena:90.45},
+  {kod:'W1200 ST9',  nazov:'Biela porcelán',                   cena:98.27},
+  {kod:'U104 ST9',   nazov:'Alabaster',                        cena:75.83},
+  {kod:'U113 ST9',   nazov:'Bavlna',                           cena:88.63},
+  {kod:'U115 ST9',   nazov:'Bežová karátová',                  cena:98.27},
+  {kod:'U125 ST9',   nazov:'Žltá piesková',                    cena:115.85},
+  {kod:'U156 ST9',   nazov:'Piesková',                         cena:88.07},
+  {kod:'U163 ST9',   nazov:'Žltá kari',                        cena:115.85},
+  {kod:'U201 ST9',   nazov:'Šedá oblázková',                   cena:99.51},
+  {kod:'U211 ST9',   nazov:'Bežová mandlová',                  cena:108.14},
+  {kod:'U216 ST9',   nazov:'Béžová camel',                     cena:88.07},
+  {kod:'U220 ST9',   nazov:'Bežová jemná',                     cena:98.27},
+  {kod:'U222 ST9',   nazov:'Béžová krémová',                   cena:74.47},
+  {kod:'U250 ST9',   nazov:'Bežová karamelová',                cena:108.14},
+  {kod:'U311 ST9',   nazov:'Červená Burgundy',                 cena:109.50},
+  {kod:'U321 ST9',   nazov:'Červená čínska',                   cena:109.50},
+  {kod:'U325 ST9',   nazov:'Ružová antická',                   cena:109.50},
+  {kod:'U335 ST9',   nazov:'Červená hrdzavá',                  cena:115.85},
+  {kod:'U350 ST9',   nazov:'Siena oranžová',                   cena:115.85},
+  {kod:'U502 ST9',   nazov:'Modrá hmlistá',                    cena:115.85},
+  {kod:'U525 ST9',   nazov:'Modrá delft',                      cena:109.50},
+  {kod:'U540 ST9',   nazov:'Modrá riflová',                    cena:108.14},
+  {kod:'U599 ST9',   nazov:'Modrá indigo',                     cena:115.85},
+  {kod:'U604 ST9',   nazov:'Zelená eukalyptová',               cena:115.85},
+  {kod:'U630 ST9',   nazov:'Limetka',                          cena:109.50},
+  {kod:'U636 ST9',   nazov:'Zelená fjordská',                  cena:115.85},
+  {kod:'U638 ST9',   nazov:'Zelená šalviová',                  cena:115.85},
+  {kod:'U665 ST9',   nazov:'Zelená kamenná',                   cena:115.85},
+  {kod:'U669 ST9',   nazov:'Zelená Estate',                    cena:108.14},
+  {kod:'U699 ST9',   nazov:'Zelená jedlová',                   cena:115.85},
+  {kod:'U702 ST9',   nazov:'Kašmír',                           cena:74.47},
+  {kod:'U705 ST9',   nazov:'Šedá angorská',                    cena:98.27},
+  {kod:'U707 ST9',   nazov:'Hodváb',                           cena:99.51},
+  {kod:'U708 ST9',   nazov:'Svetlo šedá',                      cena:66.80},
+  {kod:'U727 ST9',   nazov:'Šedá kamenná',                     cena:98.27},
+  {kod:'U732 ST9',   nazov:'Šedá prachová',                    cena:88.63},
+  {kod:'U740 ST9',   nazov:'Taupe tmavá',                      cena:98.27},
+  {kod:'U741 ST9',   nazov:'Šedá lávová',                      cena:98.89},
+  {kod:'U748 ST9',   nazov:'Šedá lanýžová',                    cena:99.51},
+  {kod:'U750 ST9',   nazov:'Šedá taupe',                       cena:98.27},
+  {kod:'U755 ST9',   nazov:'Šedá Havana',                      cena:98.27},
+  {kod:'U763 ST9',   nazov:'Perlovo šedá',                     cena:88.07},
+  {kod:'U767 ST9',   nazov:'Šedá kubanitová',                  cena:98.89},
+  {kod:'U775 ST9',   nazov:'Šedá bielošedá',                   cena:88.63},
+  {kod:'U780 ST9',   nazov:'Šedá monumentálna',                cena:98.89},
+  {kod:'U788 ST9',   nazov:'Šedá arktická',                    cena:98.89},
+  {kod:'U818 ST9',   nazov:'Hnedá tmavá',                      cena:116.57},
+  {kod:'U830 ST9',   nazov:'Nude karamelová',                  cena:116.57},
+  {kod:'U899 ST9',   nazov:'Čierna soft',                      cena:98.89},
+  {kod:'U960 ST9',   nazov:'Šedá ónyxová',                     cena:98.89},
+  {kod:'U961 ST7',   nazov:'Šedá grafitová',                   cena:76.31},
+  {kod:'U963 ST9',   nazov:'Šedá diamantová',                  cena:74.94},
+  {kod:'U968 ST9',   nazov:'Šedá uhlíková',                    cena:98.89},
+  {kod:'U998 ST38',  nazov:'Shadow Black',                     cena:134.60},
+  {kod:'U999 ST7',   nazov:'Čierna perlička',                  cena:70.38},
+  {kod:'U999 ST19',  nazov:'Čierna',                           cena:115.85},
+  {kod:'F186 ST9',   nazov:'Betón Chicago svetlý',             cena:116.57},
+  {kod:'F187 ST9',   nazov:'Betón Chicago tmavý',              cena:116.57},
+  {kod:'F206 ST9',   nazov:'Pietra Grigia čierna',             cena:117.30},
+  {kod:'F235 ST76',  nazov:'Bridlica scrivaro',                cena:121.63},
+  {kod:'F243 ST76',  nazov:'Mramor candela šedý',              cena:121.63},
+  {kod:'F323 ST20',  nazov:'Cobra bronzová',                   cena:121.63},
+  {kod:'F416 ST10',  nazov:'Juta béžová',                      cena:92.74},
+  {kod:'F433 ST10',  nazov:'Ľan antracitový',                  cena:117.30},
+  {kod:'F528 ST20',  nazov:'Kov kartáčovaný bronzový',         cena:121.63},
+  {kod:'F685 ST10',  nazov:'Acapulco',                         cena:115.85},
+  {kod:'F765 ST20',  nazov:'Kov strieborno šedý brúsený',      cena:98.27},
+  {kod:'F800 ST9',   nazov:'Mramor kryštalový',                cena:115.85},
+  {kod:'H305 ST12',  nazov:'Dub Tonsberg prírodný',            cena:115.85},
+  {kod:'H309 ST12',  nazov:'Dub Tonsberg hnedý',               cena:115.85},
+  {kod:'H1113 ST10', nazov:'Dub Kansas hnedý',                 cena:98.89},
+  {kod:'H1142 ST36', nazov:'Dub Sacramento šedý',              cena:133.76},
+  {kod:'H1145 ST10', nazov:'Dub Bardolino prírodný',           cena:68.67},
+  {kod:'H1176 ST37', nazov:'Dub Halifax biely',                cena:142.47},
+  {kod:'H1180 ST37', nazov:'Dub Halifax prírodný',             cena:142.47},
+  {kod:'H1181 ST37', nazov:'Dub Halifax tabak',                cena:142.47},
+  {kod:'H1199 ST12', nazov:'Dub Thermo čiernohnedý',           cena:98.89},
+  {kod:'H1307 ST19', nazov:'Orech Warmia hnedý',               cena:121.63},
+  {kod:'H1312 ST10', nazov:'Dub Whiteriver pieskovo béžový',   cena:116.57},
+  {kod:'H1313 ST10', nazov:'Dub Whiteriver šedohnedý',         cena:116.57},
+  {kod:'H1316 ST17', nazov:'Dub Bookmatch',                    cena:98.27},
+  {kod:'H1318 ST10', nazov:'Dub divoký prírodný',              cena:80.64},
+  {kod:'H1330 ST10', nazov:'Dub Santa Fe vintage',             cena:116.57},
+  {kod:'H1344 ST32', nazov:'Dub Sherman koňakovo hnedý',       cena:141.58},
+  {kod:'H1346 ST32', nazov:'Dub Sherman antracitový',          cena:142.47},
+  {kod:'H1362 ST12', nazov:'Dub Baronía svetlý',               cena:108.14},
+  {kod:'H1367 ST40', nazov:'Dub Casella prírodný svetlý',      cena:141.58},
+  {kod:'H1385 ST40', nazov:'Dub Casella prírodný',             cena:141.58},
+  {kod:'H1386 ST40', nazov:'Dub Casella hnedý',                cena:141.58},
+  {kod:'H1399 ST10', nazov:'Dub Denver hnedý',                 cena:116.57},
+  {kod:'H1401 ST22', nazov:'Pinia Cascina',                    cena:81.15},
+  {kod:'H1487 ST22', nazov:'Borovica Branberg',                cena:98.89},
+  {kod:'H1636 ST12', nazov:'Čerešňa Locarno',                  cena:98.89},
+  {kod:'H1708 ST17', nazov:'Gaštan Brighton',                  cena:98.27},
+  {kod:'H1710 ST10', nazov:'Gaštan Kentucky pieskový',         cena:117.30},
+  {kod:'H1714 ST19', nazov:'Orech Lincoln',                    cena:123.15},
+  {kod:'H1715 ST12', nazov:'Orech Parona',                     cena:98.27},
+  {kod:'H1732 ST9',  nazov:'Breza piesková',                   cena:75.83},
+  {kod:'H1910 ST9',  nazov:'Buk Willow',                       cena:75.83},
+  {kod:'H2033 ST10', nazov:'Dub Hunton tmavý',                 cena:116.57},
+  {kod:'H3003 ST19', nazov:'Dub Norwich',                      cena:121.63},
+  {kod:'H3012 ST22', nazov:'Coco Bolo prírodné',               cena:99.51},
+  {kod:'H3043 ST12', nazov:'Eukalyptus tmavo hnedý',           cena:75.83},
+  {kod:'H3090 ST22', nazov:'Dub Hamilton',                     cena:95.35},
+  {kod:'H3131 ST12', nazov:'Dub Davos prírodný',               cena:81.15},
+  {kod:'H3133 ST12', nazov:'Dub Davos lanýžovo hnedý',         cena:99.51},
+  {kod:'H3146 ST19', nazov:'Dub Lorenzo béžovošedý',           cena:123.15},
+  {kod:'H3152 ST19', nazov:'Dub Vicenza biely',                cena:121.63},
+  {kod:'H3154 ST36', nazov:'Dub Charleston',                   cena:133.76},
+  {kod:'H3156 ST12', nazov:'Dub Corbridge šedý',               cena:98.89},
+  {kod:'H3157 ST12', nazov:'Dub Vicenza',                      cena:93.41},
+  {kod:'H3170 ST12', nazov:'Dub Kendal prírodný',              cena:96.41},
+  {kod:'H3176 ST37', nazov:'Dub Halifax cínový',               cena:141.58},
+  {kod:'H3190 ST19', nazov:'Metallic Fineline antracitový',    cena:123.15},
+  {kod:'H3195 ST19', nazov:'Fineline biely',                   cena:121.63},
+  {kod:'H3197 ST19', nazov:'Fineline stredne šedý',            cena:121.63},
+  {kod:'H3198 ST19', nazov:'Fineline tmavo šedý',              cena:121.63},
+  {kod:'H3303 ST10', nazov:'Dub Hamilton prírodný',            cena:96.35},
+  {kod:'H3309 ST28', nazov:'Dub Gladstone pieskový',           cena:142.47},
+  {kod:'H3317 ST28', nazov:'Dub Cuneo hnedý',                  cena:141.58},
+  {kod:'H3322 ST17', nazov:'Dub Rovato svetlo prírodný',       cena:98.27},
+  {kod:'H3325 ST28', nazov:'Dub Gladstone tabakový',           cena:142.47},
+  {kod:'H3331 ST10', nazov:'Dub Nebraska prírodný',            cena:96.35},
+  {kod:'H3359 ST32', nazov:'Dub Davenport prírodný',           cena:141.58},
+  {kod:'H3395 ST12', nazov:'Dub Corbridge prírodný',           cena:79.23},
+  {kod:'H3398 ST12', nazov:'Dub Kendal tabak',                 cena:98.89},
+  {kod:'H3430 ST22', nazov:'Borovica Aland biela',             cena:99.51},
+  {kod:'H3433 ST22', nazov:'Borovica Aland polárna',           cena:99.51},
+  {kod:'H3450 ST22', nazov:'Fleetwood biely',                  cena:99.51},
+  {kod:'H3700 ST10', nazov:'Orech Pacifik prírodný',           cena:99.51},
+  {kod:'H3702 ST10', nazov:'Orech Pacifik tabak',              cena:98.89},
+  {kod:'H3710 ST12', nazov:'Orech Carini prírodný',            cena:108.82},
+  {kod:'H3730 ST10', nazov:'Orech Hickory prírodný',           cena:100.54},
+  {kod:'H3734 ST9',  nazov:'Orech Dijon prírodný',             cena:75.83},
+  {kod:'H3786 ST19', nazov:'Bolivar prírodný',                 cena:121.63},
+  {kod:'H3787 ST17', nazov:'Bolivar hnedý',                    cena:121.63},
+  {kod:'H3840 ST9',  nazov:'Javor Mandal prírodný',            cena:89.18},
+  {kod:'H3860 ST9',  nazov:'Javor hard',                       cena:99.51},
+  {kod:'H7586 ST17', nazov:'Orech Alba tabakový',              cena:98.27},
+  // MDF Egger (jednostranný)
+  {kod:'W1000 PM/ST9', nazov:'MDF Biela prémiová (hlboký mat)',       cena:232.15},
+  {kod:'W1100 PM/ST9', nazov:'MDF Biela alpská (hlboký mat)',         cena:232.15},
+  {kod:'W1100 PG/ST9', nazov:'MDF Biela alpská (vysoký lesk)',        cena:220.77},
+  {kod:'U250 PM/ST9',  nazov:'MDF Bežová karamelová (hlboký mat)',    cena:232.15},
+  {kod:'U399 PM/ST9',  nazov:'Červená granátová (hlboký mat)',        cena:232.15},
+  {kod:'U590 PM/ST9',  nazov:'MDF Modrá hlboká (hlboký mat)',         cena:232.15},
+  {kod:'U599 PM/ST9',  nazov:'Modrá indigo (hlboký mat)',             cena:232.15},
+  {kod:'U604 PM/ST9',  nazov:'MDF Zelená eukalyptová (hlboký mat)',   cena:232.15},
+  {kod:'U665 PM/ST9',  nazov:'Zelená kamenná (hlboký mat)',           cena:232.15},
+  {kod:'U669 PM/ST9',  nazov:'MDF Zelená Estate (hlboký mat)',        cena:232.15},
+  {kod:'U702 PM/ST9',  nazov:'MDF Kašmír (hlboký mat)',               cena:232.15},
+  {kod:'U705 PM/ST9',  nazov:'MDF Šedá angorská (hlboký mat)',        cena:232.15},
+  {kod:'U708 PM/ST9',  nazov:'MDF Svetlo šedá (hlboký mat)',          cena:232.15},
+  {kod:'U732 PM/ST9',  nazov:'MDF Šedá prachová (hlboký mat)',        cena:232.15},
+  {kod:'U740 PM/ST9',  nazov:'MDF Taupe tmavá (hlboký mat)',          cena:232.15},
+  {kod:'U755 PM/ST9',  nazov:'MDF Šedá Havana (hlboký mat)',          cena:232.15},
+  {kod:'U767 PM/ST9',  nazov:'Šedá kubanitová (hlboký mat)',          cena:232.15},
+  {kod:'U960 PM/ST9',  nazov:'MDF Šedá onyxová (hlboký mat)',         cena:232.15},
+  {kod:'U961 PM/ST9',  nazov:'MDF Šedá grafitová (hlboký mat)',       cena:232.15},
+  {kod:'U999 PM/ST9',  nazov:'MDF Čierna (hlboký mat)',               cena:232.15},
+  {kod:'U999 PG/ST9',  nazov:'MDF Čierna (vysoký lesk)',              cena:220.77},
+  {kod:'F128 PA/ST9',  nazov:'MDF Granit čierny (pololesk)',          cena:289.03},
+  {kod:'F129 PA/ST9',  nazov:'MDF Granit bežový (pololesk)',          cena:289.03},
+  // Sololit
+  {kod:'sololit',      nazov:'Sololit',                                  cena:24.00},
+  {kod:'SOLOLIT',      nazov:'Sololit',                                  cena:24.00},
+];
+
+// ═══════════════════════════════════
+// DATABÁZA KOVANIA
+// ═══════════════════════════════════
+const KOVANIE = [
+  {id:'zaves110',  nazov:'Záves 110°',           cena:5.00,  unit:'ks', icon:'🔩'},
+  {id:'zaves155',  nazov:'Záves 155°',           cena:8.00,  unit:'ks', icon:'🔩'},
+  {id:'tipon',     nazov:'Tipon (kr./dl.)',       cena:5.00,  unit:'ks', icon:'📌'},
+  {id:'tyc',       nazov:'Tyč na vešanie 3m',    cena:9.00,  unit:'ks', icon:'📏', isRail:true},
+  {id:'podlozka',  nazov:'Podložka priama',       cena:1.00,  unit:'ks', icon:'🔧'},
+  {id:'axilo',     nazov:'Axilo (nožička)',        cena:1.00,  unit:'ks', icon:'🦵'},
+  {id:'klzak',     nazov:'Klzák',                 cena:1.00,  unit:'ks', icon:'🔲'},
+  {id:'merivoboxE',nazov:'Merivobox E',           cena:60.00, unit:'ks', icon:'📦'},
+  {id:'merivoboxM',nazov:'Merivobox M',           cena:50.00, unit:'ks', icon:'📦'},
+];
+
+function findDekorCena(matText){
+  if(!matText) return null;
+  const upper=matText.toUpperCase();
+  // 1. Exact substring match (e.g. "W960 SM" in "W960 SM 18mm")
+  for(const d of DEKORY){
+    if(upper.includes(d.kod.toUpperCase())) return {cena:d.cena,nazov:d.nazov,kod:d.kod};
+  }
+  // 2. Match without "/..." suffix (e.g. "W1100 PM" matches "W1100 PM/ST9")
+  for(const d of DEKORY){
+    const baseKod=d.kod.replace(/\/.*$/,'').trim().toUpperCase();
+    if(baseKod.length>=4 && upper.includes(baseKod)) return {cena:d.cena,nazov:d.nazov,kod:d.kod};
+  }
+  // 3. Base color-code fallback (e.g. "W960 16mm" → first W960 entry = W960 SM)
+  for(const d of DEKORY){
+    const colorCode=d.kod.split(' ')[0].toUpperCase();
+    if(colorCode.length>=3 && upper.includes(colorCode)) return {cena:d.cena,nazov:d.nazov,kod:d.kod};
+  }
+  return null;
+}
+
+// ═══════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════
+const STATUSES = [
+  {key:'nacenena', label:'Naceněná', color:'#F59E0B', bg:'#292300', dot:'#F59E0B'},
+  {key:'vo_vyrobe', label:'Vo výrobe', color:'#3B82F6', bg:'#0D1F3C', dot:'#3B82F6'},
+  {key:'sklada_sa', label:'Skladá sa', color:'#8B5CF6', bg:'#1E0A3C', dot:'#8B5CF6'},
+  {key:'pripravena', label:'Pripravená na montáž', color:'#F97316', bg:'#2C1000', dot:'#F97316'},
+  {key:'hotova', label:'Hotovo', color:'#10B981', bg:'#052E1C', dot:'#10B981'},
+  {key:'storno', label:'Storno', color:'#EF4444', bg:'#2D0A0A', dot:'#EF4444'},
+];
+const STATUS_FLOW = ['nacenena','vo_vyrobe','sklada_sa','pripravena','hotova'];
+const ROZPRACOVANE = ['nacenena','vo_vyrobe','sklada_sa','pripravena'];
+
+function statusOf(k){ return STATUSES.find(s=>s.key===k)||STATUSES[0]; }
+
+function fmt(n){
+  if(n===null||n===undefined||n==='') return '—';
+  return new Intl.NumberFormat('sk-SK',{style:'currency',currency:'EUR',minimumFractionDigits:0,maximumFractionDigits:0}).format(Math.round(n));
+}
+function fmtDate(ts){
+  if(!ts) return '—';
+  return new Date(ts).toLocaleDateString('sk-SK',{day:'2-digit',month:'2-digit',year:'numeric'});
+}
+function fmtMins(mins){
+  const h=Math.floor(mins/60), m=mins%60;
+  return h>0 ? `${h}h${m>0?' '+m+'m':''}` : `${m}m`;
+}
+function totalMins(o){ return (o.timeLog||[]).reduce((a,e)=>a+e.mins,0); }
+
+// ═══════════════════════════════════
+// ACTIONS
+// ═══════════════════════════════════
+function updateOrder(id, patch){
+  setData(d=>({...d, orders: d.orders.map(o=>o.id===id?{...o,...patch,updatedAt:Date.now()}:o)}));
+}
+
+function saveOrder(form){
+  const order = {...form, id:uid(), createdAt:Date.now(), updatedAt:Date.now(), timeLog:[], notes:[], materials:[]};
+  setData(d=>({...d, orders:[order,...d.orders], orderSequence:[order.id,...(d.orderSequence||[])]}));
+  setState({page:'list'});
+}
+
+function saveEdit(id, form){
+  updateOrder(id, form);
+  setState({page:'detail'});
+}
+
+function deleteOrderConfirmed(){
+  const id = appState.confirmDelete;
+  setData(d=>({...d, orders:d.orders.filter(o=>o.id!==id)}));
+  setState({confirmDelete:null, page:'list'});
+}
+
+function archiveOrder(id){
+  const o = appState.data.orders.find(x=>x.id===id);
+  if(!o) return;
+  let oz = o;
+  setData(d=>({
+    ...d,
+    orders: d.orders.filter(x=>x.id!==id),
+    archive:[{...oz, archivedAt:Date.now()}, ...(d.archive||[])],
+  }));
+  setState({page:'list'});
+}
+
+function setStatus(id, status){
+  updateOrder(id,{status, [`statusHistory_${status}`]:Date.now()});
+}
+
+function nextStatus(o){
+  const idx = STATUS_FLOW.indexOf(o.status);
+  if(idx<0||idx>=STATUS_FLOW.length-1) return;
+  const newStatus = STATUS_FLOW[idx+1];
+  setStatus(o.id, newStatus);
+  sendSmsNotification(o, newStatus);
+}
+
+function sendSmsNotification(o, newStatus){
+  const phone = o.customerPhone;
+  if(!phone) return;
+  const meno = o.customerName ? 'p. ' + o.customerName.split(' ')[0] : 'vážený zákazník';
+  const nazov = o.title || 'zákazka';
+  const messages = {
+    vo_vyrobe:`Dobrý deň ${meno}, vaša zákazka "${nazov}" bola zaradená do výroby.`,
+    sklada_sa:`Dobrý deň ${meno}, vaša zákazka "${nazov}" sa práve skladá.`,
+    pripravena:`Dobrý deň ${meno}, vaša zákazka "${nazov}" je pripravená na montáž.`,
+    hotova:`Dobrý deň ${meno}, vaša zákazka "${nazov}" je hotová a pripravená na odovzdanie!`,
+  };
+  const text = messages[newStatus];
+  if(!text) return;
+  const cleanPhone = phone.replace(/ /g,'');
+  setState({smsModal:{phone, cleanPhone, text, newStatus}});
+}
+
+function logTime(){
+  const h=parseInt(appState.timeH)||0, m=parseInt(appState.timeM)||0;
+  const mins=h*60+m;
+  if(mins<=0) return;
+  const sel = appState.data.orders.find(o=>o.id===appState.selId);
+  if(!sel) return;
+  const entry={id:uid(),mins,note:appState.timeNote.trim(),category:appState.timeCategory,worker:appState.timeWorker,at:appState.timeDate?new Date(appState.timeDate).getTime():Date.now()};
+  updateOrder(appState.selId,{timeLog:[entry,...(sel.timeLog||[])]});
+  setState({timeH:'',timeM:'',timeNote:'',timeDate:today(),timeCategory:'nakres',timeWorker:'ja'});
+}
+
+function addNote(){
+  if(!appState.noteText.trim()) return;
+  const sel = appState.data.orders.find(o=>o.id===appState.selId);
+  if(!sel) return;
+  const note={id:uid(),text:appState.noteText.trim(),at:Date.now(),resolved:false};
+  updateOrder(appState.selId,{notes:[note,...(sel.notes||[])]});
+  setState({noteText:''});
+}
+
+function toggleNote(nid){
+  const sel = appState.data.orders.find(o=>o.id===appState.selId);
+  if(!sel) return;
+  updateOrder(appState.selId,{notes:(sel.notes||[]).map(n=>n.id===nid?{...n,resolved:!n.resolved}:n)});
+}
+
+function addMaterial(){
+  if(!appState.matName.trim()) return;
+  const sel = appState.data.orders.find(o=>o.id===appState.selId);
+  if(!sel) return;
+  const mat={id:uid(),name:appState.matName.trim(),cost:parseFloat(appState.matCost)||0,note:appState.matNote.trim(),at:Date.now()};
+  updateOrder(appState.selId,{materials:[mat,...(sel.materials||[])]});
+  setState({matName:'',matCost:'',matNote:'',showMatForm:false});
+}
+
+function quickExport(){
+  const json=JSON.stringify(appState.data,null,2);
+  const blob=new Blob([json],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`lupana-zaloha-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  setData(d=>({...d,lastBackup:Date.now()}));
+}
+
+// ═══════════════════════════════════
+// RENDER HELPERS
+// ═══════════════════════════════════
+function el(tag, attrs, ...children){
+  const e=document.createElement(tag);
+  if(attrs) Object.entries(attrs).forEach(([k,v])=>{
+    if(k==='style'&&typeof v==='object') Object.assign(e.style,v);
+    else if(k.startsWith('on')) e[k.toLowerCase()]=v;
+    else if(k==='className') e.className=v;
+    else if(k==='htmlFor') e.htmlFor=v;
+    else e.setAttribute(k,v);
+  });
+  children.flat(Infinity).forEach(c=>{
+    if(c===null||c===undefined||c===false) return;
+    if(typeof c==='string'||typeof c==='number') e.appendChild(document.createTextNode(c));
+    else if(c instanceof Node) e.appendChild(c);
+  });
+  return e;
+}
+
+function div(cls, ...children){ return el('div',{className:cls},...children); }
+function span(cls,...children){ return el('span',{className:cls},...children); }
+function btn(cls,text,onClick){ const b=el('button',{className:'btn '+cls},text); b.onclick=onClick; return b; }
+
+// ═══════════════════════════════════
+// PASSWORD SCREEN
+// ═══════════════════════════════════
+function renderPassword(){
+  const wrap = el('div',{style:{minHeight:'100vh',background:'#0B0F1A',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'32px'}});
+  const inner = el('div',{style:{width:'100%',maxWidth:'320px'}});
+  const title = el('div',{style:{textAlign:'center',marginBottom:'32px'}});
+  title.appendChild(el('div',{style:{fontSize:'28px',fontWeight:'700',color:'#F9FAFB',letterSpacing:'-1px'}},'LUPANA'));
+  title.appendChild(el('div',{style:{color:'#4B5563',fontSize:'14px',marginTop:'4px'}},'Zadaj heslo pre prístup'));
+  
+  const input = el('input',{type:'password',placeholder:'Heslo',style:{marginBottom:'12px',background:'#111827',border:`1px solid ${appState.pwError?'#EF4444':'#1F2937'}`,borderRadius:'12px',color:'#F9FAFB',padding:'14px 16px',fontSize:'16px',width:'100%'}});
+  input.value = appState.pwInput;
+  input.oninput = e => appState.pwInput = e.target.value;
+  
+  const errMsg = el('div',{style:{color:'#EF4444',fontSize:'13px',textAlign:'center',marginBottom:'8px',display:appState.pwError?'block':'none'}},'Nesprávne heslo');
+  
+  const loginBtn = el('button',{style:{width:'100%',background:'#2563EB',border:'none',borderRadius:'12px',color:'#fff',fontWeight:'700',fontSize:'16px',padding:'14px 0',cursor:'pointer'}},'Vstúpiť');
+  
+  function tryLogin(){
+    if(appState.pwInput===APP_PASSWORD){
+      sessionStorage.setItem('lupana-auth','1');
+      setState({authed:true,pwInput:''});
+    } else {
+      setState({pwError:true});
+      setTimeout(()=>setState({pwError:false}),2000);
+      appState.pwInput='';
+      input.value='';
+    }
+  }
+  loginBtn.onclick = tryLogin;
+  input.onkeydown = e=>{ if(e.key==='Enter') tryLogin(); };
+  
+  inner.append(title,input,errMsg,loginBtn);
+  wrap.appendChild(inner);
+  return wrap;
+}
+
+// ═══════════════════════════════════
+// TOPBAR
+// ═══════════════════════════════════
+function renderTopBar(title, backFn, rightEl){
+  const bar = el('div',{className:'topbar'});
+  if(backFn){
+    const b = el('button',{className:'back-btn'},'← Späť');
+    b.onclick=backFn;
+    bar.appendChild(b);
+  }
+  bar.appendChild(el('span',{className:'topbar-title'},title));
+  if(rightEl) bar.appendChild(rightEl);
+  return bar;
+}
+
+// ═══════════════════════════════════
+// FORM PAGE
+// ═══════════════════════════════════
+function renderForm(isEdit){
+  const sel = isEdit ? appState.data.orders.find(o=>o.id===appState.selId) : null;
+  let form = isEdit ? {...sel} : {
+    customerName:'',customerPhone:'',customerEmail:'',customerNote:'',
+    title:'',description:'',status:'nacenena',
+    price:'',depositPaid:'',
+    contactDate:today(),approvedDate:'',depositDate:'',deadlineDate:'',
+    vyplatena:false,notes:[],materials:[],timeLog:[]
+  };
+
+  const frag = document.createDocumentFragment();
+  const saveBtn = el('button',{className:'btn btn-primary',style:{padding:'8px 16px',fontSize:'14px',flexShrink:'0'}}, isEdit?'Uložiť':'Vytvoriť');
+  
+  frag.appendChild(renderTopBar(isEdit?'Upraviť zákazku':'Nová zákazka',
+    ()=>setState({page:isEdit?'detail':'list'}), saveBtn));
+
+  const scroll = el('div',{style:{padding:'16px 0',overflowY:'auto'}});
+
+  function field(lbl, inp){
+    const d=el('div',{className:'field'}); 
+    d.appendChild(el('label',{},lbl));
+    d.appendChild(inp);
+    return d;
+  }
+  function section(icon,title,...fields){
+    const s=el('div',{className:'section'});
+    const t=el('div',{className:'section-title'},icon+' '+title);
+    const b=el('div',{className:'section-body'});
+    fields.forEach(f=>b.appendChild(f));
+    s.append(t,b);
+    return s;
+  }
+  function row2(...fields){
+    const r=el('div',{className:'row2'});
+    fields.forEach(f=>r.appendChild(f));
+    return r;
+  }
+  function inp(key,placeholder,type='text'){
+    const i=el('input',{type,placeholder});
+    i.value=form[key]||'';
+    i.oninput=e=>form[key]=e.target.value;
+    return i;
+  }
+  function sel2(key,options){
+    const s=el('select');
+    options.forEach(([v,l])=>{
+      const o=el('option',{value:v},l);
+      if(form[key]===v) o.selected=true;
+      s.appendChild(o);
+    });
+    s.onchange=e=>form[key]=e.target.value;
+    return s;
+  }
+  function ta(key,placeholder,rows=3){
+    const t=el('textarea',{placeholder,rows});
+    t.value=form[key]||'';
+    t.oninput=e=>form[key]=e.target.value;
+    return t;
+  }
+  function dateField(key,label){
+    const wrap=el('div',{className:'field',style:{flex:'1'}});
+    wrap.appendChild(el('label',{},label));
+    const row=el('div',{style:{display:'flex',alignItems:'center',gap:'4px'}});
+    const i=el('input',{type:'date'});
+    i.value=form[key]||'';
+    i.oninput=e=>{ form[key]=e.target.value; refresh(); };
+    const clr=el('button',{style:{background:'none',border:'none',color:'#6B7280',fontSize:'16px',padding:'4px',display:form[key]?'block':'none'}},'✕');
+    clr.onclick=()=>{ form[key]=''; i.value=''; clr.style.display='none'; };
+    row.append(i,clr);
+    wrap.appendChild(row);
+    return wrap;
+  }
+
+  function refresh(){
+    scroll.innerHTML='';
+    buildForm();
+  }
+
+  function buildForm(){
+    scroll.appendChild(section('👤','Zákazník',
+      row2(field('Meno zákazníka',inp('customerName','Ján Novák')), field('Telefón',inp('customerPhone','+421 900...'))),
+      field('Email',inp('customerEmail','jan@email.sk','email')),
+      field('Poznámka',ta('customerNote','Odkiaľ prišiel...',2))
+    ));
+    scroll.appendChild(section('📋','Zákazka',
+      field('Názov zákazky',inp('title','napr. Kuchyňa na mieru')),
+      field('Popis',ta('description','Detailný popis...',4)),
+      field('Stav zákazky',sel2('status',STATUSES.map(s=>[s.key,s.label]))),
+      row2(dateField('contactDate','Prvý kontakt'), dateField('approvedDate','Schválená ponuka')),
+      row2(dateField('depositDate','Prijatá záloha (dátum)'), dateField('deadlineDate','Odovzdanie diela'))
+    ));
+    scroll.appendChild(section('💶','Financie',
+      row2(field('Cena zákazky (€)',inp('price','0','number')), field('Prijatá záloha (€)',inp('depositPaid','0','number')))
+    ));
+  }
+
+  buildForm();
+  frag.appendChild(scroll);
+
+  saveBtn.onclick=()=>{
+    if(!form.title.trim()&&!form.customerName.trim()) return;
+    if(isEdit) saveEdit(appState.selId, form);
+    else saveOrder(form);
+  };
+
+  return frag;
+}
+
+// ═══════════════════════════════════
+// DETAIL PAGE
+// ═══════════════════════════════════
+function renderDetail(){
+  const sel = appState.data.orders.find(o=>o.id===appState.selId);
+  if(!sel) { setState({page:'list'}); return document.createDocumentFragment(); }
+  
+  const st = statusOf(sel.status);
+  const price=parseFloat(sel.price)||0;
+  const deposit=parseFloat(sel.depositPaid)||0;
+  const due=price-deposit;
+  const mins=totalMins(sel);
+  const totalMat=(sel.materials||[]).reduce((a,m)=>a+(m.cost||0),0);
+  const profit=price>0?price-totalMat:null;
+  const nextIdx=STATUS_FLOW.indexOf(sel.status);
+  const canAdvance=nextIdx>=0&&nextIdx<STATUS_FLOW.length-1;
+
+  const frag=document.createDocumentFragment();
+
+  const editBtn=el('button',{style:{background:'#1F2937',border:'1px solid #374151',borderRadius:'8px',color:'#9CA3AF',fontWeight:'600',padding:'6px 14px',fontSize:'13px'}},'✎ Upraviť');
+  editBtn.onclick=()=>{setState({page:'edit'})};
+
+  frag.appendChild(renderTopBar(sel.title||sel.customerName, ()=>setState({page:'list', selectedCard:appState.selId}), editBtn));
+
+  // Status banner
+  const banner=el('div',{style:{background:st.bg,borderBottom:`2px solid ${st.color}`,padding:'10px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:'8px'}});
+  const bannerLeft=el('div',{style:{display:'flex',alignItems:'center',gap:'8px'}});
+  const dot=el('span',{style:{width:'10px',height:'10px',borderRadius:'50%',background:st.dot,display:'inline-block',boxShadow:`0 0 6px ${st.dot}`}});
+  bannerLeft.append(dot, el('span',{style:{color:st.color,fontWeight:'700',fontSize:'14px',letterSpacing:'1px',textTransform:'uppercase'}},st.label));
+  banner.appendChild(bannerLeft);
+  if(canAdvance){
+    const nextSt=statusOf(STATUS_FLOW[nextIdx+1]);
+    const advBtn=el('button',{style:{background:'transparent',border:`1px solid ${nextSt.color}`,borderRadius:'8px',fontSize:'12px',fontWeight:'700',padding:'5px 12px',color:nextSt.color,cursor:'pointer'}},`→ ${nextSt.label}`);
+    advBtn.onclick=()=>nextStatus(sel);
+    banner.appendChild(advBtn);
+  }
+  frag.appendChild(banner);
+
+  // Tabs
+  const tabs=el('div',{className:'tabs'});
+  ['info','finance','notes','materials','time','porez','prilohy','history'].forEach(k=>{
+    const labels={info:'Info',finance:'Financie',notes:'Pozn.',materials:'Materiál',time:'Čas',porez:'Porez ✂️',prilohy:'📎 Príl.',history:'Log'};
+    const t=el('button',{className:'tab'+(appState.tab===k?' active':'')},labels[k]);
+    t.onclick=()=>setState({tab:k, porezSkrinka:null});
+    tabs.appendChild(t);
+  });
+  frag.appendChild(tabs);
+
+  const scroll=el('div',{style:{overflowY:'auto',paddingBottom:'40px'}});
+
+  // ── INFO TAB ──
+  if(appState.tab==='info'){
+    // ── Status stepper ───────────────────────────────────────
+    const stepWrap=el('div',{style:{margin:'12px 16px 8px',display:'flex',alignItems:'center',gap:'0'}});
+    STATUS_FLOW.forEach((key,i)=>{
+      const st2=statusOf(key);
+      const isCurrent=sel.status===key;
+      const isPast=STATUS_FLOW.indexOf(sel.status)>i;
+      const isNext=STATUS_FLOW.indexOf(sel.status)===i-1;
+
+      const step=el('div',{style:{
+        display:'flex',flexDirection:'column',alignItems:'center',
+        flex:'1',position:'relative',cursor:isNext?'pointer':'default'
+      }});
+
+      // Connector line before (except first)
+      if(i>0){
+        const line=el('div',{style:{position:'absolute',top:'13px',right:'50%',width:'100%',height:'2px',background:isPast||isCurrent?st2.color:'#1E2B3C',zIndex:'0'}});
+        step.appendChild(line);
+      }
+
+      // Dot
+      const dot2=el('div',{style:{
+        width:'26px',height:'26px',borderRadius:'50%',
+        background:isCurrent?st2.color:isPast?'#1A3A2A':'#111827',
+        border:`2px solid ${isCurrent?st2.color:isPast?'#10B981':'#1E2B3C'}`,
+        display:'flex',alignItems:'center',justifyContent:'center',
+        fontSize:'11px',zIndex:'1',position:'relative',
+        boxShadow:isCurrent?`0 0 8px ${st2.color}`:isNext?`0 0 6px ${st2.color}40`:'none',
+        transition:'all 0.2s'
+      }},isPast?'✓':'');
+      if(isCurrent) dot2.style.background=st2.color;
+
+      // Label
+      const lbl2=el('div',{style:{
+        fontSize:'9px',textAlign:'center',marginTop:'4px',fontWeight:isCurrent?'700':'400',
+        color:isCurrent?st2.color:isPast?'#4B5563':'#3A4D65',
+        lineHeight:'1.2',maxWidth:'52px'
+      }},st2.label);
+
+      step.append(dot2,lbl2);
+
+      if(isNext){
+        step.title=`Posunúť na: ${st2.label}`;
+        step.onclick=()=>nextStatus(sel);
+        dot2.style.border=`2px dashed ${st2.color}`;
+        dot2.style.color=st2.color;
+        dot2.textContent='→';
+      }
+
+      stepWrap.appendChild(step);
+    });
+    scroll.appendChild(stepWrap);
+
+    // Customer card
+    const custCard=el('div',{className:'info-card',style:{margin:'12px 16px'}});
+    custCard.appendChild(el('div',{className:'info-card-title'},'👤 Zákazník'));
+    function irow(lbl,val,big){
+      const r=el('div',{className:'info-row'});
+      r.appendChild(el('span',{className:'info-label'},lbl));
+      const v=el('span',{className:'info-val'+(big?' big':'')});
+      if(typeof val==='string') v.textContent=val;
+      else v.appendChild(val);
+      r.appendChild(v);
+      return r;
+    }
+    custCard.appendChild(irow('Meno',sel.customerName||'—',true));
+    if(sel.customerPhone){
+      const a=el('a',{href:`tel:${sel.customerPhone}`,style:{color:'#3B82F6'}},sel.customerPhone);
+      custCard.appendChild(irow('Telefón',a));
+    } else { custCard.appendChild(irow('Telefón','—')); }
+    if(sel.customerEmail){
+      const a=el('a',{href:`mailto:${sel.customerEmail}`,style:{color:'#3B82F6'}},sel.customerEmail);
+      custCard.appendChild(irow('Email',a));
+    } else { custCard.appendChild(irow('Email','—')); }
+    if(sel.customerNote) custCard.appendChild(irow('Poznámka',sel.customerNote));
+    scroll.appendChild(custCard);
+
+    // Zákazka card
+    const zakCard=el('div',{className:'info-card',style:{margin:'12px 16px'}});
+    zakCard.appendChild(el('div',{className:'info-card-title'},'📋 Zákazka'));
+    zakCard.appendChild(irow('Názov',sel.title||'—',true));
+    if(sel.description){
+      const d=el('div',{style:{padding:'10px 16px',borderBottom:'1px solid #1a2234'}});
+      d.appendChild(el('div',{style:{color:'#4B5563',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'4px'}},'Popis'));
+      d.appendChild(el('div',{style:{color:'#D1D5DB',fontSize:'14px',lineHeight:'1.6'}},sel.description));
+      zakCard.appendChild(d);
+    }
+    scroll.appendChild(zakCard);
+
+    // Míľniky
+    const milCard=el('div',{className:'info-card',style:{margin:'12px 16px'}});
+    milCard.appendChild(el('div',{className:'info-card-title'},'📅 Priebeh zákazky'));
+    const depositDate=sel.depositDate?new Date(sel.depositDate):null;
+    const autoDeadline=depositDate?new Date(new Date(depositDate).setMonth(depositDate.getMonth()+2)):null;
+    const deadlineDate=sel.deadlineDate?new Date(sel.deadlineDate):autoDeadline;
+    const isAuto=!sel.deadlineDate&&!!autoDeadline;
+    const isOverdue=deadlineDate&&deadlineDate<new Date()&&sel.status!=='hotova';
+    const fmtD=d=>d?d.toLocaleDateString('sk-SK',{day:'2-digit',month:'2-digit',year:'numeric'}):'—';
+
+    function mrow(lbl,dateVal,color,extra){
+      const r=el('div',{className:'info-row'});
+      r.appendChild(el('span',{className:'info-label'},lbl));
+      const v=el('span',{style:{color:color||'#9CA3AF',fontSize:'14px',textAlign:'right'}});
+      v.textContent=fmtD(dateVal);
+      if(extra){ v.appendChild(document.createTextNode(' ')); v.appendChild(extra); }
+      r.appendChild(v);
+      return r;
+    }
+    milCard.appendChild(mrow('Prvý kontakt', sel.contactDate?new Date(sel.contactDate):null, '#9CA3AF'));
+    milCard.appendChild(mrow('Schválená ponuka', sel.approvedDate?new Date(sel.approvedDate):null, '#F59E0B'));
+    const depRow=el('div',{className:'info-row'});
+    depRow.appendChild(el('span',{className:'info-label'},'Prijatá záloha'));
+    const depVal=el('span',{style:{color:'#3B82F6',fontSize:'14px',textAlign:'right'}});
+    depVal.textContent=fmtD(depositDate);
+    if(sel.depositPaid){ const s=el('span',{style:{color:'#F59E0B',fontWeight:'700',marginLeft:'6px'}},fmt(sel.depositPaid)); depVal.appendChild(s); }
+    depRow.appendChild(depVal);
+    milCard.appendChild(depRow);
+    const dlBadges=[];
+    if(isAuto){ const b=el('span',{style:{fontSize:'10px',background:'#1E3A5F',color:'#60A5FA',borderRadius:'4px',padding:'1px 5px',marginLeft:'4px'}},'auto'); dlBadges.push(b); }
+    if(isOverdue){ const b=el('span',{style:{fontSize:'10px',background:'#3D0A0A',color:'#EF4444',borderRadius:'4px',padding:'1px 5px',marginLeft:'4px'}},'PO TERMÍNE'); dlBadges.push(b); }
+    const dlFrag=document.createDocumentFragment();
+    if(dlBadges.length){ dlBadges.forEach(b=>dlFrag.appendChild(b)); }
+    milCard.appendChild(mrow('Odovzdanie diela',deadlineDate,isOverdue?'#EF4444':'#10B981',dlFrag.childNodes.length?dlFrag:null));
+    scroll.appendChild(milCard);
+
+    // Vyplatene button
+    if(sel.status==='hotova'){
+      const vwrap=el('div',{style:{margin:'0 16px 12px'}});
+      const vbtn=el('button',{style:{width:'100%',borderRadius:'12px',border:'none',padding:'14px 0',fontWeight:'700',fontSize:'16px',cursor:'pointer',background:sel.vyplatena?'#052E1C':'#065F46',color:sel.vyplatena?'#6EE7B7':'#fff'}},sel.vyplatena?'✓ Vyplatené':'💰 Označiť ako vyplatené');
+      vbtn.onclick=()=>updateOrder(sel.id,{vyplatena:!sel.vyplatena, vyplatenaAt:!sel.vyplatena?Date.now():null});
+      vwrap.appendChild(vbtn);
+      scroll.appendChild(vwrap);
+    }
+
+    // Archive button
+    if(sel.status==='hotova'&&sel.vyplatena){
+      const awrap=el('div',{style:{margin:'0 16px 12px'}});
+      const abtn=el('button',{style:{width:'100%',borderRadius:'12px',border:'1px solid #374151',padding:'12px 0',fontWeight:'700',fontSize:'15px',cursor:'pointer',background:'#111827',color:'#9CA3AF'}},'📦 Presunúť do archívu');
+      abtn.onclick=()=>archiveOrder(sel.id);
+      awrap.appendChild(abtn);
+      scroll.appendChild(awrap);
+    }
+
+    // Danger buttons
+    const dbwrap=el('div',{style:{padding:'0 16px 16px',display:'flex',gap:'8px'}});
+    const delBtn=el('button',{className:'btn btn-danger'},'🗑 Vymazať zákazku');
+    delBtn.onclick=()=>setState({confirmDelete:sel.id});
+    dbwrap.appendChild(delBtn);
+    if(sel.status!=='storno'){
+      const sBtn=el('button',{className:'btn btn-danger',style:{background:'#1F0505',color:'#EF4444',borderColor:'#3D0A0A'}},'✕ Storno');
+      sBtn.onclick=()=>setStatus(sel.id,'storno');
+      dbwrap.appendChild(sBtn);
+    }
+    scroll.appendChild(dbwrap);
+  }
+
+  // ── FINANCE TAB ──
+  if(appState.tab==='finance'){
+    const fc=el('div',{className:'info-card',style:{margin:'12px 16px'}});
+    fc.appendChild(el('div',{className:'info-card-title'},'💶 Financie'));
+    function frow(lbl,val,color,big){
+      const r=el('div',{className:'info-row'});
+      r.appendChild(el('span',{className:'info-label'},lbl));
+      const v=el('span',{style:{color:color||'#9CA3AF',fontWeight:big?'700':'400',fontSize:big?'18px':'14px',textAlign:'right'}},val);
+      r.appendChild(v);
+      return r;
+    }
+    fc.appendChild(frow('Cena zákazky',price>0?fmt(price):'—','#10B981',true));
+    fc.appendChild(frow('Prijatá záloha',deposit>0?fmt(deposit):'—','#F59E0B'));
+    fc.appendChild(frow('Zostatok na doplatenie',price>0?fmt(due):'—',due>0?'#EF4444':'#10B981',true));
+    scroll.appendChild(fc);
+    if(price>0&&deposit>0){
+      const pw=el('div',{style:{margin:'0 16px 16px'}});
+      pw.appendChild(el('div',{style:{fontSize:'12px',color:'#6B7280',marginBottom:'6px'}},'Uhradené'));
+      const pb=el('div',{className:'progress-bar'});
+      const pf=el('div',{className:'progress-fill',style:{width:`${Math.min(100,(deposit/price)*100)}%`,background:deposit>=price?'#10B981':'#F59E0B'}});
+      pb.appendChild(pf);
+      pw.appendChild(pb);
+      pw.appendChild(el('div',{style:{fontSize:'12px',color:'#6B7280',marginTop:'4px',textAlign:'right'}},`${Math.round((deposit/price)*100)}% uhradené`));
+      scroll.appendChild(pw);
+    }
+  }
+
+  // ── NOTES TAB ──
+  if(appState.tab==='notes'){
+    const nwrap=el('div',{style:{padding:'12px 16px 8px',display:'flex',gap:'8px'}});
+    const ni=el('input',{type:'text',placeholder:'Napíš poznámku alebo zmenu...',style:{flex:'1'}});
+    ni.value=appState.noteText;
+    ni.oninput=e=>appState.noteText=e.target.value;
+    ni.onkeydown=e=>{ if(e.key==='Enter') addNote(); };
+    const nadd=el('button',{style:{background:'#2563EB',border:'none',borderRadius:'8px',color:'#fff',fontWeight:'700',padding:'10px 16px',cursor:'pointer'}},'+');
+    nadd.onclick=addNote;
+    nwrap.append(ni,nadd);
+    scroll.appendChild(nwrap);
+
+    const notes=sel.notes||[];
+    if(!notes.length) scroll.appendChild(el('div',{style:{textAlign:'center',color:'#374151',padding:'40px'}},'Zatiaľ žiadne poznámky'));
+    notes.forEach(n=>{
+      const nc=el('div',{className:'note-card'});
+      const cb=el('div',{className:'checkbox'+(n.resolved?' checked':'')});
+      if(n.resolved) cb.appendChild(el('span',{style:{color:'#fff',fontSize:'12px',fontWeight:'700'}},'✓'));
+      cb.onclick=()=>toggleNote(n.id);
+      const nd=el('div',{style:{flex:'1'}});
+      nd.appendChild(el('div',{style:{color:n.resolved?'#4B5563':'#F9FAFB',fontSize:'14px',lineHeight:'1.6',textDecoration:n.resolved?'line-through':'none'}},n.text));
+      nd.appendChild(el('div',{style:{color:'#374151',fontSize:'11px',marginTop:'4px'}},fmtDate(n.at)));
+      const db=el('button',{className:'del-btn'},'✕');
+      db.onclick=()=>{ updateOrder(sel.id,{notes:(sel.notes||[]).filter(x=>x.id!==n.id)}); };
+      nc.append(cb,nd,db);
+      scroll.appendChild(nc);
+    });
+  }
+
+  // ── MATERIALS TAB ──
+  if(appState.tab==='materials'){
+    const mhdr=el('div',{style:{padding:'12px 16px 8px',display:'flex',justifyContent:'space-between',alignItems:'center'}});
+    const mleft=el('div');
+    mleft.appendChild(el('div',{style:{color:'#9CA3AF',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px'}},'Náklady'));
+    mleft.appendChild(el('div',{style:{color:'#EF4444',fontWeight:'700',fontSize:'26px'}},totalMat>0?fmt(totalMat):'0 €'));
+    const mright=el('div',{style:{textAlign:'right'}});
+    mright.appendChild(el('div',{style:{color:'#9CA3AF',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px'}},'Zisk'));
+    mright.appendChild(el('div',{style:{color:profit>0?'#10B981':profit<0?'#EF4444':'#4B5563',fontWeight:'700',fontSize:'26px'}},profit!==null?fmt(profit):'—'));
+    mhdr.append(mleft,mright);
+    scroll.appendChild(mhdr);
+
+    if(price>0&&totalMat>0){
+      const pw=el('div',{style:{margin:'0 16px 12px'}});
+      const pb=el('div',{className:'progress-bar',style:{display:'flex'}});
+      pb.appendChild(el('div',{style:{width:`${Math.min(100,(totalMat/price)*100)}%`,background:'#EF4444',borderRadius:'8px 0 0 8px'}}));
+      pb.appendChild(el('div',{style:{flex:'1',background:'#10B981',borderRadius:'0 8px 8px 0'}}));
+      pw.appendChild(pb);
+      const pl=el('div',{style:{display:'flex',justifyContent:'space-between',marginTop:'4px',fontSize:'11px'}});
+      pl.appendChild(el('span',{style:{color:'#EF4444'}},`Materiál ${Math.round((totalMat/price)*100)}%`));
+      pl.appendChild(el('span',{style:{color:'#10B981'}},`Zisk ${Math.round(((price-totalMat)/price)*100)}%`));
+      pw.appendChild(pl);
+      scroll.appendChild(pw);
+    }
+
+    const mlist=el('div',{style:{padding:'0 16px'}});
+    if(!appState.showMatForm){
+      const madd=el('button',{style:{background:'#1E3A5F',border:'1px solid #2563EB',borderRadius:'8px',color:'#60A5FA',fontSize:'13px',fontWeight:'700',padding:'8px 14px',marginBottom:'8px',width:'100%',cursor:'pointer'}},'+ Pridať položku');
+      madd.onclick=()=>setState({showMatForm:true});
+      mlist.appendChild(madd);
+    } else {
+      const lb=el('div',{className:'log-box'});
+      const r1=el('div',{style:{display:'flex',gap:'8px',marginBottom:'8px'}});
+      const mn=el('input',{type:'text',placeholder:'Názov materiálu',style:{flex:'2'}});
+      mn.value=appState.matName;
+      mn.oninput=e=>appState.matName=e.target.value;
+      const mc=el('input',{type:'number',placeholder:'€',style:{flex:'1',minWidth:'0'}});
+      mc.value=appState.matCost;
+      mc.oninput=e=>appState.matCost=e.target.value;
+      r1.append(mn,mc);
+      const mno=el('textarea',{placeholder:'Poznámka (nepovinné)',rows:'2',style:{marginBottom:'8px'}});
+      mno.value=appState.matNote;
+      mno.oninput=e=>appState.matNote=e.target.value;
+      const r2=el('div',{style:{display:'flex',gap:'8px'}});
+      const madd2=el('button',{style:{flex:'1',background:'#2563EB',border:'none',borderRadius:'8px',color:'#fff',fontWeight:'700',padding:'10px',cursor:'pointer'}},'✓ Pridať');
+      madd2.onclick=addMaterial;
+      const mcan=el('button',{style:{background:'none',border:'1px solid #1F2937',borderRadius:'8px',color:'#6B7280',padding:'10px 14px',cursor:'pointer'}},'Zrušiť');
+      mcan.onclick=()=>setState({showMatForm:false});
+      r2.append(madd2,mcan);
+      lb.append(r1,mno,r2);
+      mlist.appendChild(lb);
+    }
+
+    const mats=sel.materials||[];
+    if(!mats.length&&!appState.showMatForm) mlist.appendChild(el('div',{style:{textAlign:'center',color:'#374151',padding:'30px'}},'Zatiaľ žiadny materiál'));
+    mats.forEach(m=>{
+      const mr=el('div',{style:{padding:'10px 0',borderBottom:'1px solid #111827'}});
+      const mr1=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}});
+      mr1.appendChild(el('span',{style:{color:'#D1D5DB',fontSize:'14px',fontWeight:'600'}},m.name));
+      const mr1r=el('div',{style:{display:'flex',alignItems:'center',gap:'12px'}});
+      mr1r.appendChild(el('span',{style:{color:'#EF4444',fontWeight:'700'}},fmt(m.cost)));
+      const db=el('button',{className:'del-btn'},'✕');
+      db.onclick=()=>updateOrder(sel.id,{materials:(sel.materials||[]).filter(x=>x.id!==m.id)});
+      mr1r.appendChild(db);
+      mr1.appendChild(mr1r);
+      mr.appendChild(mr1);
+      if(m.note) mr.appendChild(el('div',{style:{color:'#6B7280',fontSize:'12px',marginTop:'3px'}},m.note));
+      mlist.appendChild(mr);
+    });
+    scroll.appendChild(mlist);
+  }
+
+  // ── TIME TAB ──
+  if(appState.tab==='time'){
+    const thdr=el('div',{style:{padding:'16px 16px 8px',display:'flex',justifyContent:'space-between',alignItems:'center'}});
+    const tleft=el('div');
+    tleft.appendChild(el('div',{style:{color:'#9CA3AF',fontSize:'12px',textTransform:'uppercase',letterSpacing:'1px'}},'Celkový čas'));
+    tleft.appendChild(el('div',{style:{color:'#F9FAFB',fontWeight:'700',fontSize:'28px',fontVariantNumeric:'tabular-nums'}},mins>0?fmtMins(mins):'0m'));
+    const tadd=el('button',{style:{background:'#1E3A5F',border:'1px solid #2563EB',borderRadius:'8px',color:'#60A5FA',fontSize:'13px',fontWeight:'700',padding:'8px 14px',cursor:'pointer'}},appState.showTimeLog?'✕ Zavrieť':'+ Pridať čas');
+    tadd.onclick=()=>setState({showTimeLog:!appState.showTimeLog});
+    thdr.append(tleft,tadd);
+    scroll.appendChild(thdr);
+
+    // Category breakdown
+    const CAT_META=[{key:'nakres',label:'📐 Nákres',color:'#8B5CF6'},{key:'skladanie',label:'🔧 Skladanie',color:'#F59E0B'},{key:'montaz',label:'🏗 Montáž',color:'#10B981'},{key:'ine',label:'📌 Iné',color:'#6B7280'}];
+    const byCat=CAT_META.map(c=>({...c,mins:(sel.timeLog||[]).filter(e=>(e.category||'ine')===c.key).reduce((a,e)=>a+e.mins,0)})).filter(c=>c.mins>0);
+    if(byCat.length){
+      const cw=el('div',{style:{margin:'0 16px 12px',display:'flex',gap:'6px',flexWrap:'wrap'}});
+      byCat.forEach(c=>{
+        const cb=el('div',{style:{flex:'1',minWidth:'80px',background:c.color+'15',border:`1px solid ${c.color}33`,borderRadius:'8px',padding:'8px 10px',textAlign:'center'}});
+        cb.appendChild(el('div',{style:{color:c.color,fontWeight:'700',fontSize:'15px'}},fmtMins(c.mins)));
+        cb.appendChild(el('div',{style:{color:c.color+'aa',fontSize:'11px',marginTop:'2px'}},c.label));
+        cw.appendChild(cb);
+      });
+      scroll.appendChild(cw);
+    }
+
+    if(appState.showTimeLog){
+      const tlb=el('div',{className:'log-box'});
+      // Category buttons
+      tlb.appendChild(el('div',{style:{color:'#6B7280',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'8px'}},'Typ práce'));
+      const catRow=el('div',{style:{display:'flex',gap:'6px',marginBottom:'10px'}});
+      CAT_META.forEach(cat=>{
+        const active=appState.timeCategory===cat.key;
+        const cb=el('button',{style:{flex:'1',padding:'8px 4px',borderRadius:'8px',border:`1px solid ${active?cat.color:'#1F2937'}`,background:active?cat.color+'22':'#030712',color:active?cat.color:'#4B5563',fontSize:'11px',fontWeight:'700',cursor:'pointer',whiteSpace:'nowrap'}},cat.label);
+        cb.onclick=()=>setState({timeCategory:cat.key});
+        catRow.appendChild(cb);
+      });
+      tlb.appendChild(catRow);
+
+      // Time inputs
+      const tr=el('div',{style:{display:'flex',gap:'8px',marginBottom:'10px'}});
+      const tleft2=el('div',{style:{flex:'1'}});
+      tleft2.appendChild(el('div',{style:{color:'#6B7280',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'6px'}},'Hodiny / Minúty'));
+      const tinr=el('div',{style:{display:'flex',gap:'6px',alignItems:'center'}});
+      const th=el('input',{type:'number',min:'0',style:{width:'64px',textAlign:'center'}});
+      th.value=appState.timeH;
+      th.oninput=e=>appState.timeH=e.target.value;
+      const tm=el('input',{type:'number',min:'0',max:'59',style:{width:'64px',textAlign:'center'}});
+      tm.value=appState.timeM;
+      tm.oninput=e=>appState.timeM=e.target.value;
+      tinr.append(th,el('span',{style:{color:'#4B5563',fontWeight:'700'}},'h'),tm,el('span',{style:{color:'#4B5563',fontWeight:'700'}},'m'));
+      tleft2.appendChild(tinr);
+      const tright=el('div',{style:{flex:'1'}});
+      tright.appendChild(el('div',{style:{color:'#6B7280',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'6px'}},'Dátum práce'));
+      const td=el('input',{type:'date'});
+      td.value=appState.timeDate;
+      td.oninput=e=>appState.timeDate=e.target.value;
+      tright.appendChild(td);
+      tr.append(tleft2,tright);
+      tlb.appendChild(tr);
+
+      const tn=el('input',{type:'text',placeholder:'Poznámka (nepovinné)',style:{marginBottom:'8px'}});
+      tn.value=appState.timeNote;
+      tn.oninput=e=>appState.timeNote=e.target.value;
+      tlb.appendChild(tn);
+
+      tlb.appendChild(el('div',{style:{color:'#6B7280',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'6px'}},'Kto pracoval'));
+      const wrow=el('div',{style:{display:'flex',gap:'6px',marginBottom:'10px'}});
+      ['ja','pomocník','externý'].forEach(w=>{
+        const active=appState.timeWorker===w;
+        const wb=el('button',{style:{flex:'1',padding:'7px 4px',borderRadius:'8px',fontSize:'11px',fontWeight:'700',cursor:'pointer',border:`1px solid ${active?'#3B82F6':'#1F2937'}`,background:active?'#1E3A5F':'#030712',color:active?'#60A5FA':'#4B5563'}},w);
+        wb.onclick=()=>setState({timeWorker:w});
+        wrow.appendChild(wb);
+      });
+      tlb.appendChild(wrow);
+
+      const tbr=el('div',{style:{display:'flex',gap:'8px'}});
+      const tadd2=el('button',{style:{flex:'1',background:'#2563EB',border:'none',borderRadius:'8px',color:'#fff',fontWeight:'700',padding:'10px',cursor:'pointer'}},'✓ Pridať záznam');
+      tadd2.onclick=logTime;
+      const tcan=el('button',{style:{background:'none',border:'1px solid #1F2937',borderRadius:'8px',color:'#6B7280',padding:'10px 14px',cursor:'pointer'}},'Zrušiť');
+      tcan.onclick=()=>setState({showTimeLog:false});
+      tbr.append(tadd2,tcan);
+      tlb.appendChild(tbr);
+      scroll.appendChild(tlb);
+    }
+
+    const tlog=sel.timeLog||[];
+    if(!tlog.length) scroll.appendChild(el('div',{style:{textAlign:'center',color:'#374151',padding:'40px'}},'Zatiaľ žiadne záznamy'));
+    const CAT={nakres:{label:'Nákres',color:'#8B5CF6'},skladanie:{label:'Skladanie',color:'#F59E0B'},montaz:{label:'Montáž',color:'#10B981'},ine:{label:'Iné',color:'#6B7280'}};
+    const tlistWrap=el('div',{style:{padding:'0 16px'}});
+    tlog.forEach(e=>{
+      const cat=CAT[e.category]||CAT.ine;
+      const te=el('div',{className:'time-entry'});
+      const td2=el('div',{style:{flex:'1'}});
+      const tr2=el('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'4px'}});
+      tr2.appendChild(el('span',{style:{fontSize:'11px',fontWeight:'700',padding:'2px 8px',borderRadius:'20px',background:cat.color+'22',color:cat.color,border:`1px solid ${cat.color}44`}},cat.label));
+      tr2.appendChild(el('span',{style:{color:'#F9FAFB',fontWeight:'700'}},fmtMins(e.mins)));
+      if(e.worker&&e.worker!=='ja') tr2.appendChild(el('span',{style:{fontSize:'11px',background:'#1E3A5F',color:'#60A5FA',borderRadius:'10px',padding:'1px 7px'}},e.worker));
+      td2.appendChild(tr2);
+      if(e.note) td2.appendChild(el('div',{style:{color:'#6B7280',fontSize:'13px'}},e.note));
+      td2.appendChild(el('div',{style:{color:'#374151',fontSize:'12px',marginTop:'2px'}},fmtDate(e.at)));
+      const db=el('button',{className:'del-btn'},'✕');
+      db.onclick=()=>updateOrder(sel.id,{timeLog:(sel.timeLog||[]).filter(x=>x.id!==e.id)});
+      te.append(td2,db);
+      tlistWrap.appendChild(te);
+    });
+    scroll.appendChild(tlistWrap);
+  }
+
+  if(appState.tab==='porez'){
+    const porezText=sel.porezText||'';
+    const pwrap=el('div',{style:{padding:'12px 16px',paddingBottom:'40px'}});
+
+    // Import button
+    const fileLbl=el('label',{style:{width:'100%',background:'#0D2B1F',border:'1px solid #10B981',borderRadius:'10px',color:'#34D399',fontWeight:'700',fontSize:'14px',padding:'12px 0',textAlign:'center',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'8px',marginBottom:'12px',boxSizing:'border-box'}});
+    fileLbl.append(el('span',{},'📄'),el('span',{},'Importovať súbor (.txt)'));
+    const fileInp=el('input',{type:'file',accept:'.txt,.csv,text/*',style:{display:'none'}});
+    fileInp.onchange=e=>{
+      const file=e.target.files[0]; if(!file) return;
+      const reader=new FileReader();
+      reader.onload=ev=>updateOrder(sel.id,{porezText:ev.target.result||''});
+      reader.readAsText(file,'UTF-8');
+    };
+    fileLbl.appendChild(fileInp);
+    pwrap.appendChild(fileLbl);
+
+    // Parser helpers
+    function isEdge1(v){ return v==='-'||v==='\u2013'||v==='\u2014'; }
+    function isEdge2(v){ return v==='='; }
+    function edgeCount(v){ return isEdge2(v)?2:isEdge1(v)?1:0; }
+
+    function parseLine(line){
+      const hasTab=line.includes('\t');
+      if(hasTab){
+        const p=line.split('\t').map(s=>s.trim());
+        if(p.length<2) return null;
+        const sirkaVal=p[1]||'';
+        const sirkaEdgeRaw=p[2]||'';
+        let sirkaEdges=edgeCount(sirkaEdgeRaw)||(sirkaVal.match(/,/g)||[]).length;
+        const sirkaNum=sirkaVal.replace(/[,\-=\u2013\u2014]+$/,'').trim();
+        const dlzkaVal=p[3]||'';
+        const dlzkaEdgeRaw=p[4]||'';
+        let dlzkaEdges=edgeCount(dlzkaEdgeRaw)||(dlzkaVal.match(/,/g)||[]).length;
+        const dlzkaNum=dlzkaVal.replace(/[,\-=\u2013\u2014]+$/,'').trim();
+        const hrubka=(p[5]||'').replace(/,/g,'').trim();
+        const pocet=(p[6]||'').replace(/,/g,'').trim();
+        const material=p.length>=8?p.slice(7).filter(x=>x).join(' '):'';
+        return{nazov:p[0]||'',sirka:{num:sirkaNum,edges:sirkaEdges},dlzka:{num:dlzkaNum,edges:dlzkaEdges},hrubka,pocet,material};
+      } else {
+        const rawParts=line.split(',');
+        const tokens=[];
+        for(let i=0;i<rawParts.length;i++){
+          const val=rawParts[i].trim();
+          if(isEdge1(val)){if(tokens.length>0)tokens[tokens.length-1].edges=Math.max(tokens[tokens.length-1].edges,1);}
+          else if(isEdge2(val)){if(tokens.length>0)tokens[tokens.length-1].edges=2;}
+          else if(val===''){if(tokens.length>0)tokens[tokens.length-1].edges=Math.min(tokens[tokens.length-1].edges+1,2);}
+          else{
+            const trailingCommas=(val.match(/,+$/)||[''])[0].length;
+            const cleanNum=val.replace(/[,\-=\u2013\u2014]+$/,'').trim();
+            if(cleanNum!=='') tokens.push({num:cleanNum,edges:trailingCommas});
+          }
+        }
+        if(tokens.length<2) return null;
+        return{nazov:tokens[0]?.num||'',sirka:{num:tokens[1]?.num||'',edges:tokens[1]?.edges||0},dlzka:{num:tokens[2]?.num||'',edges:tokens[2]?.edges||0},hrubka:tokens[3]?.num||'',pocet:tokens[4]?.num||'',material:tokens.length>=6?tokens.slice(5).map(t=>t.num).join(' '):''};
+      }
+    }
+
+    // ── Pomocná funkcia: detekcia ID skrinky z názvu ──────────
+    function extractCabinetId(nazov){
+      // Vzory: "G1.bok", "G1 bok", "WC2.predna", "D3", "1.bok", "SK1.bok"
+      const m=(nazov||'').match(/^([A-ZÁČĎÉÍĽŇÓŔŠŤÚÝŽ]{1,2}\d+|\d+)(?:[.\s]|$)/i);
+      return m?m[1].toUpperCase():null;
+    }
+
+    // ── Pomocná funkcia: vykresli tabuľku riadkov ─────────────
+    function renderPorezTable(rows){
+      const hdrs=['Názov','Dĺžka','Šírka','Hrúb.','Počet','Materiál'];
+      const colW=['2fr','1fr','1fr','0.7fr','0.7fr','1.5fr'];
+      const tblWrap=el('div',{style:{overflowX:'auto',marginBottom:'12px'}});
+      const tbl=el('div',{style:{minWidth:'480px'}});
+      const hdrRow=el('div',{style:{display:'grid',gridTemplateColumns:colW.join(' '),padding:'6px 8px',borderBottom:'1px solid #1E3A5F',marginBottom:'4px'}});
+      hdrs.forEach(h=>hdrRow.appendChild(el('div',{style:{color:'#3A4D65',fontSize:'10px',textTransform:'uppercase',letterSpacing:'1px',fontWeight:'700'}},h)));
+      tbl.appendChild(hdrRow);
+
+      const specialKeywords=/36mm|duplak/i;
+      rows.forEach((r,idx)=>{
+        const isSpecial=specialKeywords.test(r.nazov)||specialKeywords.test(r.material);
+        const row=el('div',{style:{display:'grid',gridTemplateColumns:colW.join(' '),padding:'5px 8px',borderRadius:'6px',background:isSpecial?(idx%2===0?'#1F0A0A':'#1A0808'):(idx%2===0?'#111827':'#0D1117'),alignItems:'center'}});
+        if(isSpecial) row.style.border='1px solid #3D0A0A';
+
+        row.appendChild(el('span',{style:{color:isSpecial?'#EF4444':'#E8EDF5',fontSize:'13px',fontWeight:isSpecial?'700':'400'}},r.nazov||'—'));
+
+        function dimCell(num,lo,hi,loColor,hiColor){
+          const n=parseFloat(num)||0;
+          const isLo=n>0&&n<lo, isHi=n>0&&n>hi;
+          const bg=isLo?'#0D2B1F':isHi?'#2D1A00':'transparent';
+          const col=isLo?loColor:isHi?hiColor:'#7A9AB8';
+          const cell=el('div',{style:{textAlign:'center',borderRadius:'4px',padding:(isLo||isHi)?'2px 4px':'0',background:bg}});
+          cell.appendChild(el('span',{style:{color:col,fontSize:'13px',fontWeight:(isLo||isHi)?'700':'400'}},num||'—'));
+          return cell;
+        }
+
+        const sirkaCell=dimCell(r.sirka.num,80,2780,'#34D399','#F97316');
+        if(r.sirka.edges>0) sirkaCell.appendChild(el('span',{style:{fontSize:'11px',fontWeight:'700',background:r.sirka.edges===2?'#1E3A5F':'#1A2A1A',color:r.sirka.edges===2?'#60A5FA':'#34D399',borderRadius:'4px',padding:'1px 5px',marginLeft:'4px'}},r.sirka.edges===2?'\\\\':'\\'));
+        row.appendChild(sirkaCell);
+
+        const dlzkaCell=dimCell(r.dlzka.num,80,2050,'#34D399','#F97316');
+        if(r.dlzka.edges>0) dlzkaCell.appendChild(el('span',{style:{fontSize:'11px',fontWeight:'700',background:r.dlzka.edges===2?'#1E3A5F':'#1A2A1A',color:r.dlzka.edges===2?'#60A5FA':'#34D399',borderRadius:'4px',padding:'1px 5px',marginLeft:'4px'}},r.dlzka.edges===2?'\\\\':'\\'));
+        row.appendChild(dlzkaCell);
+
+        row.appendChild(el('div',{style:{textAlign:'center',color:'#7A9AB8',fontSize:'13px'}},r.hrubka||'—'));
+        const pocetCell=el('div',{style:{textAlign:'center'}});
+        if(r.pocet){ pocetCell.appendChild(el('span',{style:{color:'#E8EDF5',fontWeight:'700',fontSize:'13px'}},r.pocet)); pocetCell.appendChild(el('span',{style:{color:'#3A4D65',fontSize:'10px',marginLeft:'2px'}},'ks')); }
+        else pocetCell.appendChild(document.createTextNode('—'));
+        row.appendChild(pocetCell);
+        row.appendChild(el('div',{style:{color:'#4A6585',fontSize:'12px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}},r.material||''));
+        tbl.appendChild(row);
+
+        // ── Pánty / Aventos hint ─────────────────────────────
+        const nazovLow=(r.nazov||'').toLowerCase();
+        const isDvere=/dvere|dvierka/i.test(r.nazov);
+        const isAV=/dvere\s*av|dvierka\s*av/i.test(r.nazov);
+        if(isDvere){
+          const dim1=parseFloat(r.dlzka&&r.dlzka.num)||0;
+          const dim2=parseFloat(r.sirka&&r.sirka.num)||0;
+          // Pre Aventos: väčší rozmer = šírka, menší = výška (výklopné dvierka sú širšie ako vysoké)
+          const vyska=Math.min(dim1,dim2);
+          const sirka=Math.max(dim1,dim2);
+          const pocetKs=parseInt(r.pocet)||1;
+          const pantInfo=isAV?null:blumPanty(vyska,sirka);
+          const avInfo=isAV?blumAventos(vyska,sirka):null;
+
+          if(pantInfo||avInfo){
+            const hint=el('div',{style:{
+              gridColumn:'1 / -1', display:'flex', flexWrap:'wrap', gap:'8px',
+              padding:'4px 8px 7px 8px', marginBottom:'2px',
+              background: isAV ? '#0D1E10' : '#0D1421',
+              borderLeft: isAV ? '3px solid #22C55E' : '3px solid #3B82F6',
+              borderRadius:'0 0 6px 6px', fontSize:'12px'
+            }});
+            // Pánty
+            if(pantInfo){
+              const totalPanty = pantInfo.pocet * pocetKs;
+              const pBadge=el('span',{style:{display:'inline-flex',alignItems:'center',gap:'4px',background:'#1E3A5F',borderRadius:'6px',padding:'2px 8px',color:'#93C5FD',fontWeight:'600'}});
+              pBadge.append(el('span',{},'🔩'),el('span',{},`Pánty: ${pantInfo.pocet} ks/kus`));
+              if(pocetKs>1) pBadge.appendChild(el('span',{style:{color:'#60A5FA',fontWeight:'700'}},` = ${totalPanty} ks celkom`));
+              hint.appendChild(pBadge);
+            }
+            // Aventos
+            if(avInfo){
+              const aBadge=el('span',{style:{display:'inline-flex',alignItems:'center',gap:'4px',background:'#14290F',border:'1px solid #16A34A',borderRadius:'6px',padding:'2px 8px',color:'#86EFAC',fontWeight:'600'}});
+              aBadge.append(el('span',{},'↑'),el('span',{},`Aventos ${avInfo.type} – ${avInfo.cat}`));
+              hint.appendChild(aBadge);
+            } else if(isAV){
+              const aBadge=el('span',{style:{display:'inline-flex',alignItems:'center',gap:'4px',background:'#1A0808',border:'1px solid #7F1D1D',borderRadius:'6px',padding:'2px 8px',color:'#EF4444',fontWeight:'600'}});
+              aBadge.append(el('span',{},'↑'),el('span',{},'Aventos: mimo rozsahu'));
+              hint.appendChild(aBadge);
+            }
+            // Wrap hint in a full-width grid row
+            const hintWrap=el('div',{style:{display:'grid',gridTemplateColumns:'1fr',marginBottom:'4px'}});
+            hintWrap.appendChild(hint);
+            tbl.appendChild(hintWrap);
+          }
+        }
+      });
+      tblWrap.appendChild(tbl);
+      return tblWrap;
+    }
+
+    if(porezText){
+      // Delete table button
+      const clearTblBtn=el('button',{style:{width:'100%',background:'none',border:'1px solid #3D0A0A',borderRadius:'8px',color:'#EF4444',fontSize:'13px',padding:'8px',marginBottom:'10px',cursor:'pointer'}},'🗑 Zmazať tabuľku');
+      clearTblBtn.onclick=()=>{ if(confirm('Zmazať celý zoznam na pílenie?')) { updateOrder(sel.id,{porezText:''}); setState({porezSkrinka:null}); } };
+      pwrap.appendChild(clearTblBtn);
+
+      // Parse all lines
+      const rows=porezText.split('\n').map(l=>l.trimEnd()).filter(l=>l.trim()).map(parseLine).filter(Boolean);
+
+      // ── DETAIL VIEW: konkrétna skrinka ─────────────────────
+      if(appState.porezSkrinka){
+        const sid=appState.porezSkrinka;
+        const skrinkaRows=sid==='__misc__'
+          ? rows.filter(r=>!extractCabinetId(r.nazov))
+          : rows.filter(r=>extractCabinetId(r.nazov)===sid);
+
+        // Back button
+        const backBtn=el('button',{style:{background:'none',border:'1px solid #1E2B3C',borderRadius:'8px',color:'#7A9AB8',fontSize:'13px',padding:'7px 14px',marginBottom:'12px',cursor:'pointer',display:'flex',alignItems:'center',gap:'6px'}});
+        backBtn.append(el('span',{},'←'),el('span',{},`Späť na skrinky`));
+        backBtn.onclick=()=>setState({porezSkrinka:null});
+        pwrap.appendChild(backBtn);
+
+        // Title
+        const isMiscView=sid==='__misc__';
+        const titleRow=el('div',{style:{display:'flex',alignItems:'center',gap:'10px',marginBottom:'12px'}});
+        titleRow.appendChild(el('div',{style:{background:isMiscView?'#1A1A2E':'#1E3A5F',borderRadius:'8px',padding:'6px 14px',color:isMiscView?'#9CA3AF':'#60A5FA',fontWeight:'700',fontSize:'18px'}},isMiscView?'Ostatné':sid));
+        const totKs=skrinkaRows.reduce((s,r)=>s+(parseInt(r.pocet)||0),0);
+        titleRow.appendChild(el('div',{style:{color:'#4A6585',fontSize:'13px'}},`${skrinkaRows.length} dielov · ${totKs} ks`));
+        pwrap.appendChild(titleRow);
+
+        pwrap.appendChild(renderPorezTable(skrinkaRows));
+
+        const sumRowD=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px'}});
+        sumRowD.appendChild(el('div',{style:{color:'#3A4D65',fontSize:'12px'}},`${skrinkaRows.length} položiek`));
+        if(totKs>0) sumRowD.appendChild(el('div',{style:{color:'#60A5FA',fontWeight:'700',fontSize:'13px'}},`Spolu ${totKs} ks`));
+        pwrap.appendChild(sumRowD);
+
+        // ── Prílohy patriace tejto skrinke ───────────────────
+        if(!isMiscView){
+          const allAtts=sel.attachments||[];
+          // Zhoda: názov súboru obsahuje ID skrinky (napr. "G1" v "G1 nacrt.jpg")
+          const sidLower=sid.toLowerCase();
+          const matchedAtts=allAtts.filter(a=>{
+            const n=a.name.toLowerCase();
+            // Hľadáme ID ako celé slovo/prefix: "g1." alebo "g1 " alebo "g1_" alebo "g1-" alebo "g1" na konci
+            return new RegExp('(^|[\\s_\\-])'+sidLower+'([.\\s_\\-]|$)').test(n);
+          });
+          if(matchedAtts.length){
+            const attSec=el('div',{style:{marginTop:'14px'}});
+            attSec.appendChild(el('div',{style:{color:'#3A4D65',fontSize:'10px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'8px'}},'📎 Prílohy'));
+            matchedAtts.forEach(att=>{
+              const isImg=/^image\//i.test(att.type);
+              const isPdf=/pdf/i.test(att.type);
+              const row=el('div',{style:{display:'flex',alignItems:'center',gap:'10px',background:'#141926',border:'1px solid #1E2B3C',borderRadius:'10px',padding:'10px 12px',marginBottom:'8px',cursor:'pointer'}});
+              row.onclick=()=>openAttachment(att);
+              if(isImg){
+                const imgEl=el('img',{src:'',style:{width:'52px',height:'52px',objectFit:'cover',borderRadius:'6px',flexShrink:'0',background:'#0D1117'}});
+                if(att.url){ imgEl.src=att.url; }
+                else{ loadAttData(att.id).then(d=>{ if(d) imgEl.src=d; }); }
+                row.appendChild(imgEl);
+              } else {
+                row.appendChild(el('div',{style:{width:'52px',height:'52px',background:isPdf?'#1A0808':'#0B1221',border:`1px solid ${isPdf?'#3D0A0A':'#1E2B3C'}`,borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'26px',flexShrink:'0'}},isPdf?'📄':'📎'));
+              }
+              const info=el('div',{style:{flex:'1',minWidth:'0'}});
+              info.appendChild(el('div',{style:{color:'#E8EDF5',fontSize:'13px',fontWeight:'600',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}},att.name));
+              info.appendChild(el('div',{style:{color:'#4A6585',fontSize:'11px',marginTop:'2px'}},(att.size/1024).toFixed(0)+' KB'));
+              row.appendChild(info);
+              row.appendChild(el('span',{style:{color:'#3A4D65',fontSize:'16px',flexShrink:'0'}},'↗'));
+              attSec.appendChild(row);
+            });
+            pwrap.appendChild(attSec);
+          }
+        }
+
+      } else {
+        // ── HLAVNÝ POHĽAD: celá tabuľka so skupinami ─────────
+        const colW=['2fr','1fr','1fr','0.7fr','0.7fr','1.5fr'];
+        const hdrs=['Názov','Dĺžka','Šírka','Hrúb.','Počet','Materiál'];
+        const specialKeywords=/36mm|duplak/i;
+
+        function makeDataRow(r,idx,bg){
+          const isSpecial=specialKeywords.test(r.nazov)||specialKeywords.test(r.material);
+          const row=el('div',{style:{display:'grid',gridTemplateColumns:colW.join(' '),padding:'5px 8px',borderRadius:'4px',background:isSpecial?(idx%2===0?'#1F0A0A':'#1A0808'):bg,alignItems:'center'}});
+          if(isSpecial) row.style.outline='1px solid #3D0A0A';
+          row.appendChild(el('span',{style:{color:isSpecial?'#EF4444':'#E8EDF5',fontSize:'13px',fontWeight:isSpecial?'700':'400'}},r.nazov||'—'));
+          function dimCell(num,lo,hi,lc,hc){
+            const n=parseFloat(num)||0,isLo=n>0&&n<lo,isHi=n>0&&n>hi;
+            const cell=el('div',{style:{textAlign:'center',borderRadius:'4px',padding:(isLo||isHi)?'2px 4px':'0',background:isLo?'#0D2B1F':isHi?'#2D1A00':'transparent'}});
+            cell.appendChild(el('span',{style:{color:isLo?lc:isHi?hc:'#7A9AB8',fontSize:'13px',fontWeight:(isLo||isHi)?'700':'400'}},num||'—'));
+            return cell;
+          }
+          const sc=dimCell(r.sirka.num,80,2780,'#34D399','#F97316');
+          if(r.sirka.edges>0) sc.appendChild(el('span',{style:{fontSize:'11px',fontWeight:'700',background:r.sirka.edges===2?'#1E3A5F':'#1A2A1A',color:r.sirka.edges===2?'#60A5FA':'#34D399',borderRadius:'4px',padding:'1px 5px',marginLeft:'4px'}},r.sirka.edges===2?'\\\\':'\\'));
+          row.appendChild(sc);
+          const dc=dimCell(r.dlzka.num,80,2050,'#34D399','#F97316');
+          if(r.dlzka.edges>0) dc.appendChild(el('span',{style:{fontSize:'11px',fontWeight:'700',background:r.dlzka.edges===2?'#1E3A5F':'#1A2A1A',color:r.dlzka.edges===2?'#60A5FA':'#34D399',borderRadius:'4px',padding:'1px 5px',marginLeft:'4px'}},r.dlzka.edges===2?'\\\\':'\\'));
+          row.appendChild(dc);
+          row.appendChild(el('div',{style:{textAlign:'center',color:'#7A9AB8',fontSize:'13px'}},r.hrubka||'—'));
+          const pc=el('div',{style:{textAlign:'center'}});
+          if(r.pocet){pc.appendChild(el('span',{style:{color:'#E8EDF5',fontWeight:'700',fontSize:'13px'}},r.pocet));pc.appendChild(el('span',{style:{color:'#3A4D65',fontSize:'10px',marginLeft:'2px'}},'ks'));}
+          else pc.appendChild(document.createTextNode('—'));
+          row.appendChild(pc);
+          row.appendChild(el('div',{style:{color:'#4A6585',fontSize:'12px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}},r.material||''));
+          return row;
+        }
+
+        // Zoskup riadky zachovávajúc poradie
+        const skupiny=[]; // [{id, rows}]
+        const idIndex=new Map();
+        rows.forEach(r=>{
+          const id=extractCabinetId(r.nazov)||'__misc__';
+          if(!idIndex.has(id)){ idIndex.set(id,skupiny.length); skupiny.push({id,rows:[]}); }
+          skupiny[idIndex.get(id)].rows.push(r);
+        });
+
+        const tblWrap=el('div',{style:{overflowX:'auto',marginBottom:'12px'}});
+        const tbl=el('div',{style:{minWidth:'480px'}});
+
+        // Hlavička stĺpcov (raz na vrchu)
+        const hdrRow=el('div',{style:{display:'grid',gridTemplateColumns:colW.join(' '),padding:'6px 8px',borderBottom:'1px solid #1E3A5F',marginBottom:'6px'}});
+        hdrs.forEach(h=>hdrRow.appendChild(el('div',{style:{color:'#3A4D65',fontSize:'10px',textTransform:'uppercase',letterSpacing:'1px',fontWeight:'700'}},h)));
+        tbl.appendChild(hdrRow);
+
+        skupiny.forEach(({id,rows:sRows})=>{
+          const isMisc=id==='__misc__';
+          const totKs=sRows.reduce((s,r)=>s+(parseInt(r.pocet)||0),0);
+          const hasDuplak=sRows.some(r=>specialKeywords.test(r.nazov)||specialKeywords.test(r.material));
+
+          // Obal skupiny
+          const grp=el('div',{style:{
+            border:`1.5px solid ${hasDuplak?'#5B1B1B':isMisc?'#252535':'#1A2D4A'}`,
+            borderRadius:'10px',
+            marginBottom:'10px',
+            overflow:'hidden'
+          }});
+
+          // Klikateľná hlavička skupiny
+          const ghdr=el('div',{style:{
+            display:'flex',alignItems:'center',gap:'10px',
+            padding:'7px 10px',
+            background:hasDuplak?'#1A0808':isMisc?'#111118':'#0A1628',
+            cursor:'pointer',
+            userSelect:'none'
+          }});
+          ghdr.appendChild(el('span',{style:{
+            background:hasDuplak?'#3D0A0A':isMisc?'#1E1E30':'#0D1E36',
+            border:`1px solid ${hasDuplak?'#7F1D1D':isMisc?'#2E2E50':'#1E3A5F'}`,
+            borderRadius:'6px',padding:'2px 10px',
+            color:hasDuplak?'#EF4444':isMisc?'#6B7280':'#60A5FA',
+            fontWeight:'700',fontSize:'13px',letterSpacing:'0.5px'
+          }},isMisc?'—':id));
+          ghdr.appendChild(el('span',{style:{color:'#3A4D65',fontSize:'12px',flex:'1'}},`${sRows.length} dielov · ${totKs} ks`));
+          ghdr.appendChild(el('span',{style:{color:'#3A4D65',fontSize:'13px'}},'›'));
+          ghdr.onclick=()=>setState({porezSkrinka:id});
+          grp.appendChild(ghdr);
+
+          // Riadky tabuľky
+          const body=el('div',{style:{padding:'4px 4px 4px 4px'}});
+          sRows.forEach((r,idx)=>body.appendChild(makeDataRow(r,idx,idx%2===0?'#111827':'#0D1117')));
+          grp.appendChild(body);
+          tbl.appendChild(grp);
+        });
+
+        tblWrap.appendChild(tbl);
+        pwrap.appendChild(tblWrap);
+
+        // Súhrn
+        const total=rows.reduce((s,r)=>s+(parseInt(r.pocet)||0),0);
+        const sumRow=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px',padding:'0 2px'}});
+        const realGroups=skupiny.filter(g=>g.id!=='__misc__').length;
+        sumRow.appendChild(el('div',{style:{color:'#3A4D65',fontSize:'12px'}},`${realGroups} skriniek · ${rows.length} dielov`));
+        if(total>0) sumRow.appendChild(el('div',{style:{color:'#60A5FA',fontWeight:'700',fontSize:'13px'}},`Spolu ${total} ks`));
+        pwrap.appendChild(sumRow);
+      }
+
+      // Spotreba + raw text — len na hlavnej strane, nie v detaile skrinky
+      if(!appState.porezSkrinka){
+
+      // Spotreba tabúľ (strip-packing) + ABS + ceny
+      const TABULA_W=2800, TABULA_H=2070;
+
+      // Guillotine cut packing — presný odhad ako SketchCut
+      function guillotinePack(pieces){
+        if(!pieces.length) return 0;
+        // Expand pieces (each copy separately), filter out pieces that don't fit
+        const all=[];
+        pieces.forEach(p=>{
+          const w=p.s, h=p.d;
+          const fits=(w<=TABULA_W&&h<=TABULA_H)||(h<=TABULA_W&&w<=TABULA_H);
+          if(fits) all.push({w,h});
+        });
+        if(!all.length) return 0;
+        // Sort by longest side desc (largest first)
+        all.sort((a,b)=>Math.max(b.w,b.h)-Math.max(a.w,a.h));
+
+        function placePiece(piece, freeRects){
+          let bestIdx=-1, bestScore=Infinity, bestRot=false;
+          for(let i=0;i<freeRects.length;i++){
+            const r=freeRects[i];
+            // Normal
+            if(piece.w<=r.w&&piece.h<=r.h){
+              const sc=Math.min(r.w-piece.w, r.h-piece.h);
+              if(sc<bestScore){bestScore=sc;bestIdx=i;bestRot=false;}
+            }
+            // Rotated
+            if(piece.h<=r.w&&piece.w<=r.h){
+              const sc=Math.min(r.w-piece.h, r.h-piece.w);
+              if(sc<bestScore){bestScore=sc;bestIdx=i;bestRot=true;}
+            }
+          }
+          if(bestIdx===-1) return false;
+          const r=freeRects[bestIdx];
+          const pw=bestRot?piece.h:piece.w;
+          const ph=bestRot?piece.w:piece.h;
+          const rw=r.w-pw, bh=r.h-ph;
+          freeRects.splice(bestIdx,1);
+          // Split along longer leftover axis
+          if(rw*r.h >= r.w*bh){
+            if(rw>0&&r.h>0) freeRects.push({x:r.x+pw,y:r.y,w:rw,h:r.h});
+            if(pw>0&&bh>0) freeRects.push({x:r.x,y:r.y+ph,w:pw,h:bh});
+          } else {
+            if(r.w>0&&bh>0) freeRects.push({x:r.x,y:r.y+ph,w:r.w,h:bh});
+            if(rw>0&&ph>0) freeRects.push({x:r.x+pw,y:r.y,w:rw,h:ph});
+          }
+          return true;
+        }
+
+        let sheets=0, remaining=[...all];
+        while(remaining.length>0){
+          sheets++;
+          const freeRects=[{x:0,y:0,w:TABULA_W,h:TABULA_H}];
+          const notPlaced=[];
+          for(const p of remaining){
+            if(!placePiece(p,freeRects)) notPlaced.push(p);
+          }
+          remaining=notPlaced;
+        }
+        return sheets;
+      }
+
+      function stripPackCount(pieces){ return guillotinePack(pieces); }
+
+      function calcUtilPct(pieces, panels){
+        if(!panels) return 0;
+        const totalArea=pieces.reduce((s,p)=>s+(p.s*p.d),0);
+        return Math.round(totalArea/(panels*TABULA_W*TABULA_H)*100);
+      }
+
+      const matGroups={};
+      let totalABS=0;
+      rows.forEach(r=>{
+        const pocet=parseInt(r.pocet)||0;
+        const s=parseFloat(r.sirka.num)||0;
+        const d=parseFloat(r.dlzka.num)||0;
+        const mat=(r.material||'').trim()||'(bez materiálu)';
+        const hrubka=(r.hrubka||'').trim();
+        // Kľúč = materiál + hrúbka — rôzne hrúbky = rôzne tabule
+        const key=hrubka ? `${mat} ${hrubka}mm` : mat;
+        if(!matGroups[key]) matGroups[key]={pieces:[],abs:0,mat,hrubka};
+        if(s>0&&d>0&&pocet>0) for(let i=0;i<pocet;i++) matGroups[key].pieces.push({s,d});
+        if(r.sirka.edges>=1) matGroups[key].abs+=s*pocet;
+        if(r.sirka.edges>=2) matGroups[key].abs+=s*pocet;
+        if(r.dlzka.edges>=1) matGroups[key].abs+=d*pocet;
+        if(r.dlzka.edges>=2) matGroups[key].abs+=d*pocet;
+        totalABS+=(r.sirka.edges>=1?s*pocet:0)+(r.sirka.edges>=2?s*pocet:0)+(r.dlzka.edges>=1?d*pocet:0)+(r.dlzka.edges>=2?d*pocet:0);
+      });
+
+      const matNames=Object.keys(matGroups);
+      if(matNames.length>0){
+        const tabuleSection=el('div',{style:{marginBottom:'12px'}});
+        tabuleSection.appendChild(el('div',{style:{color:'#3A4D65',fontSize:'10px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'8px'}},'Spotreba tabúľ  (2800 × 2070 mm / odhad)'));
+        const matGrid=el('div',{style:{display:'flex',flexDirection:'column',gap:'6px'}});
+        let grandTotal=0;
+        matNames.forEach(mat=>{
+          const grp=matGroups[mat];
+          const count=stripPackCount(grp.pieces);
+          if(count===0) return;
+          const autoDekor=findDekorCena(grp.mat||mat);
+          const hasManual=appState.cennik.hasOwnProperty(mat);
+          const unitPrice=hasManual?(appState.cennik[mat]||0):(autoDekor?autoDekor.cena:0);
+          const isAuto=!hasManual&&!!autoDekor;
+          const lineTotal=unitPrice*count;
+          grandTotal+=lineTotal;
+
+          const mRow=el('div',{style:{background:'#0F1E30',border:'1px solid #1E3A5F',borderRadius:'8px',padding:'8px 12px'}});
+
+          const topLine=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'6px'}});
+          const nameWrap=el('div',{style:{display:'flex',alignItems:'center',gap:'6px',flex:'1',marginRight:'8px',overflow:'hidden'}});
+          nameWrap.appendChild(el('span',{style:{color:'#9EC8F0',fontSize:'13px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}},grp.mat||mat));
+          if(grp.hrubka) nameWrap.appendChild(el('span',{style:{background:'#1E2B3C',color:'#7A9AB8',fontSize:'9px',fontWeight:'700',borderRadius:'4px',padding:'1px 5px',whiteSpace:'nowrap',flexShrink:'0'}},`${grp.hrubka}mm`));
+          if(isAuto) nameWrap.appendChild(el('span',{style:{background:'#1A3A1A',color:'#34D399',fontSize:'9px',fontWeight:'700',borderRadius:'4px',padding:'1px 5px',whiteSpace:'nowrap',flexShrink:'0'}},'AUTO'));
+          topLine.appendChild(nameWrap);
+          const utilPct=calcUtilPct(grp.pieces, count);
+          const countWrap=el('div',{style:{display:'flex',flexDirection:'column',alignItems:'flex-end',flexShrink:'0'}});
+          countWrap.appendChild(el('span',{style:{color:'#60A5FA',fontWeight:'700',fontSize:'15px',whiteSpace:'nowrap'}},`${count} ks`));
+          if(utilPct>0) countWrap.appendChild(el('span',{style:{color:utilPct>=70?'#34D399':utilPct>=50?'#F59E0B':'#EF4444',fontSize:'10px'}},`využitie ${utilPct}%`));
+          topLine.appendChild(countWrap);
+          mRow.appendChild(topLine);
+
+          const priceLine=el('div',{style:{display:'flex',alignItems:'center',gap:'8px'}});
+          const priceWrap=el('div',{style:{position:'relative',flex:'1'}});
+          const priceInp=el('input',{style:{background:'#141926',border:`1px solid ${isAuto?'#1E3A28':'#1E3A5F'}`,borderRadius:'6px',color:'#E8EDF5',padding:'5px 28px 5px 8px',fontSize:'13px',width:'100%'},type:'number',min:'0',step:'0.01',placeholder:'Cena / ks (€)'});
+          priceInp.value=unitPrice||'';
+          priceInp.oninput=e=>setCennikPrice(mat,e.target.value);
+          priceWrap.appendChild(priceInp);
+          priceWrap.appendChild(el('span',{style:{position:'absolute',right:'8px',top:'50%',transform:'translateY(-50%)',color:'#3A4D65',fontSize:'12px',pointerEvents:'none'}},'€'));
+          priceLine.appendChild(priceWrap);
+          if(unitPrice>0) priceLine.appendChild(el('span',{style:{color:'#34D399',fontWeight:'700',fontSize:'14px',whiteSpace:'nowrap'}},`= ${lineTotal.toFixed(2)} €`));
+          if(hasManual&&autoDekor){
+            const resetBtn=el('button',{style:{background:'none',border:'none',color:'#3A4D65',fontSize:'11px',padding:'0',cursor:'pointer',whiteSpace:'nowrap',flexShrink:'0'}},'↺');
+            resetBtn.title='Vrátiť na auto cenu';
+            resetBtn.onclick=()=>{delete appState.cennik[mat];saveCennik();renderApp();};
+            priceLine.appendChild(resetBtn);
+          }
+          mRow.appendChild(priceLine);
+
+          // ABS per material
+          const absM=(grp.abs/1000).toFixed(2);
+          if(grp.abs>0){
+            const absLine=el('div',{style:{marginTop:'4px',color:'#4A6585',fontSize:'11px'}},`ABS: ${absM} m`);
+            mRow.appendChild(absLine);
+          }
+          matGrid.appendChild(mRow);
+        });
+        tabuleSection.appendChild(matGrid);
+        if(grandTotal>0){
+          const totalBar=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:'10px',padding:'10px 12px',background:'#0A1628',border:'1px solid #2563EB',borderRadius:'8px'}});
+          totalBar.appendChild(el('span',{style:{color:'#7A9AB8',fontSize:'12px',textTransform:'uppercase',letterSpacing:'0.5px'}},'Spolu materiál'));
+          totalBar.appendChild(el('span',{style:{color:'#60A5FA',fontWeight:'700',fontSize:'18px'}},`${grandTotal.toFixed(2)} €`));
+          tabuleSection.appendChild(totalBar);
+
+          const porezBar=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:'6px',padding:'10px 12px',background:'#0A1628',border:'1px solid #2563EB',borderRadius:'8px'}});
+          porezBar.appendChild(el('span',{style:{color:'#7A9AB8',fontSize:'12px',textTransform:'uppercase',letterSpacing:'0.5px'}},'Cena za porez'));
+          porezBar.appendChild(el('span',{style:{color:'#60A5FA',fontWeight:'700',fontSize:'18px'}},`${grandTotal.toFixed(2)} €`));
+          tabuleSection.appendChild(porezBar);
+
+          const spoluBar=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:'6px',padding:'10px 12px',background:'#0D1F3C',border:'1px solid #3B82F6',borderRadius:'8px',gap:'10px'}});
+          const spoluLeft=el('div',{style:{display:'flex',flexDirection:'column',gap:'4px'}});
+          spoluLeft.appendChild(el('span',{style:{color:'#E8EDF5',fontSize:'13px',fontWeight:'700',textTransform:'uppercase',letterSpacing:'0.5px'}},'Spolu'));
+          const addToMatBtn=el('button',{style:{background:'#2563EB',border:'none',borderRadius:'6px',color:'#fff',fontSize:'11px',fontWeight:'700',padding:'3px 8px',cursor:'pointer',whiteSpace:'nowrap'}},'+ Pridať do zákazky');
+          addToMatBtn.onclick=()=>{
+            const spolu=grandTotal*2;
+            const entry={id:Date.now().toString(36),name:'Porez (materiál + réžia)',cost:spolu,note:'',at:Date.now()};
+            updateOrder(sel.id,{materials:[entry,...(sel.materials||[])]});
+            setState({tab:'materials'});
+          };
+          spoluLeft.appendChild(addToMatBtn);
+          spoluBar.appendChild(spoluLeft);
+          spoluBar.appendChild(el('span',{style:{color:'#FFFFFF',fontWeight:'700',fontSize:'20px'}},`${(grandTotal*2).toFixed(2)} €`));
+          tabuleSection.appendChild(spoluBar);
+        }
+        pwrap.appendChild(tabuleSection);
+      }
+
+
+
+      // Raw text toggle
+      const rawToggle=el('button',{style:{background:'none',border:'1px solid #1E2B3C',borderRadius:'8px',color:'#3A4D65',fontSize:'12px',padding:'6px 12px',marginBottom:'8px',width:'100%',cursor:'pointer'}},appState.porezRawOpen?'▲ Skryť zdrojový text':'▼ Zobraziť zdrojový text');
+      rawToggle.onclick=()=>{ appState.porezRawOpen=!appState.porezRawOpen; renderApp(); };
+      pwrap.appendChild(rawToggle);
+
+      if(appState.porezRawOpen){
+        const hdrRaw=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px'}});
+        hdrRaw.appendChild(el('div',{style:{color:'#3A4D65',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px'}},'Zdrojový text'));
+        const clrBtn=el('button',{style:{background:'none',border:'none',color:'#374151',fontSize:'12px',cursor:'pointer'}},'Vymazať');
+        clrBtn.onclick=()=>updateOrder(sel.id,{porezText:''});
+        hdrRaw.appendChild(clrBtn);
+        pwrap.appendChild(hdrRaw);
+        const ta=el('textarea',{style:{width:'100%',background:'#141926',border:'1px solid #1E2B3C',borderRadius:'8px',color:'#E8EDF5',padding:'12px',fontSize:'12px',fontFamily:'monospace',lineHeight:'1.6',minHeight:'200px',resize:'vertical',boxSizing:'border-box'}});
+        ta.value=porezText;
+        ta.oninput=e=>updateOrder(sel.id,{porezText:e.target.value});
+        pwrap.appendChild(ta);
+      }
+      } // koniec if(!appState.porezSkrinka)
+    } else {
+      // Empty — show textarea to paste
+      const hdr=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px'}});
+      hdr.appendChild(el('div',{style:{color:'#3A4D65',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px'}},'Obsah súboru na pílenie'));
+      pwrap.appendChild(hdr);
+      const ta=el('textarea',{style:{width:'100%',background:'#141926',border:'1.5px solid #1E2B3C',borderRadius:'10px',color:'#E8EDF5',padding:'12px',fontSize:'13px',fontFamily:'monospace',lineHeight:'1.6',minHeight:'300px',resize:'vertical',boxSizing:'border-box'}});
+      ta.value='';
+      ta.placeholder='Vlož text súboru posielaného na porez...';
+      ta.oninput=e=>updateOrder(sel.id,{porezText:e.target.value});
+      pwrap.appendChild(ta);
+    }
+
+    scroll.appendChild(pwrap);
+  }
+
+  if(appState.tab==='prilohy'){
+    scroll.appendChild(renderPrilohy(sel));
+  }
+
+  if(appState.tab==='history'){
+    const hc=el('div',{className:'info-card',style:{margin:'12px 16px'}});
+    hc.appendChild(el('div',{className:'info-card-title'},'📜 História zmien'));
+    STATUSES.filter(s=>sel[`statusHistory_${s.key}`]).forEach(s=>{
+      const r=el('div',{className:'info-row'});
+      const lbl=el('span',{style:{color:s.color,fontSize:'13px'}},`● ${s.label}`);
+      r.append(lbl,el('span',{style:{color:'#9CA3AF',fontSize:'14px'}},fmtDate(sel[`statusHistory_${s.key}`])));
+      hc.appendChild(r);
+    });
+    function hr2(lbl,val){
+      const r=el('div',{className:'info-row'});
+      r.append(el('span',{className:'info-label'},lbl),el('span',{style:{color:'#6B7280',fontSize:'14px'}},val));
+      return r;
+    }
+    hc.appendChild(hr2('Vytvorená',fmtDate(sel.createdAt)));
+    hc.appendChild(hr2('Posledná zmena',fmtDate(sel.updatedAt)));
+    scroll.appendChild(hc);
+  }
+
+  frag.appendChild(scroll);
+  return frag;
+}
+
+// ═══════════════════════════════════
+// PRÍLOHY TAB
+// ═══════════════════════════════════
+function renderPrilohy(order){
+  const wrap=el('div',{style:{padding:'12px 16px',paddingBottom:'60px'}});
+  const attachments=order.attachments||[];
+
+  // Upload button
+  const uploadLbl=el('label',{style:{width:'100%',background:'#0D1E36',border:'1.5px solid #1E3A5F',borderRadius:'10px',color:'#60A5FA',fontWeight:'700',fontSize:'14px',padding:'13px 0',textAlign:'center',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'8px',marginBottom:'14px',boxSizing:'border-box'}});
+  uploadLbl.append(el('span',{},'📎'),el('span',{},'Pridať prílohu (PDF, JPG, PNG)'));
+  const fileInp=el('input',{type:'file',accept:'.pdf,.jpg,.jpeg,.png,image/*,application/pdf',style:{display:'none'},multiple:true});
+
+  fileInp.onchange=async e=>{
+    const files=[...e.target.files];
+    if(!files.length) return;
+    for(const file of files){
+      const progDiv=el('div',{style:{background:'#141926',border:'1px solid #1E2B3C',borderRadius:'8px',padding:'10px 14px',marginBottom:'8px',color:'#7A9AB8',fontSize:'13px'}},`⏫ Spracúvam ${file.name}…`);
+      wrap.insertBefore(progDiv,uploadLbl.nextSibling);
+      try{
+        let dataUrl;
+        if(file.type.startsWith('image/')){
+          // Compress image to max 1600px, 80% quality
+          dataUrl=await compressImage(file,1600,0.80);
+          if(!dataUrl) throw new Error('Chyba pri spracovaní obrázka.');
+        } else {
+          // PDF or other — max 4 MB
+          if(file.size>4*1024*1024) throw new Error(`Súbor je príliš veľký (${(file.size/1024/1024).toFixed(1)} MB). Max 4 MB.`);
+          dataUrl=await fileToDataUrl(file);
+        }
+        const attId=uid();
+        // Store file data (chunked if needed)
+        await saveAttData(attId,order.id,dataUrl);
+        // Store metadata in order (no url/path — loaded on demand)
+        const att={id:attId,name:file.name,type:file.type,size:file.size,uploadedAt:Date.now()};
+        updateOrder(order.id,{attachments:[...(order.attachments||[]),att]});
+        progDiv.remove();
+      }catch(err){
+        console.error('Attachment upload error:',err);
+        progDiv.style.cssText+='border-color:#7F1D1D;background:#1A0808;color:#EF4444;';
+        progDiv.innerHTML='';
+        const closeBtn=el('button',{style:{float:'right',background:'none',border:'none',color:'#EF4444',fontSize:'16px',cursor:'pointer',padding:'0 4px'}},'✕');
+        closeBtn.onclick=()=>progDiv.remove();
+        progDiv.appendChild(closeBtn);
+        progDiv.appendChild(el('div',{style:{fontWeight:'700',marginBottom:'4px'}},'✗ Chyba pri nahrávaní'));
+        progDiv.appendChild(el('div',{style:{fontSize:'12px',wordBreak:'break-word'}},err.message||String(err)));
+      }
+    }
+    e.target.value='';
+  };
+
+  uploadLbl.appendChild(fileInp);
+  wrap.appendChild(uploadLbl);
+
+  if(!attachments.length){
+    const emp=el('div',{style:{textAlign:'center',padding:'40px 20px',color:'#3A4D65'}});
+    emp.appendChild(el('div',{style:{fontSize:'36px',marginBottom:'10px'}},'📎'));
+    emp.appendChild(el('div',{style:{fontSize:'14px'}},'Žiadne prílohy'));
+    wrap.appendChild(emp);
+    return wrap;
+  }
+
+  attachments.forEach(att=>{
+    const isImg=/^image\//i.test(att.type);
+    const isPdf=/pdf/i.test(att.type);
+    const row=el('div',{style:{display:'flex',alignItems:'center',gap:'10px',background:'#141926',border:'1px solid #1E2B3C',borderRadius:'10px',padding:'10px 12px',marginBottom:'8px'}});
+
+    // Thumbnail / icon
+    if(isImg){
+      const imgEl=el('img',{src:'',style:{width:'44px',height:'44px',objectFit:'cover',borderRadius:'6px',flexShrink:'0',cursor:'pointer',background:'#0D1117'}});
+      imgEl.onclick=()=>openAttachment(att);
+      // Async load thumbnail
+      if(att.url){ imgEl.src=att.url; }
+      else{ loadAttData(att.id).then(d=>{ if(d) imgEl.src=d; }); }
+      row.appendChild(imgEl);
+    } else {
+      const ico=el('div',{style:{width:'44px',height:'44px',background:'#1A0808',border:'1px solid #3D0A0A',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:'0',cursor:'pointer'}},isPdf?'📄':'📎');
+      ico.onclick=()=>openAttachment(att);
+      row.appendChild(ico);
+    }
+
+    // Info
+    const info=el('div',{style:{flex:'1',minWidth:'0'}});
+    const nameEl=el('div',{style:{color:'#E8EDF5',fontSize:'13px',fontWeight:'600',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',cursor:'pointer'}},att.name);
+    nameEl.onclick=()=>openAttachment(att);
+    const sizeEl=el('div',{style:{color:'#4A6585',fontSize:'11px',marginTop:'2px'}},(att.size/1024).toFixed(0)+' KB · '+(att.uploadedAt?new Date(att.uploadedAt).toLocaleDateString('sk-SK'):''));
+    info.append(nameEl,sizeEl);
+    row.appendChild(info);
+
+    // Delete
+    const delBtn=el('button',{style:{background:'none',border:'none',color:'#374151',fontSize:'18px',padding:'4px 6px',flexShrink:'0',lineHeight:'1',cursor:'pointer'}},'✕');
+    delBtn.onclick=async ()=>{
+      if(!confirm(`Zmazať prílohu "${att.name}"?`)) return;
+      // Delete from Firestore (new format); ignore Storage errors for old format
+      if(!att.url){ try{ await db.collection('lupana_att').doc(att.id).delete(); }catch(e){} }
+      else { try{ await storage.ref(att.path).delete(); }catch(e){} }
+      updateOrder(order.id,{attachments:(order.attachments||[]).filter(a=>a.id!==att.id)});
+    };
+    row.append(delBtn);
+    wrap.appendChild(row);
+  });
+
+  return wrap;
+}
+
+// ═══════════════════════════════════
+// LIST PAGE
+// ═══════════════════════════════════
+function renderList(){
+  const {data,filterStatus,search,selectedCard,showMenu} = appState;
+  const orders = data.orders||[];
+  
+  const totalPrice=orders.reduce((s,o)=>s+(parseFloat(o.price)||0),0);
+  const totalDeposit=orders.reduce((s,o)=>s+(parseFloat(o.depositPaid)||0),0);
+  const totalDue=totalPrice-totalDeposit;
+  const totalMat=orders.reduce((s,o)=>s+(o.materials||[]).reduce((a,m)=>a+(m.cost||0),0),0);
+
+  const filtered = orders.filter(o=>{
+    const match = filterStatus==='all'?true:filterStatus==='rozpracovane'?ROZPRACOVANE.includes(o.status):o.status==='hotova';
+    const q=search.toLowerCase();
+    const ms=!q||(o.customerName||'').toLowerCase().includes(q)||(o.title||'').toLowerCase().includes(q)||(o.customerPhone||'').includes(q);
+    return match&&ms;
+  }).sort((a,b)=>{
+    const seq=data.orderSequence||[];
+    const ai=seq.indexOf(a.id), bi=seq.indexOf(b.id);
+    if(ai===-1&&bi===-1) return b.createdAt-a.createdAt;
+    if(ai===-1) return 1; if(bi===-1) return -1;
+    return ai-bi;
+  });
+
+  const frag=document.createDocumentFragment();
+
+  // HEADER
+  const hdr=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'20px 16px 12px'}});
+  const hleft=el('div',{style:{position:'relative'}});
+  
+  const appNameRow=el('div',{style:{display:'flex',alignItems:'center',gap:'8px'}});
+  const appNameBtn=el('button',{style:{background:'none',border:'none',color:'#F9FAFB',fontSize:'20px',fontWeight:'700',letterSpacing:'-1px',cursor:'pointer',padding:'0'}});
+  appNameBtn.textContent=`LUPANA ${showMenu?'▲':'▼'}`;
+  appNameBtn.onclick=e=>{ e.stopPropagation(); setState({showMenu:!showMenu}); };
+  
+  const syncDot=el('div',{style:{width:'8px',height:'8px',borderRadius:'50%',background:syncStatus==='ok'?'#10B981':syncStatus==='saving'?'F59E0B':'#EF4444',flexShrink:'0'}});
+  appNameRow.append(appNameBtn,syncDot);
+  hleft.appendChild(appNameRow);
+  hleft.appendChild(el('div',{style:{color:'#4B5563',fontSize:'12px'}},`${orders.length} zákaziek celkovo`));
+
+  if(showMenu){
+    const dd=el('div',{className:'dropdown'});
+    [['👥','Zákazníci','customers'],['📈','Štatistiky','stats'],['📊','Ročný prehľad','yearly'],['📅','Kalendár','calendar'],['📦','Archív','archive'],['💾','Zálohovanie dát','backup']].forEach(([icon,label,key])=>{
+      const item=el('button',{className:'dropdown-item'});
+      item.append(el('span',{style:{fontSize:'18px'}},icon),label);
+      item.onclick=()=>setState({subPage:key,showMenu:false});
+      dd.appendChild(item);
+    });
+    hleft.appendChild(dd);
+    // Close on outside click
+    setTimeout(()=>{ document.addEventListener('click',()=>setState({showMenu:false}),{once:true}); },0);
+  }
+
+  hdr.appendChild(hleft);
+  const hdrRight=el('div',{style:{display:'flex',gap:'8px',alignItems:'center'}});
+  const nakupBtn=el('button',{style:{background:'#111827',border:'1px solid #1F2937',borderRadius:'10px',color:'#9CA3AF',fontSize:'20px',width:'42px',height:'42px',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',position:'relative'}},'🛒');
+  const nakupBadge=(appState.data.orders||[]).reduce((s,o)=>(o.nakupList||[]).filter(i=>!i.checked).length+s,0);
+  if(nakupBadge>0){ const nb2=el('span',{className:'badge'},String(nakupBadge)); nakupBtn.appendChild(nb2); }
+  nakupBtn.onclick=()=>setState({subPage:'nakupMerge', nakupSelected:[], nakupMergeChecked:{}});
+  hdrRight.appendChild(nakupBtn);
+  // SKLAD button
+  const skladBtn=el('button',{style:{background:'#111827',border:'1px solid #1F2937',borderRadius:'10px',color:'#9CA3AF',fontSize:'20px',width:'42px',height:'42px',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',position:'relative'}},'📦');
+  const skladBadge=(appState.data.sklad||[]).filter(i=>i.qty<=i.minQty).length;
+  if(skladBadge>0){ const sb2=el('span',{className:'badge',style:{background:'#EF4444'}},String(skladBadge)); skladBtn.appendChild(sb2); }
+  skladBtn.onclick=()=>setState({subPage:'sklad'});
+  hdrRight.appendChild(skladBtn);
+  const newBtn=el('button',{className:'btn btn-primary',style:{padding:'10px 18px',fontSize:'14px',borderRadius:'10px'}},'+  Nová');
+  newBtn.onclick=()=>{ setState({page:'new'}); };
+  hdrRight.appendChild(newBtn);
+  hdr.appendChild(hdrRight);
+  frag.appendChild(hdr);
+
+  // BACKUP REMINDER
+  const lastBackup=data.lastBackup;
+  const oneWeek=7*24*60*60*1000;
+  if(!lastBackup||(Date.now()-lastBackup>oneWeek)){
+    const daysAgo=lastBackup?Math.floor((Date.now()-lastBackup)/(24*60*60*1000)):null;
+    const brem=el('div',{style:{margin:'0 16px 12px',background:'#1C1400',border:'1px solid #78350F',borderRadius:'12px',padding:'12px 14px',display:'flex',alignItems:'center',gap:'10px'}});
+    brem.appendChild(el('span',{style:{fontSize:'20px'}},'💾'));
+    const bt=el('div',{style:{flex:'1'}});
+    bt.appendChild(el('div',{style:{color:'#F59E0B',fontWeight:'700',fontSize:'13px'}},lastBackup?`Záloha pred ${daysAgo} dňami`:'Zatiaľ bez zálohy'));
+    bt.appendChild(el('div',{style:{color:'#92400E',fontSize:'12px'}},'Odporúčame zálohovať raz týždenne'));
+    brem.appendChild(bt);
+    const zb=el('button',{style:{background:'#F59E0B',border:'none',borderRadius:'8px',color:'#000',fontWeight:'700',fontSize:'12px',padding:'8px 12px',cursor:'pointer',whiteSpace:'nowrap'}},'⬇️ Záloha');
+    zb.onclick=quickExport;
+    brem.appendChild(zb);
+    frag.appendChild(brem);
+  }
+
+  // SUMMARY
+  const sg=el('div',{className:'summary-grid'});
+  function scard(lbl,val,color){
+    const c=el('div',{className:'summary-card'});
+    c.appendChild(el('div',{className:'lbl'},lbl));
+    c.appendChild(el('div',{className:'val',style:{color}},String(val)));
+    return c;
+  }
+  sg.append(scard('Celkový objem',fmt(totalPrice),'#3B82F6'),scard('Prijaté zálohy',fmt(totalDeposit),'#F59E0B'),scard('Doplatok celkový',fmt(totalDue>0?totalDue:0),totalDue>0?'#EF4444':'#10B981'),scard('Počet zákaziek',`${orders.length} ks`,'#8B5CF6'));
+  frag.appendChild(sg);
+
+  // FILTER PILLS
+  const pr=el('div',{className:'pill-row'});
+  [{key:'all',label:'Všetky',count:orders.length,color:'#3B82F6',bg:'#1E3A5F'},{key:'rozpracovane',label:'Rozpracované',count:orders.filter(o=>ROZPRACOVANE.includes(o.status)).length,color:'#F59E0B',bg:'#292300'},{key:'hotova',label:'Hotové',count:orders.filter(o=>o.status==='hotova').length,color:'#10B981',bg:'#052E1C'}].forEach(f=>{
+    const active=filterStatus===f.key;
+    const p=el('button',{className:'pill'+(active?' active':''),style:active?{background:f.bg,color:f.color,borderColor:f.color}:{}});
+    const dot=el('span',{style:{width:'6px',height:'6px',borderRadius:'50%',background:active?f.color:'#4B5563',display:'inline-block',marginRight:'4px'}});
+    p.append(dot,`${f.label} (${f.count})`);
+    p.onclick=()=>setState({filterStatus:f.key});
+    pr.appendChild(p);
+  });
+  frag.appendChild(pr);
+
+  // SEARCH
+  const sw=el('div',{style:{padding:'0 16px 8px'}});
+  const si=el('input',{type:'text',placeholder:'🔍  Hľadať podľa zákazníka alebo názvu...',style:{width:'100%'}});
+  si.value=search;
+  si.oninput=e=>setState({search:e.target.value});
+  sw.appendChild(si);
+  frag.appendChild(sw);
+
+  // ORDER LIST
+  const ol=el('div',{style:{padding:'4px 16px'}});
+  if(!filtered.length){
+    const emp=el('div',{style:{textAlign:'center',color:'#374151',padding:'60px 20px'}});
+    emp.appendChild(el('div',{style:{fontSize:'48px',marginBottom:'12px'}},'📂'));
+    emp.appendChild(el('div',{style:{fontSize:'16px',color:'#4B5563',marginBottom:'16px'}},'Žiadne zákazky'));
+    const ab=el('button',{className:'btn btn-primary',style:{borderRadius:'10px',padding:'10px 18px'}},'+  Pridať prvú zákazku');
+    ab.onclick=()=>setState({page:'new'});
+    emp.appendChild(ab);
+    ol.appendChild(emp);
+  }
+
+  filtered.forEach(o=>{
+    const st=statusOf(o.status);
+    const price=parseFloat(o.price)||0;
+    const deposit=parseFloat(o.depositPaid)||0;
+    const due=price-deposit;
+    const mins=totalMins(o);
+    const depositDate=o.depositDate?new Date(o.depositDate):null;
+    const deadlineDate=o.deadlineDate?new Date(o.deadlineDate):depositDate?new Date(new Date(depositDate).setMonth(depositDate.getMonth()+2)):null;
+    const isAuto=!o.deadlineDate&&!!depositDate;
+    const isOverdue=deadlineDate&&deadlineDate<new Date()&&o.status!=='storno';
+    const selected=selectedCard===o.id;
+    const unresolved=(o.notes||[]).filter(n=>!n.resolved).length;
+
+    const card=el('div',{className:'card'+(selected?' selected':''),style:{borderLeft:`3px solid ${selected?st.color:'#1F2937'}`},'data-orderid':o.id});
+    card.onclick=()=>setState({selectedCard:selected?null:o.id});
+
+    // Row 1
+    const r1=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'6px'}});
+    const r1l=el('div',{style:{flex:'1'}});
+    const nameRow=el('div',{style:{display:'flex',alignItems:'center',gap:'6px',flexWrap:'wrap'}});
+    nameRow.appendChild(el('span',{style:{color:'#F9FAFB',fontWeight:'700',fontSize:'16px'}},o.customerName||'Bez mena'));
+    if(isOverdue) nameRow.appendChild(el('span',{style:{fontSize:'10px',background:'#3D0A0A',color:'#EF4444',borderRadius:'4px',padding:'1px 6px'}},'PO TERMÍNE'));
+    r1l.appendChild(nameRow);
+    r1l.appendChild(el('div',{style:{color:'#6B7280',fontSize:'13px',marginTop:'2px'}},o.title||'—'));
+    const r1r=el('div',{style:{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:'3px',marginLeft:'8px'}});
+    const stRow=el('div',{style:{display:'flex',alignItems:'center',gap:'5px'}});
+    stRow.append(el('span',{style:{width:'7px',height:'7px',borderRadius:'50%',background:selected?st.dot:'#374151',flexShrink:'0'}}),el('span',{style:{color:selected?st.color:'#6B7280',fontSize:'12px',fontWeight:'600',whiteSpace:'nowrap'}},st.label));
+    r1r.appendChild(stRow);
+    if(o.status==='hotova'){
+      r1r.appendChild(el('span',{style:{fontSize:'10px',fontWeight:'700',padding:'1px 7px',borderRadius:'10px',background:o.vyplatena?'#052E1C':'#1F0505',color:o.vyplatena?'#6EE7B7':'#EF4444',border:`1px solid ${o.vyplatena?'#065F46':'#3D0A0A'}`}},o.vyplatena?'✓ Vyplatené':'Nevyplatené'));
+    }
+    r1.append(r1l,r1r);
+    card.appendChild(r1);
+
+    // Row 2 - financie
+    const r2=el('div',{style:{display:'flex',gap:'10px',flexWrap:'wrap',alignItems:'center'}});
+    if(price>0){
+      const pd=el('div',{style:{display:'flex',flexDirection:'column'}});
+      pd.append(el('span',{style:{color:'#9CA3AF',fontSize:'10px',textTransform:'uppercase',letterSpacing:'0.5px'}},'cena'),el('span',{style:{color:selected?'#10B981':'#9CA3AF',fontWeight:'700',fontSize:'16px'}},fmt(price)));
+      r2.appendChild(pd);
+    }
+    if(deposit>0){
+      const zd=el('div',{style:{display:'flex',flexDirection:'column'}});
+      zd.append(el('span',{style:{color:'#9CA3AF',fontSize:'10px',textTransform:'uppercase',letterSpacing:'0.5px'}},'záloha'),el('span',{style:{color:selected?'#F59E0B':'#6B7280',fontWeight:'700',fontSize:'16px'}},fmt(deposit)));
+      r2.appendChild(zd);
+    }
+    if(price>0){
+      const dd2=el('div',{style:{display:'flex',flexDirection:'column',background:selected?(due>0?'#1F0505':'#052E1C'):'#161B22',borderRadius:'8px',padding:'4px 10px',border:`1px solid ${selected?(due>0?'#3D0A0A':'#065F46'):'#1F2937'}`}});
+      dd2.append(el('span',{style:{color:'#4B5563',fontSize:'10px',textTransform:'uppercase',letterSpacing:'0.5px'}},'doplatok'),el('span',{style:{color:selected?(due>0?'#EF4444':'#10B981'):'#6B7280',fontSize:'16px',fontWeight:'700'}},fmt(due>=0?due:0)));
+      r2.appendChild(dd2);
+    } else {
+      const dd3=el('div',{style:{display:'flex',flexDirection:'column',background:'#161B22',borderRadius:'8px',padding:'4px 10px',border:'1px solid #1F2937'}});
+      dd3.append(el('span',{style:{color:'#4B5563',fontSize:'10px',textTransform:'uppercase',letterSpacing:'0.5px'}},'doplatok'),el('span',{style:{color:'#374151',fontSize:'14px',fontWeight:'600'}},'—'));
+      r2.appendChild(dd3);
+    }
+    if(mins>0) r2.appendChild(el('div',{style:{marginLeft:'auto',color:'#4B5563',fontSize:'12px'}},`⏱ ${fmtMins(mins)}`));
+    if(deadlineDate){
+      const dlSpan=el('div',{style:{color:isOverdue?'#EF4444':'#4B5563',fontSize:'12px'}});
+      dlSpan.textContent=`📅 ${deadlineDate.toLocaleDateString('sk-SK',{day:'2-digit',month:'2-digit',year:'numeric'})}`;
+      if(isAuto){ dlSpan.appendChild(el('span',{style:{color:'#1D4ED8',marginLeft:'4px'}},'(auto)')); }
+      r2.appendChild(dlSpan);
+    }
+    card.appendChild(r2);
+
+    // Status next button — vpravo hore pod stavom
+    const nextIdx=STATUS_FLOW.indexOf(o.status);
+    if(nextIdx>=0&&nextIdx<STATUS_FLOW.length-1){
+      const nextSt=statusOf(STATUS_FLOW[nextIdx+1]);
+      const qb=el('button',{style:{background:'none',border:'1px solid #1F2937',borderRadius:'6px',color:'#4B5563',fontSize:'11px',padding:'3px 8px',cursor:'pointer',whiteSpace:'nowrap',marginTop:'4px',textAlign:'right'}},`→ ${nextSt.label}`);
+      qb.onclick=e=>{ e.stopPropagation(); nextStatus(o); };
+      r1r.appendChild(qb);
+    }
+
+    // Action bar
+    const ab2=el('div',{className:'action-bar'});
+    ab2.appendChild(el('div',{style:{flex:'1',minWidth:'4px'}}));
+
+    // Note btn with badge
+    const nb=el('button',{className:'icon-btn',style:{background:unresolved>0?'#2D0A0A':'#1a2234',borderColor:unresolved>0?'#7F1D1D':'#1F2937',color:unresolved>0?'#EF4444':'#6B7280',cursor:'pointer'}},'📝');
+    if(unresolved>0){ const badge=el('span',{className:'badge'},String(unresolved)); nb.appendChild(badge); }
+    nb.onclick=e=>{ e.stopPropagation(); setState({selId:o.id,tab:'notes',page:'detail'}); };
+
+    const matb=el('button',{className:'icon-btn',style:{cursor:'pointer'}},'🧱');
+    matb.onclick=e=>{ e.stopPropagation(); setState({selId:o.id,tab:'materials',showMatForm:true,page:'detail'}); };
+
+    const timeb=el('button',{className:'icon-btn',style:{cursor:'pointer'}},'⏱');
+    timeb.onclick=e=>{ e.stopPropagation(); setState({selId:o.id,tab:'time',showTimeLog:true,page:'detail'}); };
+
+    const editb=el('button',{className:'icon-btn',style:{cursor:'pointer'}},'✏️');
+    editb.onclick=e=>{ e.stopPropagation(); setState({selId:o.id,tab:'info',page:'detail'}); };
+
+    // Shopping cart — open nakup list with this order as active context
+    const nakupCnt=(o.nakupList||[]).filter(i=>!i.checked).length;
+    const cartb=el('button',{className:'icon-btn',style:{cursor:'pointer',background:nakupCnt>0?'#0D2B1F':'#1a2234',borderColor:nakupCnt>0?'#10B981':'#1F2937',color:nakupCnt>0?'#34D399':'#6B7280'}},'🛒');
+    if(nakupCnt>0){ const cb5=el('span',{className:'badge',style:{background:'#10B981'}},String(nakupCnt)); cartb.appendChild(cb5); }
+    cartb.onclick=e=>{
+      e.stopPropagation();
+      setState({subPage:'nakupOrder', nakupOrderId: o.id, nakupInput:''});
+    };
+
+    // Porez — import súboru priamo z karty
+    const hasPorez=!!(o.porezText&&o.porezText.trim());
+    const porezb=el('button',{className:'icon-btn',style:{cursor:'pointer',background:hasPorez?'#0D2B1F':'#1a2234',borderColor:hasPorez?'#10B981':'#1F2937',color:hasPorez?'#34D399':'#6B7280',fontSize:'17px'}},'✂️');
+    porezb.title='Porez';
+    const porezFileInp=el('input',{type:'file',accept:'.txt,.csv,text/*',style:{display:'none'}});
+    porezFileInp.onchange=e=>{
+      const file=e.target.files[0]; if(!file) return;
+      const reader=new FileReader();
+      reader.onload=ev=>{
+        updateOrder(o.id,{porezText:ev.target.result||''});
+        setState({selId:o.id,tab:'porez',page:'detail'});
+      };
+      reader.readAsText(file,'UTF-8');
+    };
+    porezb.appendChild(porezFileInp);
+    porezb.onclick=e=>{
+      e.stopPropagation();
+      if(hasPorez){ setState({selId:o.id,tab:'porez',page:'detail'}); }
+      else { porezFileInp.click(); }
+    };
+
+    // Prílohy
+    const attCnt=(o.attachments||[]).length;
+    const attb=el('button',{className:'icon-btn',style:{cursor:'pointer',background:attCnt>0?'#0D1E36':'#1a2234',borderColor:attCnt>0?'#3B82F6':'#1F2937',color:attCnt>0?'#60A5FA':'#6B7280'}},'📎');
+    if(attCnt>0){ const ab3=el('span',{className:'badge',style:{background:'#3B82F6'}},String(attCnt)); attb.appendChild(ab3); }
+    attb.onclick=e=>{ e.stopPropagation(); setState({selId:o.id,tab:'prilohy',page:'detail'}); };
+
+    ab2.append(nb,matb,cartb,porezb,timeb,attb,editb);
+    card.appendChild(ab2);
+
+    // ── Drag & Drop (touch + mouse) ──────────────────────────
+    let longPressTimer=null, touchDragging=false, ghost=null, dragId=o.id;
+
+    function startDrag(clientX,clientY){
+      touchDragging=true;
+      card.classList.add('drag-active');
+      if(navigator.vibrate) navigator.vibrate(40);
+      // Create ghost clone
+      const rect=card.getBoundingClientRect();
+      ghost=card.cloneNode(true);
+      ghost.className='card-ghost';
+      ghost.style.width=rect.width+'px';
+      ghost.style.left=(clientX-rect.width/2)+'px';
+      ghost.style.top=(clientY-rect.height/2)+'px';
+      document.body.appendChild(ghost);
+    }
+
+    function moveDrag(clientX,clientY){
+      if(!touchDragging||!ghost) return;
+      const rect=card.getBoundingClientRect();
+      ghost.style.left=(clientX-rect.width/2)+'px';
+      ghost.style.top=(clientY-50)+'px';
+      // Find card under touch
+      ghost.style.display='none';
+      const el2=document.elementFromPoint(clientX,clientY);
+      ghost.style.display='';
+      ol.querySelectorAll('.card').forEach(c=>c.classList.remove('drag-over'));
+      const target=el2&&el2.closest('[data-orderid]');
+      if(target&&target!==card) target.classList.add('drag-over');
+    }
+
+    function endDrag(clientX,clientY){
+      if(!touchDragging) return;
+      touchDragging=false;
+      card.classList.remove('drag-active');
+      ol.querySelectorAll('.card').forEach(c=>c.classList.remove('drag-over'));
+      // Hide ghost before elementFromPoint so we can detect what's underneath
+      if(ghost) ghost.style.display='none';
+      const elUnder=document.elementFromPoint(clientX,clientY);
+      if(ghost){ghost.remove();ghost=null;}
+      const target=elUnder&&elUnder.closest('[data-orderid]');
+      const targetId=target&&target.getAttribute('data-orderid');
+      if(targetId&&targetId!==dragId){
+        // Reorder
+        const ids=filtered.map(x=>x.id);
+        const fromIdx=ids.indexOf(dragId);
+        const toIdx=ids.indexOf(targetId);
+        if(fromIdx!==-1&&toIdx!==-1){
+          ids.splice(fromIdx,1);
+          ids.splice(toIdx,0,dragId);
+          setData(d=>{
+            const allIds=(d.orders||[]).map(x=>x.id);
+            // merge: ids first, then any not in filtered
+            const rest=allIds.filter(id=>!ids.includes(id));
+            return {...d, orderSequence:[...ids,...rest]};
+          });
+        }
+      }
+    }
+
+    // Touch events
+    card.addEventListener('touchstart',e=>{
+      if(e.touches.length!==1) return;
+      const t=e.touches[0];
+      longPressTimer=setTimeout(()=>startDrag(t.clientX,t.clientY),450);
+    },{passive:true});
+
+    card.addEventListener('touchmove',e=>{
+      if(longPressTimer){clearTimeout(longPressTimer);longPressTimer=null;}
+      if(!touchDragging) return;
+      e.preventDefault();
+      moveDrag(e.touches[0].clientX,e.touches[0].clientY);
+    },{passive:false});
+
+    card.addEventListener('touchend',e=>{
+      if(longPressTimer){clearTimeout(longPressTimer);longPressTimer=null;}
+      if(!touchDragging) return;
+      e.preventDefault();
+      const t=e.changedTouches[0];
+      endDrag(t.clientX,t.clientY);
+    },{passive:false});
+
+    card.addEventListener('touchcancel',()=>{
+      if(longPressTimer){clearTimeout(longPressTimer);longPressTimer=null;}
+      touchDragging=false;
+      card.classList.remove('drag-active');
+      if(ghost){ghost.remove();ghost=null;}
+    });
+
+    // Mouse events (desktop)
+    card.setAttribute('draggable','true');
+    card.addEventListener('dragstart',e=>{
+      e.dataTransfer.setData('text/plain',o.id);
+      e.dataTransfer.effectAllowed='move';
+      setTimeout(()=>card.classList.add('drag-active'),0);
+    });
+    card.addEventListener('dragend',()=>card.classList.remove('drag-active'));
+    card.addEventListener('dragover',e=>{
+      e.preventDefault();
+      ol.querySelectorAll('.card').forEach(c=>c.classList.remove('drag-over'));
+      card.classList.add('drag-over');
+    });
+    card.addEventListener('drop',e=>{
+      e.preventDefault();
+      const fromId=e.dataTransfer.getData('text/plain');
+      const toId=o.id;
+      ol.querySelectorAll('.card').forEach(c=>c.classList.remove('drag-over'));
+      if(fromId&&fromId!==toId){
+        const ids=filtered.map(x=>x.id);
+        const fromIdx=ids.indexOf(fromId);
+        const toIdx=ids.indexOf(toId);
+        if(fromIdx!==-1&&toIdx!==-1){
+          ids.splice(fromIdx,1);
+          ids.splice(toIdx,0,fromId);
+          setData(d=>{
+            const rest=(d.orders||[]).map(x=>x.id).filter(id=>!ids.includes(id));
+            return {...d, orderSequence:[...ids,...rest]};
+          });
+        }
+      }
+    });
+    // ── koniec Drag & Drop ───────────────────────────────────
+
+    ol.appendChild(card);
+  });
+  frag.appendChild(ol);
+  return frag;
+}
+
+// ═══════════════════════════════════
+// SUB PAGES
+// ═══════════════════════════════════
+function renderStats(){
+  const {calYear, data} = appState;
+  const orders = (data.orders||[]).filter(o=>!o.archived);
+  const months = ['Jan','Feb','Mar','Apr','Máj','Jún','Júl','Aug','Sep','Okt','Nov','Dec'];
+
+  const byMonth = Array(12).fill(null).map((_,m)=>{
+    // Počítame podľa dátumu vyplatenia (vyplatenaAt), nie vytvorenia
+    const mo = orders.filter(o=>{
+      if(!o.vyplatena) return false;
+      const ts = o.vyplatenaAt || o.createdAt;
+      const d = new Date(ts);
+      return d.getFullYear()===calYear && d.getMonth()===m;
+    });
+    const total = mo.reduce((s,o)=>s+(parseFloat(o.price)||0), 0);
+    const avg = mo.length ? total/mo.length : 0;
+    return {label:months[m], count:mo.length, total, avg};
+  });
+
+  const totalOrders = byMonth.reduce((s,m)=>s+m.count, 0);
+  const totalValue  = byMonth.reduce((s,m)=>s+m.total, 0);
+  const avgValue    = totalOrders ? totalValue/totalOrders : 0;
+  const maxCount    = Math.max(...byMonth.map(m=>m.count), 1);
+  const bestMonth   = byMonth.reduce((best,m)=>m.count>best.count?m:best, byMonth[0]);
+
+  const frag = document.createDocumentFragment();
+  const yearNav = el('div',{style:{display:'flex',gap:'6px',alignItems:'center'}});
+  const yp = el('button',{style:{background:'#1F2937',border:'none',borderRadius:'6px',color:'#9CA3AF',padding:'4px 10px',cursor:'pointer',fontSize:'16px'}},'‹');
+  yp.onclick = ()=>setState({calYear:calYear-1});
+  const yn = el('button',{style:{background:'#1F2937',border:'none',borderRadius:'6px',color:'#9CA3AF',padding:'4px 10px',cursor:'pointer',fontSize:'16px'}},'›');
+  yn.onclick = ()=>setState({calYear:calYear+1});
+  yearNav.append(yp, el('span',{style:{color:'#F9FAFB',fontWeight:'700',fontSize:'15px'}},String(calYear)), yn);
+  frag.appendChild(renderTopBar('📈 Štatistiky', ()=>setState({subPage:null}), yearNav));
+
+  const wrap = el('div',{style:{padding:'12px 16px',paddingBottom:'40px'}});
+
+  // Summary cards
+  const cards = el('div',{style:{display:'flex',gap:'8px',marginBottom:'16px'}});
+  function scard(lbl,val,color){
+    const c=el('div',{style:{flex:'1',background:'#111827',borderRadius:'10px',padding:'10px 12px',border:'1px solid #1F2937'}});
+    c.append(el('div',{style:{color:'#4B5563',fontSize:'9px',textTransform:'uppercase',letterSpacing:'1px'}},lbl), el('div',{style:{color,fontWeight:'700',fontSize:'20px',marginTop:'4px'}},val));
+    return c;
+  }
+  cards.append(
+    scard('Zákazky', String(totalOrders), '#60A5FA'),
+    scard('Priemer', fmt(avgValue), '#34D399'),
+    scard('Najlepší', bestMonth.count>0 ? bestMonth.label : '—', '#F59E0B')
+  );
+  wrap.appendChild(cards);
+
+  // Bar chart — počet zákaziek po mesiacoch
+  const chart = el('div',{style:{background:'#111827',borderRadius:'12px',padding:'16px 12px 10px',border:'1px solid #1F2937',marginBottom:'14px'}});
+  chart.appendChild(el('div',{style:{color:'#4B5563',fontSize:'10px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'12px'}},'Počet zákaziek po mesiacoch'));
+  const bars = el('div',{style:{display:'flex',alignItems:'flex-end',gap:'3px',height:'110px'}});
+  byMonth.forEach(m=>{
+    const col = el('div',{style:{flex:'1',display:'flex',flexDirection:'column',alignItems:'center',gap:'3px'}});
+    const barH = Math.max(m.count>0?6:0, Math.round((m.count/maxCount)*95));
+    const bar = el('div',{style:{width:'100%',borderRadius:'4px 4px 0 0',background:m.count>0?'#3B82F6':'#1F2937',height:`${barH}px`,position:'relative',display:'flex',alignItems:'flex-start',justifyContent:'center'}});
+    if(m.count>0) bar.appendChild(el('span',{style:{color:'#fff',fontSize:'9px',fontWeight:'700',marginTop:'2px'}},String(m.count)));
+    col.append(bar, el('div',{style:{color:'#4B5563',fontSize:'8px',textAlign:'center'}},m.label));
+    bars.appendChild(col);
+  });
+  chart.appendChild(bars);
+  wrap.appendChild(chart);
+
+  // Monthly detail table
+  const tbl = el('div',{style:{background:'#111827',borderRadius:'12px',border:'1px solid #1F2937',overflow:'hidden'}});
+  tbl.appendChild(el('div',{style:{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr',padding:'8px 14px',borderBottom:'1px solid #1F2937'}},...['Mesiac','Zákaziek','Suma','Priemer'].map(h=>el('div',{style:{color:'#3A4D65',fontSize:'10px',textTransform:'uppercase',letterSpacing:'0.8px',fontWeight:'700'}},h))));
+  byMonth.forEach((m,idx)=>{
+    if(m.count===0) return;
+    const row = el('div',{style:{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr',padding:'10px 14px',borderBottom:'1px solid #0D1117',background:idx%2===0?'#111827':'#0D1117'}});
+    row.append(
+      el('span',{style:{color:'#E8EDF5',fontSize:'13px',fontWeight:'600'}},m.label),
+      el('span',{style:{color:'#60A5FA',fontSize:'13px',fontWeight:'700'}},String(m.count)),
+      el('span',{style:{color:'#F59E0B',fontSize:'13px'}},fmt(m.total)),
+      el('span',{style:{color:'#34D399',fontSize:'13px'}},fmt(m.avg))
+    );
+    tbl.appendChild(row);
+  });
+  if(totalOrders===0) tbl.appendChild(el('div',{style:{textAlign:'center',color:'#374151',padding:'40px'}},`Žiadne zákazky v roku ${calYear}`));
+  wrap.appendChild(tbl);
+
+  frag.appendChild(wrap);
+  return frag;
+}
+
+function renderCalendar(){
+  const {calYear,calMonth,data} = appState;
+  const orders=data.orders||[];
+  const monthNames=['Január','Február','Marec','Apríl','Máj','Jún','Júl','August','September','Október','November','December'];
+  const dayNames=['Po','Ut','St','Št','Pi','So','Ne'];
+  const firstDay=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const adjustedFirst=(firstDay+6)%7;
+  const deadlinesByDay={};
+  orders.forEach(o=>{
+    const dl=o.deadlineDate?new Date(o.deadlineDate):o.depositDate?new Date(new Date(o.depositDate).setMonth(new Date(o.depositDate).getMonth()+2)):null;
+    if(dl&&dl.getFullYear()===calYear&&dl.getMonth()===calMonth){
+      const d=dl.getDate();
+      if(!deadlinesByDay[d]) deadlinesByDay[d]=[];
+      deadlinesByDay[d].push(o);
+    }
+  });
+  const today2=new Date();
+  const frag=document.createDocumentFragment();
+  frag.appendChild(renderTopBar('📅 Kalendár',()=>setState({subPage:null})));
+  const wrap=el('div',{style:{padding:'12px 16px'}});
+  const nav=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}});
+  const prevBtn=el('button',{style:{background:'#1F2937',border:'none',borderRadius:'8px',color:'#fff',fontSize:'18px',width:'36px',height:'36px',cursor:'pointer'}},'‹');
+  prevBtn.onclick=()=>{ if(calMonth===0) setState({calMonth:11,calYear:calYear-1}); else setState({calMonth:calMonth-1}); };
+  const nextBtn=el('button',{style:{background:'#1F2937',border:'none',borderRadius:'8px',color:'#fff',fontSize:'18px',width:'36px',height:'36px',cursor:'pointer'}},'›');
+  nextBtn.onclick=()=>{ if(calMonth===11) setState({calMonth:0,calYear:calYear+1}); else setState({calMonth:calMonth+1}); };
+  nav.append(prevBtn,el('span',{style:{color:'#F9FAFB',fontWeight:'700',fontSize:'17px'}},`${monthNames[calMonth]} ${calYear}`),nextBtn);
+  wrap.appendChild(nav);
+  const dayNamesRow=el('div',{style:{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:'2px',marginBottom:'4px'}});
+  dayNames.forEach(d=>dayNamesRow.appendChild(el('div',{style:{textAlign:'center',color:'#4B5563',fontSize:'11px',padding:'4px 0',fontWeight:'700'}},d)));
+  wrap.appendChild(dayNamesRow);
+  const grid=el('div',{style:{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:'3px'}});
+  for(let i=0;i<adjustedFirst;i++) grid.appendChild(el('div'));
+  for(let day=1;day<=daysInMonth;day++){
+    const isToday=today2.getDate()===day&&today2.getMonth()===calMonth&&today2.getFullYear()===calYear;
+    const events=deadlinesByDay[day]||[];
+    const cell=el('div',{style:{background:isToday?'#1E3A5F':events.length?'#0D1117':'#0a0a0a',borderRadius:'8px',padding:'6px 4px',minHeight:'52px',border:isToday?'1px solid #3B82F6':events.length?'1px solid #1F2937':'1px solid transparent',textAlign:'center'}});
+    cell.appendChild(el('div',{style:{color:isToday?'#60A5FA':'#9CA3AF',fontSize:'13px',fontWeight:isToday?'700':'400',marginBottom:'2px'}},String(day)));
+    events.forEach(o=>{
+      const st=statusOf(o.status);
+      const ev=el('div',{style:{fontSize:'9px',background:st.color+'22',color:st.color,borderRadius:'3px',padding:'1px 3px',marginTop:'2px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',cursor:'pointer'}},o.customerName||o.title);
+      ev.onclick=()=>setState({subPage:null,selId:o.id,tab:'info',page:'detail'});
+      cell.appendChild(ev);
+    });
+    grid.appendChild(cell);
+  }
+  wrap.appendChild(grid);
+  frag.appendChild(wrap);
+  return frag;
+}
+
+function renderYearly(){
+  const {calYear,data} = appState;
+  const orders=data.orders||[];
+  const months=['Jan','Feb','Mar','Apr','Máj','Jún','Júl','Aug','Sep','Okt','Nov','Dec'];
+  const byMonth=Array(12).fill(null).map((_,m)=>{
+    const mo=orders.filter(o=>{ const d=new Date(o.createdAt); return d.getFullYear()===calYear&&d.getMonth()===m; });
+    const paid=mo.reduce((s,o)=>{ const dep=parseFloat(o.depositPaid)||0; const pr=parseFloat(o.price)||0; const dpl=o.vyplatena&&pr>dep?pr-dep:0; return s+dep+dpl; },0);
+    const mat=mo.reduce((s,o)=>s+(o.materials||[]).reduce((a,m2)=>a+(m2.cost||0),0),0);
+    return {label:months[m],count:mo.length,paid,mat,profit:paid-mat};
+  });
+  const maxProfit=Math.max(...byMonth.map(m=>Math.abs(m.profit)),1);
+  const totalPaid=byMonth.reduce((s,m)=>s+m.paid,0);
+  const totalMat2=byMonth.reduce((s,m)=>s+m.mat,0);
+  const totalProfit=totalPaid-totalMat2;
+
+  const frag=document.createDocumentFragment();
+  const yearNav=el('div',{style:{display:'flex',gap:'6px',alignItems:'center'}});
+  const yp=el('button',{style:{background:'#1F2937',border:'none',borderRadius:'6px',color:'#9CA3AF',padding:'4px 10px',cursor:'pointer',fontSize:'16px'}},'‹');
+  yp.onclick=()=>setState({calYear:calYear-1});
+  const yn=el('button',{style:{background:'#1F2937',border:'none',borderRadius:'6px',color:'#9CA3AF',padding:'4px 10px',cursor:'pointer',fontSize:'16px'}},'›');
+  yn.onclick=()=>setState({calYear:calYear+1});
+  yearNav.append(yp,el('span',{style:{color:'#F9FAFB',fontWeight:'700',fontSize:'15px'}},String(calYear)),yn);
+  frag.appendChild(renderTopBar('📊 Ročný prehľad',()=>setState({subPage:null}),yearNav));
+
+  const wrap=el('div',{style:{padding:'12px 16px'}});
+  const cards=el('div',{style:{display:'flex',gap:'8px',marginBottom:'16px'}});
+  function ycard(lbl,val,color,bg,border){
+    const c=el('div',{style:{flex:'1',background:bg||'#111827',borderRadius:'10px',padding:'10px 12px',border:`1px solid ${border||'#1F2937'}`}});
+    c.append(el('div',{style:{color:'#4B5563',fontSize:'9px',textTransform:'uppercase',letterSpacing:'1px'}},(lbl)),el('div',{style:{color,fontWeight:'700',fontSize:'17px',marginTop:'3px'}},val));
+    return c;
+  }
+  cards.append(ycard('Prijaté',fmt(totalPaid),'#F59E0B'),ycard('Materiál',fmt(totalMat2),'#EF4444'),ycard('Reálny zisk',fmt(totalProfit),totalProfit>=0?'#10B981':'#EF4444',totalProfit>=0?'#052E1C':'#2D0A0A',totalProfit>=0?'#065F46':'#3D0A0A'));
+  wrap.appendChild(cards);
+
+  // Bar chart
+  const chart=el('div',{style:{background:'#111827',borderRadius:'12px',padding:'16px 12px 8px',border:'1px solid #1F2937',marginBottom:'12px'}});
+  chart.appendChild(el('div',{style:{color:'#4B5563',fontSize:'10px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'12px'}},'Reálny zisk po mesiacoch'));
+  const bars=el('div',{style:{display:'flex',alignItems:'flex-end',gap:'3px',height:'100px'}});
+  byMonth.forEach(m=>{
+    const col=el('div',{style:{flex:'1',display:'flex',flexDirection:'column',alignItems:'center',gap:'3px'}});
+    const barH=Math.max(3,(Math.abs(m.profit)/maxProfit)*90);
+    col.append(el('div',{style:{width:'100%',borderRadius:'4px 4px 0 0',background:m.profit>0?'#10B981':m.profit<0?'#EF4444':'#1F2937',height:`${barH}px`}}),el('div',{style:{color:'#4B5563',fontSize:'8px',textAlign:'center'}},m.label));
+    bars.appendChild(col);
+  });
+  chart.appendChild(bars);
+  wrap.appendChild(chart);
+
+  // Table
+  const tbl=el('div',{style:{background:'#111827',borderRadius:'12px',border:'1px solid #1F2937',overflow:'hidden'}});
+  byMonth.filter(m=>m.count>0).forEach(m=>{
+    const row=el('div',{style:{padding:'10px 16px',borderBottom:'1px solid #0D1117',display:'flex',alignItems:'center',gap:'8px'}});
+    row.append(el('span',{style:{color:'#9CA3AF',fontWeight:'700',width:'30px',fontSize:'13px'}},m.label),el('span',{style:{color:'#4B5563',fontSize:'12px',width:'28px'}},`${m.count}ks`),el('span',{style:{color:'#F59E0B',fontSize:'13px',flex:'1'}},fmt(m.paid)));
+    if(m.mat>0) row.appendChild(el('span',{style:{color:'#EF4444',fontSize:'12px'}},`−${fmt(m.mat)}`));
+    row.appendChild(el('span',{style:{color:m.profit>=0?'#10B981':'#EF4444',fontWeight:'700',fontSize:'14px'}},fmt(m.profit)));
+    tbl.appendChild(row);
+  });
+  if(byMonth.every(m=>m.count===0)) tbl.appendChild(el('div',{style:{textAlign:'center',color:'#374151',padding:'40px'}},`Žiadne zákazky v roku ${calYear}`));
+  wrap.appendChild(tbl);
+  frag.appendChild(wrap);
+  return frag;
+}
+
+function renderCustomers(){
+  const orders=appState.data.orders||[];
+  const customerMap={};
+  orders.forEach(o=>{
+    const key=(o.customerName||'').trim().toLowerCase()||o.customerPhone||'neznamy';
+    if(!customerMap[key]) customerMap[key]={name:o.customerName||'Neznámy',phone:o.customerPhone,orders:[]};
+    customerMap[key].orders.push(o);
+  });
+  const customers=Object.values(customerMap).sort((a,b)=>b.orders.length-a.orders.length);
+  const frag=document.createDocumentFragment();
+  frag.appendChild(renderTopBar('👥 Zákazníci',()=>setState({subPage:null})));
+  const wrap=el('div',{style:{padding:'8px 16px'}});
+  if(!customers.length) wrap.appendChild(el('div',{style:{textAlign:'center',color:'#374151',padding:'60px'}},'Žiadni zákazníci'));
+  customers.forEach(c=>{
+    const total=c.orders.reduce((s,o)=>s+(parseFloat(o.price)||0),0);
+    const card2=el('div',{style:{background:'#141926',borderRadius:'12px',padding:'14px 16px',marginBottom:'10px',border:'1px solid #1F2937'}});
+    const r1=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'8px'}});
+    const rl=el('div');
+    rl.appendChild(el('div',{style:{color:'#F9FAFB',fontWeight:'700',fontSize:'16px'}},c.name));
+    if(c.phone){ const a=el('a',{href:`tel:${c.phone}`,style:{color:'#3B82F6',fontSize:'13px'}},c.phone); rl.appendChild(a); }
+    const rr=el('div',{style:{textAlign:'right'}});
+    rr.append(el('div',{style:{color:'#10B981',fontWeight:'700'}},fmt(total)),el('div',{style:{color:'#4B5563',fontSize:'12px'}},`${c.orders.length} zákaziek`));
+    r1.append(rl,rr);
+    card2.appendChild(r1);
+    c.orders.forEach(o=>{
+      const st=statusOf(o.status);
+      const or=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',background:'#111827',borderRadius:'8px',padding:'8px 12px',marginBottom:'4px',cursor:'pointer'}});
+      or.onclick=()=>setState({subPage:null,selId:o.id,tab:'info',page:'detail'});
+      or.append(el('span',{style:{color:'#D1D5DB',fontSize:'13px'}},o.title||'Bez názvu'));
+      const orr=el('div',{style:{display:'flex',alignItems:'center',gap:'8px'}});
+      if(o.price) orr.appendChild(el('span',{style:{color:'#9CA3AF',fontSize:'12px'}},fmt(o.price)));
+      orr.appendChild(el('span',{style:{fontSize:'11px',color:st.color,fontWeight:'600'}},st.label));
+      or.appendChild(orr);
+      card2.appendChild(or);
+    });
+    wrap.appendChild(card2);
+  });
+  frag.appendChild(wrap);
+  return frag;
+}
+
+function renderArchive(){
+  const archived=appState.data.archive||[];
+  const totalArch=archived.reduce((s,o)=>s+(parseFloat(o.price)||0),0);
+  const frag=document.createDocumentFragment();
+  frag.appendChild(renderTopBar('📦 Archív',()=>setState({subPage:null}),el('span',{style:{color:'#4B5563',fontSize:'13px'}},fmt(totalArch))));
+  const wrap=el('div',{style:{padding:'8px 16px'}});
+  if(!archived.length){
+    const emp=el('div',{style:{textAlign:'center',color:'#374151',padding:'60px'}});
+    emp.append(el('div',{style:{fontSize:'40px',marginBottom:'12px'}},'📦'),el('div',{},'Archív je prázdny'),el('div',{style:{fontSize:'12px',marginTop:'8px',color:'#374151'}},'Hotové a vyplatené zákazky tu presunúť tlačidlom v detaile'));
+    wrap.appendChild(emp);
+  }
+  archived.forEach(o=>{
+    const price=parseFloat(o.price)||0;
+    const mat=(o.materials||[]).reduce((s,m)=>s+(m.cost||0),0);
+    const profit=price-mat;
+    const card3=el('div',{style:{background:'#141926',borderRadius:'12px',padding:'14px 16px',marginBottom:'10px',border:'1px solid #1F2937'}});
+    const r1=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'6px'}});
+    const rl=el('div');
+    rl.append(el('div',{style:{color:'#F9FAFB',fontWeight:'700',fontSize:'15px'}},o.customerName||'—'),el('div',{style:{color:'#6B7280',fontSize:'13px'}},o.title||'—'));
+    const rr=el('div',{style:{textAlign:'right'}});
+    rr.appendChild(el('div',{style:{color:'#10B981',fontWeight:'700'}},fmt(price)));
+    if(mat>0) rr.appendChild(el('div',{style:{color:profit>=0?'#10B981':'#EF4444',fontSize:'12px'}},`zisk ${fmt(profit)}`));
+    r1.append(rl,rr);
+    card3.append(r1,el('div',{style:{color:'#374151',fontSize:'12px'}},`Archivované ${fmtDate(o.archivedAt)}`));
+    wrap.appendChild(card3);
+  });
+  frag.appendChild(wrap);
+  return frag;
+}
+
+function renderNakup(){
+  const {data,nakupSelected,nakupChecked} = appState;
+  const activeOrders=(data.orders||[]).filter(o=>o.status!=='storno'&&o.status!=='hotova');
+  const merged=[];
+  nakupSelected.forEach(id=>{
+    const o=(data.orders||[]).find(x=>x.id===id);
+    if(!o) return;
+    (o.materials||[]).forEach(m=>{
+      merged.push({...m,orderName:o.customerName||o.title||'—',orderId:id,shopKey:id+'_'+m.id});
+    });
+  });
+  const unchecked=merged.filter(m=>!nakupChecked[m.shopKey]);
+  const checked=merged.filter(m=>nakupChecked[m.shopKey]);
+  const totalUnc=unchecked.reduce((s,m)=>s+(m.cost||0),0);
+
+  const frag=document.createDocumentFragment();
+  frag.appendChild(renderTopBar('🛒 Nákupný zoznam',()=>setState({subPage:null})));
+  const wrap=el('div',{style:{padding:'12px 16px 4px'}});
+
+  // Order selection
+  wrap.appendChild(el('div',{style:{color:'#4B5563',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'8px'}},'Vyber zákazky na nákup'));
+  if(!activeOrders.length) wrap.appendChild(el('div',{style:{color:'#374151',fontSize:'14px',padding:'20px 0'}},'Žiadne aktívne zákazky'));
+  activeOrders.forEach(o=>{
+    const sel2=nakupSelected.includes(o.id);
+    const oc=el('div',{style:{display:'flex',alignItems:'center',gap:'12px',padding:'10px 14px',marginBottom:'6px',borderRadius:'10px',border:`1px solid ${sel2?'#2563EB':'#1F2937'}`,background:sel2?'#0D1F3C':'#0D1117',cursor:'pointer'}});
+    oc.onclick=()=>{ const ns=sel2?nakupSelected.filter(x=>x!==o.id):[...nakupSelected,o.id]; setState({nakupSelected:ns}); };
+    const cb2=el('div',{style:{width:'22px',height:'22px',borderRadius:'6px',border:`2px solid ${sel2?'#2563EB':'#374151'}`,background:sel2?'#2563EB':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:'0'}});
+    if(sel2) cb2.appendChild(el('span',{style:{color:'#fff',fontSize:'13px',fontWeight:'700'}},'✓'));
+    const od=el('div',{style:{flex:'1'}});
+    od.append(el('div',{style:{color:'#F9FAFB',fontWeight:'600',fontSize:'14px'}},o.customerName||'—'),el('div',{style:{color:'#4B5563',fontSize:'12px'}},`${o.title||'—'} · ${(o.materials||[]).length} položiek`));
+    oc.append(cb2,od);
+    wrap.appendChild(oc);
+  });
+  frag.appendChild(wrap);
+
+  if(nakupSelected.length){
+    const lw=el('div',{style:{padding:'8px 16px'}});
+    const lh=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px'}});
+    lh.appendChild(el('div',{style:{color:'#4B5563',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px'}},'Zoznam nákupu'));
+    if(totalUnc>0) lh.appendChild(el('div',{style:{color:'#EF4444',fontWeight:'700',fontSize:'14px'}},fmt(totalUnc)));
+    lw.appendChild(lh);
+    if(!merged.length) lw.appendChild(el('div',{style:{color:'#374151',fontSize:'14px',padding:'20px 0',textAlign:'center'}},'Vybrané zákazky nemajú žiadny materiál'));
+    unchecked.forEach(m=>{
+      const mi=el('div',{style:{display:'flex',alignItems:'center',gap:'12px',padding:'12px 14px',marginBottom:'6px',borderRadius:'10px',border:'1px solid #1F2937',background:'#141926',cursor:'pointer'}});
+      mi.onclick=()=>setState({nakupChecked:{...nakupChecked,[m.shopKey]:true}});
+      mi.append(el('div',{style:{width:'24px',height:'24px',borderRadius:'50%',border:'2px solid #374151',flexShrink:'0'}}));
+      const md=el('div',{style:{flex:'1'}});
+      md.append(el('div',{style:{color:'#F9FAFB',fontWeight:'600',fontSize:'14px'}},m.name),el('div',{style:{color:'#4B5563',fontSize:'12px'}},m.orderName+(m.note?` · ${m.note}`:'')));
+      mi.appendChild(md);
+      if(m.cost>0) mi.appendChild(el('span',{style:{color:'#9CA3AF',fontSize:'13px',fontWeight:'600'}},fmt(m.cost)));
+      lw.appendChild(mi);
+    });
+    if(checked.length){
+      lw.appendChild(el('div',{style:{color:'#374151',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',margin:'12px 0 6px'}},'Nakúpené'));
+      checked.forEach(m=>{
+        const mi2=el('div',{style:{display:'flex',alignItems:'center',gap:'12px',padding:'10px 14px',marginBottom:'4px',borderRadius:'10px',border:'1px solid #1a2e1a',background:'#0a0f0a',cursor:'pointer',opacity:'0.6'}});
+        mi2.onclick=()=>{ const nc={...nakupChecked}; delete nc[m.shopKey]; setState({nakupChecked:nc}); };
+        const cb3=el('div',{style:{width:'24px',height:'24px',borderRadius:'50%',border:'2px solid #10B981',background:'#10B981',flexShrink:'0',display:'flex',alignItems:'center',justifyContent:'center'}});
+        cb3.appendChild(el('span',{style:{color:'#fff',fontSize:'13px',fontWeight:'700'}},'✓'));
+        const md2=el('div',{style:{flex:'1'}});
+        md2.append(el('div',{style:{color:'#4B5563',fontWeight:'600',fontSize:'14px',textDecoration:'line-through'}},m.name),el('div',{style:{color:'#374151',fontSize:'12px'}},m.orderName));
+        mi2.append(cb3,md2);
+        if(m.cost>0) mi2.appendChild(el('span',{style:{color:'#374151',fontSize:'13px'}},fmt(m.cost)));
+        lw.appendChild(mi2);
+      });
+    }
+    frag.appendChild(lw);
+  }
+  return frag;
+}
+
+function renderBackup(){
+  const {data} = appState;
+  const lastBackup=data.lastBackup;
+  const frag=document.createDocumentFragment();
+  frag.appendChild(renderTopBar('💾 Zálohovanie dát',()=>setState({subPage:null})));
+  const wrap=el('div',{style:{padding:'20px 16px'}});
+  const warn=el('div',{style:{background:'#1C1400',border:'1px solid #78350F',borderRadius:'12px',padding:'14px 16px',marginBottom:'20px'}});
+  warn.append(el('div',{style:{color:'#F59E0B',fontWeight:'700',fontSize:'14px',marginBottom:'4px'}},'⚠️ Dôležité upozornenie'),el('div',{style:{color:'#92400E',fontSize:'13px',lineHeight:'1.6'}},'Dáta sú uložené v prehliadači a Firebase. Pravidelne si rob zálohu!'));
+  wrap.appendChild(warn);
+  const stats=el('div',{style:{background:'#111827',borderRadius:'12px',border:'1px solid #1F2937',marginBottom:'20px',overflow:'hidden'}});
+  function srow(lbl,val,color){ const r=el('div',{style:{padding:'12px 16px',borderBottom:'1px solid #1F2937',display:'flex',justifyContent:'space-between'}}); r.append(el('span',{style:{color:'#6B7280',fontSize:'14px'}},lbl),el('span',{style:{color:color||'#F9FAFB',fontWeight:'700'}},val)); return r; }
+  stats.append(srow('Aktívne zákazky',String((data.orders||[]).length)),srow('V archíve',String((data.archive||[]).length)),srow('Posledná záloha',lastBackup?fmtDate(lastBackup):'Nikdy',lastBackup?'#10B981':'#EF4444'));
+  wrap.appendChild(stats);
+  const expBtn=el('button',{style:{width:'100%',background:'#1E3A5F',border:'1px solid #2563EB',borderRadius:'12px',color:'#60A5FA',fontWeight:'700',fontSize:'16px',padding:'16px 0',cursor:'pointer',marginBottom:'12px'}},'⬇️ Stiahnuť zálohu (.json)');
+  expBtn.onclick=quickExport;
+  wrap.appendChild(expBtn);
+  const impLbl=el('label',{style:{display:'block',width:'100%',background:'#111827',border:'1px solid #374151',borderRadius:'12px',color:'#9CA3AF',fontWeight:'700',fontSize:'16px',padding:'16px 0',cursor:'pointer',textAlign:'center',boxSizing:'border-box'}},'⬆️ Obnoviť zo zálohy');
+  const impInp=el('input',{type:'file',accept:'.json',style:{display:'none'}});
+  impInp.onchange=e=>{ const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=ev=>{ try{ const parsed=JSON.parse(ev.target.result); if(!parsed.orders){ alert('Neplatný súbor.'); return; } if(!confirm('Toto prepíše všetky dáta. Pokračovať?')) return; setData(()=>parsed); alert('Dáta obnovené!'); setState({subPage:null}); }catch{ alert('Chyba pri čítaní súboru.'); } }; reader.readAsText(file); };
+  impLbl.appendChild(impInp);
+  wrap.appendChild(impLbl);
+  frag.appendChild(wrap);
+  return frag;
+}
+
+// ═══════════════════════════════════
+// MODALS
+// ═══════════════════════════════════
+function renderModals(){
+  const frag=document.createDocumentFragment();
+
+  // Confirm delete modal
+  if(appState.confirmDelete){
+    const ov=el('div',{className:'modal-overlay'});
+    ov.onclick=e=>{ if(e.target===ov) setState({confirmDelete:null}); };
+    const box=el('div',{className:'modal-box'});
+    box.appendChild(el('div',{style:{color:'#F9FAFB',fontWeight:'700',fontSize:'17px',marginBottom:'8px'}},'Vymazať zákazku?'));
+    box.appendChild(el('div',{style:{color:'#6B7280',fontSize:'14px',marginBottom:'24px'}},'Táto akcia sa nedá vrátiť späť.'));
+    const btns=el('div',{style:{display:'flex',gap:'10px'}});
+    const delB=el('button',{style:{flex:'1',background:'#7F1D1D',border:'none',borderRadius:'10px',color:'#fff',fontWeight:'700',fontSize:'15px',padding:'14px 0',cursor:'pointer'}},'🗑 Vymazať');
+    delB.onclick=deleteOrderConfirmed;
+    const canB=el('button',{style:{flex:'1',background:'#1F2937',border:'1px solid #374151',borderRadius:'10px',color:'#9CA3AF',fontWeight:'600',fontSize:'15px',padding:'14px 0',cursor:'pointer'}},'Zrušiť');
+    canB.onclick=()=>setState({confirmDelete:null});
+    btns.append(delB,canB);
+    box.appendChild(btns);
+    ov.appendChild(box);
+    frag.appendChild(ov);
+  }
+
+  // SMS modal
+  if(appState.smsModal){
+    const m=appState.smsModal;
+    const ov=el('div',{className:'modal-overlay'});
+    const box=el('div',{className:'modal-box'});
+    box.appendChild(el('div',{style:{color:'#9CA3AF',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'6px'}},'Notifikácia zákazníkovi'));
+    box.appendChild(el('div',{style:{color:'#F9FAFB',fontSize:'14px',lineHeight:'1.6',background:'#141926',borderRadius:'10px',padding:'12px 14px',marginBottom:'16px',border:'1px solid #1F2937'}},m.text));
+    box.appendChild(el('div',{style:{color:'#6B7280',fontSize:'12px',marginBottom:'16px'}},`📱 ${m.phone}`));
+    const btns=el('div',{style:{display:'flex',gap:'10px',marginBottom:'12px'}});
+    const waBtn=el('button',{style:{flex:'1',background:'#075E54',border:'none',borderRadius:'10px',color:'#fff',fontWeight:'700',fontSize:'15px',padding:'14px 0',cursor:'pointer'}},'💬 WhatsApp');
+    waBtn.onclick=()=>{ const p=m.cleanPhone.startsWith('+')?m.cleanPhone.slice(1):m.cleanPhone.startsWith('0')?'421'+m.cleanPhone.slice(1):m.cleanPhone; window.open(`https://wa.me/${p}?text=${encodeURIComponent(m.text)}`,'_blank'); setState({smsModal:null}); };
+    const smsBtn=el('button',{style:{flex:'1',background:'#1D4ED8',border:'none',borderRadius:'10px',color:'#fff',fontWeight:'700',fontSize:'15px',padding:'14px 0',cursor:'pointer'}},'📨 SMS');
+    smsBtn.onclick=()=>{ window.location.href=`sms:${m.cleanPhone}?body=${encodeURIComponent(m.text)}`; setState({smsModal:null}); };
+    btns.append(waBtn,smsBtn);
+    const skipBtn=el('button',{style:{width:'100%',background:'none',border:'1px solid #1F2937',borderRadius:'10px',color:'#6B7280',fontSize:'14px',padding:'12px 0',cursor:'pointer'}},'Preskočiť');
+    skipBtn.onclick=()=>setState({smsModal:null});
+    box.append(btns,skipBtn);
+    ov.appendChild(box);
+    frag.appendChild(ov);
+  }
+
+  return frag;
+}
+
+
+function findKovanieCena(text){
+  if(!text) return null;
+  const t=text.toLowerCase().replace(/[°]/g,'');
+  for(const k of KOVANIE){
+    // Full name match
+    if(t.includes(k.nazov.toLowerCase().replace(/[°()/]/g,''))) return k;
+    // ID match (strip digits from id for generic match e.g. 'zaves' matches 'zaves110')
+    const idBase=k.id.replace(/\d+$/,'').toLowerCase();
+    if(idBase.length>=4 && t.includes(idBase)) return k;
+    if(t.includes(k.id.toLowerCase())) return k;
+  }
+  // First meaningful word of name (>=5 chars)
+  for(const k of KOVANIE){
+    const tokens=k.nazov.toLowerCase().replace(/[°()/]/g,'').split(/\s+/).filter(w=>w.length>=5);
+    if(tokens.length>0 && t.includes(tokens[0])) return k;
+  }
+  return null;
+}
+
+function parseNakupLine(raw){
+  // Try to extract trailing qty: "Záves 110° 5 ks" or "Záves — 5" or tab-separated "Záves\t5"
+  let name=raw.trim(), qty=1;
+  // Tab-separated: name \t qty
+  const tabParts=raw.split(/\t+/);
+  if(tabParts.length>=2){
+    const last=tabParts[tabParts.length-1].trim().replace(/\s*ks\s*$/i,'');
+    if(!isNaN(last)&&last!==''){
+      qty=Math.max(1,parseFloat(last));
+      name=tabParts[0].trim();
+    } else {
+      name=tabParts[0].trim();
+    }
+  } else {
+    // Trailing number (optionally followed by "ks"): "Záves 110° — 5 ks" or "Záves 5"
+    const m=name.match(/^(.*?)\s*[-–—]+\s*(\d+(?:[.,]\d+)?)\s*(?:ks)?\s*$/i)
+           || name.match(/^(.*?)\s+(\d+(?:[.,]\d+)?)\s*(?:ks)\s*$/i);
+    if(m){
+      qty=Math.max(1,parseFloat(m[2].replace(',','.')));
+      name=m[1].trim();
+    }
+  }
+  return {name, qty};
+}
+
+function resolveRailQty(name, piecesQty){
+  // Detects "tyč / vesanie / tyc" items with embedded mm length
+  // e.g. "vesanie tyc 391mm" with 4 ks → total 1564mm → ceil(1564/3000) = 1 tyč
+  const isRail=/tyc|tyč|vesanie|vešanie/i.test(name);
+  if(!isRail) return null;
+  const mmMatch=name.match(/(\d+)\s*mm/i);
+  if(!mmMatch) return null;
+  const mmEach=parseInt(mmMatch[1]);
+  const totalMm=mmEach*piecesQty;
+  const rails=Math.ceil(totalMm/3000);
+  return {qty:rails, note:`${piecesQty}× ${mmEach}mm = ${totalMm}mm → ${rails} ks tyče (3m)`};
+}
+
+function makeNakupItem(rawText, forcedQty){
+  const {name, qty: parsedQty} = parseNakupLine(rawText);
+  const qty = forcedQty!=null ? forcedQty : parsedQty;
+  const match=findKovanieCena(name||rawText);
+  const rail=resolveRailQty(name||rawText, qty);
+  return {id:uid(), text: name||rawText.trim(), checked:false,
+    qty: rail ? rail.qty : qty,
+    cena: match ? match.cena : 0,
+    ...(rail ? {railNote: rail.note} : {})
+  };
+}
+
+function renderNakupOrder(){
+  // Per-order shopping list with qty + price
+  const o = (appState.data.orders||[]).find(x=>x.id===appState.nakupOrderId);
+  if(!o){ setState({subPage:null}); return document.createDocumentFragment(); }
+  // Migrate items: extract qty from text, auto-assign price from KOVANIE
+  const rawStored = o.nakupList||[];
+  const hasEmbedded = t => /[-–—]\s*\d+\s*(?:ks)?\s*$/i.test(t||'');
+  const list = rawStored.map(i=>{
+    const needsParse = !('qty' in i) || (i.qty<=1 && hasEmbedded(i.text));
+    let item;
+    if(needsParse){
+      const {name,qty}=parseNakupLine(i.text||'');
+      const match=findKovanieCena(name||i.text||'');
+      item={cena:0,...i, text:name||i.text, qty, cena: match ? match.cena : (i.cena||0)};
+    } else if(!(i.cena>0)){
+      const match=findKovanieCena(i.text||'');
+      item={qty:1,...i, cena: match ? match.cena : 0};
+    } else {
+      item={qty:1,cena:0,...i};
+    }
+    // Rail resolution: if tyč item and no railNote yet, calculate number of 3m rails
+    if(!item.railNote){
+      const rail=resolveRailQty(item.text, needsParse ? item.qty : (i.qty||1));
+      if(rail){ item.qty=rail.qty; item.railNote=rail.note; }
+    }
+    return item;
+  });
+  const unchecked=list.filter(i=>!i.checked);
+  const checked=list.filter(i=>i.checked);
+
+  function saveList(newList){ updateOrder(o.id,{nakupList:newList}); }
+  // Auto-save migration if any item changed
+  const needsMigration = rawStored.some((i,idx)=>
+    i.text!==list[idx].text || i.qty!==list[idx].qty || (i.cena||0)!==(list[idx].cena||0)
+  );
+  if(needsMigration) saveList(list);
+
+  const frag=document.createDocumentFragment();
+  // Dropdown menu for clear options
+  const menuWrap=el('div',{style:{position:'relative'}});
+  const menuBtn=el('button',{style:{background:'none',border:'1px solid #1F2937',borderRadius:'8px',color:'#6B7280',fontSize:'13px',cursor:'pointer',padding:'5px 10px'}},'⋯');
+  let menuOpen=false;
+  menuBtn.onclick=e=>{
+    e.stopPropagation();
+    menuOpen=!menuOpen;
+    dropMenu.style.display=menuOpen?'block':'none';
+  };
+  const dropMenu=el('div',{style:{display:'none',position:'absolute',right:'0',top:'110%',background:'#111827',border:'1px solid #1F2937',borderRadius:'10px',overflow:'hidden',zIndex:'50',minWidth:'170px',boxShadow:'0 8px 24px rgba(0,0,0,0.5)'}});
+  const clearDone=el('button',{style:{width:'100%',background:'none',border:'none',borderBottom:'1px solid #1F2937',color:'#9CA3AF',fontSize:'14px',padding:'12px 16px',textAlign:'left',cursor:'pointer'}},'✓ Vymazať nakúpené');
+  clearDone.onclick=()=>{ saveList(list.filter(i=>!i.checked)); dropMenu.style.display='none'; };
+  const clearAll=el('button',{style:{width:'100%',background:'none',border:'none',color:'#EF4444',fontSize:'14px',padding:'12px 16px',textAlign:'left',cursor:'pointer'}},'🗑 Vymazať celý zoznam');
+  clearAll.onclick=()=>{ if(confirm('Vymazať celý nákupný zoznam?')) saveList([]); dropMenu.style.display='none'; };
+  dropMenu.append(clearDone,clearAll);
+  menuWrap.append(menuBtn,dropMenu);
+  document.addEventListener('click',()=>{ dropMenu.style.display='none'; menuOpen=false; });
+  frag.appendChild(renderTopBar(`🛒 ${o.customerName||o.title||'Zákazka'}`,()=>setState({subPage:null}),menuWrap));
+
+  const wrap=el('div',{style:{padding:'12px 16px',paddingBottom:'120px'}});
+
+  // File import
+  const fileLbl=el('label',{style:{width:'100%',background:'#0D2B1F',border:'1px solid #10B981',borderRadius:'10px',color:'#34D399',fontWeight:'700',fontSize:'14px',padding:'13px 0',textAlign:'center',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'8px',marginBottom:'10px',boxSizing:'border-box'}});
+  fileLbl.append(el('span',{},'📄'),el('span',{},'Importovať zo súboru (.txt)'));
+  const fileInp=el('input',{type:'file',accept:'.txt,.csv,text/*',style:{display:'none'}});
+  fileInp.onchange=e=>{
+    const file=e.target.files[0]; if(!file) return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      const text=ev.target.result;
+      if(!text||!text.trim()){ alert('Prázdny súbor.'); return; }
+      const rawLines=text.split(/[\n\r]+/)
+        .map(l=>l.replace(/^[-•*·]+\s*/,'').trim())
+        .filter(l=>l&&l.length>1&&l.length<300);
+      if(!rawLines.length){ alert('Žiadne položky nenájdené.'); return; }
+      const newItems=rawLines.map(t=>makeNakupItem(t));
+      saveList([...list,...newItems]);
+    };
+    reader.readAsText(file,'UTF-8');
+  };
+  fileLbl.appendChild(fileInp);
+  wrap.appendChild(fileLbl);
+
+  // Manual input
+  const manRow=el('div',{style:{display:'flex',gap:'8px',marginBottom:'14px'}});
+  const manInp=el('input',{type:'text',placeholder:'Napíš položku...'});
+  manInp.value=appState.nakupInput;
+  manInp.oninput=e=>appState.nakupInput=e.target.value;
+  manInp.onkeydown=e=>{ if(e.key==='Enter'&&manInp.value.trim()){ saveList([...list,makeNakupItem(manInp.value)]); setState({nakupInput:''}); } };
+  const manAdd=el('button',{style:{background:'#2563EB',border:'none',borderRadius:'8px',color:'#fff',fontWeight:'700',padding:'10px 16px',flexShrink:'0',cursor:'pointer'}},'+');
+  manAdd.onclick=()=>{ if(!appState.nakupInput.trim()) return; saveList([...list,makeNakupItem(appState.nakupInput)]); setState({nakupInput:''}); };
+  manRow.append(manInp,manAdd);
+  wrap.appendChild(manRow);
+
+  // Unchecked
+  if(unchecked.length){
+    const hdrRow=el('div',{style:{display:'flex',alignItems:'center',gap:'8px',padding:'0 12px',marginBottom:'4px'}});
+    hdrRow.appendChild(el('div',{style:{width:'24px',flexShrink:'0'}},''));
+    hdrRow.appendChild(el('div',{style:{flex:'1',minWidth:'80px'}},''));
+    hdrRow.appendChild(el('div',{style:{width:'52px',flexShrink:'0',color:'#3A4D65',fontSize:'10px',textTransform:'uppercase',letterSpacing:'1px',textAlign:'center'}},'ks'));
+    hdrRow.appendChild(el('div',{style:{width:'62px',flexShrink:'0',color:'#3A4D65',fontSize:'10px',textTransform:'uppercase',letterSpacing:'1px',textAlign:'right'}},'cena/ks'));
+    hdrRow.appendChild(el('div',{style:{minWidth:'56px',flexShrink:'0',color:'#3A4D65',fontSize:'10px',textTransform:'uppercase',letterSpacing:'1px',textAlign:'right'}},'spolu'));
+    hdrRow.appendChild(el('div',{style:{width:'28px',flexShrink:'0'}},''));
+    wrap.appendChild(el('div',{style:{color:'#4B5563',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'4px'}},`Na nakúpenie (${unchecked.length})`));
+    wrap.appendChild(hdrRow);
+    unchecked.forEach(item=>{
+      const row=el('div',{style:{display:'flex',alignItems:'center',gap:'8px',padding:'10px 12px',marginBottom:'6px',borderRadius:'10px',border:'1px solid #1F2937',background:'#141926',flexWrap:'wrap'}});
+      // Checkbox
+      const cb=el('div',{style:{width:'24px',height:'24px',borderRadius:'50%',border:'2px solid #374151',flexShrink:'0',cursor:'pointer'}});
+      cb.onclick=()=>saveList(list.map(i=>i.id===item.id?{...i,checked:true}:i));
+      // Name (+ rail hint if applicable)
+      const txt=el('span',{style:{color:'#F9FAFB',fontSize:'14px',flex:'1',minWidth:'80px'}},item.text);
+      if(item.railNote) txt.appendChild(el('div',{style:{color:'#3A4D65',fontSize:'10px',marginTop:'2px'}},item.railNote));
+      // Qty input
+      const qtyInp=el('input',{type:'number',min:'1',step:'1',style:{width:'52px',background:'#0B0F1A',border:'1px solid #1E2B3C',borderRadius:'6px',color:'#E8EDF5',padding:'5px 6px',fontSize:'13px',textAlign:'center',flexShrink:'0'}});
+      qtyInp.value=item.qty||1;
+      qtyInp.onchange=e=>{
+        const q=Math.max(1,parseFloat(e.target.value)||1);
+        saveList(list.map(i=>i.id===item.id?{...i,qty:q}:i));
+      };
+      // Unit price input
+      const priceInp=el('input',{type:'number',min:'0',step:'0.5',style:{width:'62px',background:'#0B0F1A',border:'1px solid #1E2B3C',borderRadius:'6px',color:'#60A5FA',padding:'5px 6px',fontSize:'13px',textAlign:'right',flexShrink:'0'}});
+      priceInp.value=item.cena||0;
+      priceInp.onchange=e=>{
+        const c=parseFloat(e.target.value)||0;
+        saveList(list.map(i=>i.id===item.id?{...i,cena:c}:i));
+      };
+      // Line total
+      const lineTotal=(item.qty||1)*(item.cena||0);
+      const totalSpan=el('span',{style:{color: lineTotal>0?'#34D399':'#374151',fontWeight:'700',fontSize:'13px',whiteSpace:'nowrap',flexShrink:'0',minWidth:'56px',textAlign:'right'}},lineTotal>0?`${lineTotal.toFixed(2)} €`:'–');
+      // Delete
+      const db=el('button',{style:{background:'none',border:'none',color:'#374151',fontSize:'14px',padding:'4px 6px',cursor:'pointer',flexShrink:'0'}},'✕');
+      db.onclick=()=>saveList(list.filter(i=>i.id!==item.id));
+      row.append(cb,txt,qtyInp,priceInp,totalSpan,db);
+      wrap.appendChild(row);
+    });
+
+    // Grand total bar
+    const grandTotal=unchecked.reduce((s,i)=>s+(i.qty||1)*(i.cena||0),0);
+    if(grandTotal>0){
+      const totalBar=el('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 14px',background:'#0A1628',border:'1px solid #2563EB',borderRadius:'10px',marginTop:'10px',marginBottom:'6px'}});
+      totalBar.appendChild(el('span',{style:{color:'#7A9AB8',fontSize:'12px',textTransform:'uppercase',letterSpacing:'0.5px'}},'Spolu nákup'));
+      totalBar.appendChild(el('span',{style:{color:'#60A5FA',fontWeight:'700',fontSize:'20px'}},`${grandTotal.toFixed(2)} €`));
+      wrap.appendChild(totalBar);
+      // Add to order button
+      const addBtn=el('button',{style:{width:'100%',background:'#2563EB',border:'none',borderRadius:'10px',color:'#fff',fontSize:'14px',fontWeight:'700',padding:'12px',cursor:'pointer',marginBottom:'14px'}},'+ Pridať do zákazky');
+      addBtn.onclick=()=>{
+        const entry={id:Date.now().toString(36),name:'Kovanie',cost:grandTotal,note:'',at:Date.now()};
+        updateOrder(o.id,{materials:[entry,...(o.materials||[])]});
+        setState({subPage:null, selId:o.id, page:'detail', tab:'materials'});
+      };
+      wrap.appendChild(addBtn);
+    }
+  } else {
+    const emp=el('div',{style:{textAlign:'center',padding:'40px',color:'#374151'}});
+    emp.append(el('div',{style:{fontSize:'32px',marginBottom:'8px'}},'🛒'),el('div',{},'Zoznam je prázdny'));
+    wrap.appendChild(emp);
+  }
+
+  // Checked
+  if(checked.length){
+    wrap.appendChild(el('div',{style:{color:'#374151',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',margin:'16px 0 8px'}},'Nakúpené'));
+    checked.forEach(item=>{
+      const row=el('div',{style:{display:'flex',alignItems:'center',gap:'8px',padding:'10px 12px',marginBottom:'4px',borderRadius:'10px',border:'1px solid #1a2e1a',background:'#0a0f0a',opacity:'0.6'}});
+      const cb=el('div',{style:{width:'24px',height:'24px',borderRadius:'50%',border:'2px solid #10B981',background:'#10B981',flexShrink:'0',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}});
+      cb.onclick=()=>saveList(list.map(i=>i.id===item.id?{...i,checked:false}:i));
+      cb.appendChild(el('span',{style:{color:'#fff',fontSize:'13px',fontWeight:'700'}},'✓'));
+      const txt=el('span',{style:{color:'#4B5563',fontSize:'14px',flex:'1',textDecoration:'line-through'}},item.text);
+      const lineTotal=(item.qty||1)*(item.cena||0);
+      if(lineTotal>0) txt.appendChild(el('span',{style:{color:'#1F4A2A',fontSize:'12px',marginLeft:'6px'}},`${lineTotal.toFixed(2)} €`));
+      const db=el('button',{style:{background:'none',border:'none',color:'#374151',fontSize:'14px',padding:'4px 6px',cursor:'pointer'}},'✕');
+      db.onclick=()=>saveList(list.filter(i=>i.id!==item.id));
+      row.append(cb,txt,db); wrap.appendChild(row);
+    });
+  }
+  frag.appendChild(wrap);
+  return frag;
+}
+
+function renderNakupMerge(){
+  // Merged shopping view — select orders, see combined list
+  const {nakupSelected, nakupMergeChecked, data} = appState;
+  const activeOrders=(data.orders||[]).filter(o=>o.status!=='storno');
+
+  // Build merged list from selected orders
+  const merged=[];
+  nakupSelected.forEach(id=>{
+    const o=activeOrders.find(x=>x.id===id);
+    if(!o) return;
+    (o.nakupList||[]).filter(i=>!i.checked).forEach(item=>{
+      merged.push({...item, shopKey:id+'_'+item.id, orderName:o.customerName||o.title||'—'});
+    });
+  });
+  const unchecked=merged.filter(m=>!nakupMergeChecked[m.shopKey]);
+  const checked=merged.filter(m=>nakupMergeChecked[m.shopKey]);
+
+  // Sklad items needing restock
+  const skladReorder=(data.sklad||[]).filter(i=>i.qty<=i.minQty);
+  const skladChecked=skladReorder.filter(i=>nakupMergeChecked['sklad_'+i.id]);
+  const skladUnchecked=skladReorder.filter(i=>!nakupMergeChecked['sklad_'+i.id]);
+
+  const hasAnyChecked=checked.length||skladChecked.length;
+  const frag=document.createDocumentFragment();
+  const clearBtn=hasAnyChecked?el('button',{style:{background:'none',border:'none',color:'#374151',fontSize:'13px',cursor:'pointer',padding:'4px 8px'}},'Vymazať hotové'):null;
+  if(clearBtn) clearBtn.onclick=()=>{
+    const nc={...nakupMergeChecked};
+    checked.forEach(m=>delete nc[m.shopKey]);
+    skladChecked.forEach(i=>delete nc['sklad_'+i.id]);
+    setState({nakupMergeChecked:nc});
+  };
+  frag.appendChild(renderTopBar('🛒 Zlúčený nákup',()=>setState({subPage:null}),clearBtn||undefined));
+
+  const wrap=el('div',{style:{padding:'12px 16px',paddingBottom:'40px'}});
+
+  // ── Sklad — na dokúpenie (always visible if any) ─────────────────
+  if(skladReorder.length){
+    const sh=el('div',{style:{color:'#F59E0B',fontSize:'11px',fontWeight:'700',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'8px',display:'flex',alignItems:'center',gap:'6px'}});
+    sh.append(el('span',{},'📦 Sklad — na dokúpenie'),el('span',{style:{background:'#F59E0B',color:'#000',borderRadius:'10px',padding:'1px 7px',fontSize:'11px'}},String(skladUnchecked.length)));
+    wrap.appendChild(sh);
+
+    skladUnchecked.forEach(item=>{
+      const row=el('div',{style:{display:'flex',alignItems:'center',gap:'12px',padding:'12px 14px',marginBottom:'6px',borderRadius:'10px',border:'1px solid #78350F',background:'#1C1400',cursor:'pointer'}});
+      row.onclick=()=>setState({nakupMergeChecked:{...nakupMergeChecked,['sklad_'+item.id]:true}});
+      const cb=el('div',{style:{width:'24px',height:'24px',borderRadius:'50%',border:'2px solid #F59E0B',flexShrink:'0'}});
+      const td=el('div',{style:{flex:'1'}});
+      td.append(el('div',{style:{color:'#F9FAFB',fontSize:'15px'}},item.name),el('div',{style:{color:'#92400E',fontSize:'11px',marginTop:'2px'}},`Zostatok: ${item.qty} ${item.unit||'ks'} · Min: ${item.minQty}`));
+      row.append(cb,td);
+      wrap.appendChild(row);
+    });
+    if(skladChecked.length){
+      skladChecked.forEach(item=>{
+        const row=el('div',{style:{display:'flex',alignItems:'center',gap:'12px',padding:'10px 14px',marginBottom:'4px',borderRadius:'10px',border:'1px solid #1a2e1a',background:'#0a0f0a',opacity:'0.6',cursor:'pointer'}});
+        row.onclick=()=>{ const nc={...nakupMergeChecked}; delete nc['sklad_'+item.id]; setState({nakupMergeChecked:nc}); };
+        const cb=el('div',{style:{width:'24px',height:'24px',borderRadius:'50%',border:'2px solid #10B981',background:'#10B981',flexShrink:'0',display:'flex',alignItems:'center',justifyContent:'center'}});
+        cb.appendChild(el('span',{style:{color:'#fff',fontSize:'13px',fontWeight:'700'}},'✓'));
+        const td=el('div',{style:{flex:'1'}});
+        td.append(el('div',{style:{color:'#4B5563',fontSize:'15px',textDecoration:'line-through'}},item.name),el('div',{style:{color:'#374151',fontSize:'11px'}},'Nakúpené'));
+        row.append(cb,td);
+        wrap.appendChild(row);
+      });
+    }
+    wrap.appendChild(el('div',{style:{borderTop:'1px solid #1F2937',margin:'14px 0 12px'}}));
+  }
+
+  // Order selection
+  wrap.appendChild(el('div',{style:{color:'#4B5563',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'10px'}},'Vyber zákazky na nákup'));
+
+  activeOrders.forEach(o=>{
+    const cnt=(o.nakupList||[]).filter(i=>!i.checked).length;
+    const sel2=nakupSelected.includes(o.id);
+    const oc=el('div',{style:{display:'flex',alignItems:'center',gap:'12px',padding:'10px 14px',marginBottom:'6px',borderRadius:'10px',border:`1px solid ${sel2?'#2563EB':'#1F2937'}`,background:sel2?'#0D1F3C':'#0D1117',cursor:'pointer'}});
+    oc.onclick=()=>{ const ns=sel2?nakupSelected.filter(x=>x!==o.id):[...nakupSelected,o.id]; setState({nakupSelected:ns}); };
+    const cb2=el('div',{style:{width:'22px',height:'22px',borderRadius:'6px',border:`2px solid ${sel2?'#2563EB':'#374151'}`,background:sel2?'#2563EB':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:'0'}});
+    if(sel2) cb2.appendChild(el('span',{style:{color:'#fff',fontSize:'13px',fontWeight:'700'}},'✓'));
+    const od=el('div',{style:{flex:'1'}});
+    od.append(el('div',{style:{color:'#F9FAFB',fontWeight:'600',fontSize:'14px'}},o.customerName||'—'),el('div',{style:{color:'#4B5563',fontSize:'12px'}},`${o.title||'—'} · ${cnt} položiek`));
+    oc.append(cb2,od);
+    wrap.appendChild(oc);
+  });
+
+  // Merged list
+  if(nakupSelected.length){
+    const divider=el('div',{style:{borderTop:'1px solid #1F2937',margin:'16px 0 12px'}});
+    wrap.appendChild(divider);
+    if(!merged.length){
+      wrap.appendChild(el('div',{style:{textAlign:'center',color:'#374151',padding:'20px'}},'Vybrané zákazky nemajú žiadne položky v nákupnom zozname'));
+    } else {
+      wrap.appendChild(el('div',{style:{color:'#4B5563',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'10px'}},`Celkový zoznam (${unchecked.length} položiek)`));
+      unchecked.forEach(m=>{
+        const row=el('div',{style:{display:'flex',alignItems:'center',gap:'12px',padding:'12px 14px',marginBottom:'6px',borderRadius:'10px',border:'1px solid #1F2937',background:'#141926',cursor:'pointer'}});
+        row.onclick=()=>setState({nakupMergeChecked:{...nakupMergeChecked,[m.shopKey]:true}});
+        const cb3=el('div',{style:{width:'24px',height:'24px',borderRadius:'50%',border:'2px solid #374151',flexShrink:'0'}});
+        const td=el('div',{style:{flex:'1'}});
+        td.append(el('div',{style:{color:'#F9FAFB',fontSize:'15px'}},m.text),el('div',{style:{color:'#4B5563',fontSize:'11px',marginTop:'2px'}},m.orderName));
+        row.append(cb3,td);
+        wrap.appendChild(row);
+      });
+      if(checked.length){
+        wrap.appendChild(el('div',{style:{color:'#374151',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',margin:'14px 0 8px'}},'Nakúpené'));
+        checked.forEach(m=>{
+          const row=el('div',{style:{display:'flex',alignItems:'center',gap:'12px',padding:'10px 14px',marginBottom:'4px',borderRadius:'10px',border:'1px solid #1a2e1a',background:'#0a0f0a',opacity:'0.6',cursor:'pointer'}});
+          row.onclick=()=>{ const nc={...nakupMergeChecked}; delete nc[m.shopKey]; setState({nakupMergeChecked:nc}); };
+          const cb4=el('div',{style:{width:'24px',height:'24px',borderRadius:'50%',border:'2px solid #10B981',background:'#10B981',flexShrink:'0',display:'flex',alignItems:'center',justifyContent:'center'}});
+          cb4.appendChild(el('span',{style:{color:'#fff',fontSize:'13px',fontWeight:'700'}},'✓'));
+          const td=el('div',{style:{flex:'1'}});
+          td.append(el('div',{style:{color:'#4B5563',fontSize:'15px',textDecoration:'line-through'}},m.text),el('div',{style:{color:'#374151',fontSize:'11px'}},m.orderName));
+          row.append(cb4,td);
+          wrap.appendChild(row);
+        });
+      }
+    }
+  }
+  frag.appendChild(wrap);
+  return frag;
+}
+
+
+// ═══════════════════════════════════
+// SKLAD
+// ═══════════════════════════════════
+const SKLAD_UNITS=['ks','m','bal','m²','kg','l'];
+function makeSkladUnitSelect(currentUnit, onChange){
+  const sel=el('select',{style:{background:'#111827',border:'1px solid #374151',borderRadius:'8px',color:'#9CA3AF',fontSize:'13px',padding:'4px 8px',cursor:'pointer',appearance:'auto'}});
+  SKLAD_UNITS.forEach(u=>{
+    const opt=el('option',{value:u},u);
+    if(u===(currentUnit||'ks')) opt.selected=true;
+    sel.appendChild(opt);
+  });
+  sel.onchange=()=>onChange(sel.value);
+  return sel;
+}
+
+function renderSklad(){
+  const data=appState.data;
+  const sklad=data.sklad||[];
+  const frag=document.createDocumentFragment();
+
+  frag.appendChild(renderTopBar('📦 Sklad',()=>setState({subPage:null})));
+
+  const wrap=el('div',{style:{padding:'12px 16px',paddingBottom:'60px'}});
+
+  function saveSklad(newSklad){ setData(d=>({...d, sklad:newSklad})); }
+
+  // ── Items below threshold ────────────────────────────────────────
+  const reorder=sklad.filter(i=>i.qty<=i.minQty);
+  if(reorder.length){
+    const secHdr=el('div',{style:{color:'#EF4444',fontSize:'11px',fontWeight:'700',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'8px',display:'flex',alignItems:'center',gap:'6px'}});
+    secHdr.append(el('span',{},'⚠️ Na dokúpenie'),el('span',{style:{background:'#EF4444',color:'#fff',borderRadius:'10px',padding:'1px 7px',fontSize:'11px'}},String(reorder.length)));
+    const cartHint=el('span',{style:{marginLeft:'auto',color:'#EF4444',fontSize:'11px',cursor:'pointer',textDecoration:'underline'}},'→ Otvoriť košík');
+    cartHint.onclick=()=>setState({subPage:'nakupMerge',nakupSelected:[],nakupMergeChecked:{}});
+    secHdr.appendChild(cartHint);
+    wrap.appendChild(secHdr);
+    reorder.forEach(item=>{
+      const row=el('div',{style:{display:'flex',alignItems:'center',gap:'10px',padding:'10px 14px',marginBottom:'6px',borderRadius:'10px',border:'1px solid #7F1D1D',background:'#1A0A0A'}});
+      const nameEl=el('div',{style:{flex:'1'}});
+      nameEl.append(el('div',{style:{color:'#F9FAFB',fontWeight:'600',fontSize:'14px'}},item.name),el('div',{style:{color:'#EF4444',fontSize:'12px',marginTop:'2px'}},`Zostatok: ${item.qty} ${item.unit||'ks'} · Min: ${item.minQty} ${item.unit||'ks'}`));
+      row.appendChild(nameEl);
+      wrap.appendChild(row);
+    });
+    wrap.appendChild(el('div',{style:{borderTop:'1px solid #1F2937',margin:'14px 0 12px'}}));
+  }
+
+  // ── Celý sklad ───────────────────────────────────────────────────
+  wrap.appendChild(el('div',{style:{color:'#4B5563',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'10px'}},`Skladové položky (${sklad.length})`));
+
+  if(!sklad.length){
+    wrap.appendChild(el('div',{style:{textAlign:'center',color:'#374151',padding:'30px 0',fontSize:'14px'}},'Sklad je prázdny. Pridaj prvú položku nižšie.'));
+  }
+
+  sklad.forEach((item,idx)=>{
+    const low=item.qty<=item.minQty;
+    const card=el('div',{style:{background:'#0D1117',border:`1px solid ${low?'#7F1D1D':'#1F2937'}`,borderRadius:'12px',padding:'12px 14px',marginBottom:'8px'}});
+
+    // Row 1: name + delete
+    const r1=el('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px'}});
+    r1.append(el('div',{style:{flex:'1',color:'#F9FAFB',fontWeight:'600',fontSize:'15px'}},item.name));
+    const delBtn=el('button',{style:{background:'none',border:'none',color:'#374151',fontSize:'16px',cursor:'pointer',padding:'2px 6px',lineHeight:'1'}},'✕');
+    delBtn.onclick=()=>{ if(confirm(`Odstrániť „${item.name}" zo skladu?`)){ saveSklad(sklad.filter((_,i)=>i!==idx)); } };
+    r1.appendChild(delBtn);
+    card.appendChild(r1);
+
+    // Row 2: qty controls + unit select + min
+    const r2=el('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'4px'}});
+    const minusBtn=el('button',{style:{width:'34px',height:'34px',borderRadius:'8px',border:'1px solid #374151',background:'#1a1a2e',color:'#9CA3AF',fontSize:'20px',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}},'-');
+    minusBtn.onclick=()=>saveSklad(sklad.map((it,i)=>i===idx?{...it,qty:Math.max(0,it.qty-1)}:it));
+    const qtyDisp=el('div',{style:{minWidth:'44px',textAlign:'center',color:low?'#EF4444':'#F9FAFB',fontWeight:'700',fontSize:'20px'}},String(item.qty));
+    const plusBtn=el('button',{style:{width:'34px',height:'34px',borderRadius:'8px',border:'1px solid #374151',background:'#1a1a2e',color:'#9CA3AF',fontSize:'20px',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}},'+');
+    plusBtn.onclick=()=>saveSklad(sklad.map((it,i)=>i===idx?{...it,qty:it.qty+1}:it));
+    // Unit select
+    const unitSel=makeSkladUnitSelect(item.unit,(v)=>saveSklad(sklad.map((it,i)=>i===idx?{...it,unit:v}:it)));
+    r2.append(minusBtn,qtyDisp,plusBtn,unitSel,el('div',{style:{flex:'1'}}));
+    // Min qty
+    r2.appendChild(el('div',{style:{color:'#6B7280',fontSize:'12px',whiteSpace:'nowrap'}},'Min:'));
+    const minInp=el('input',{type:'number',min:'0',value:String(item.minQty),style:{width:'52px',background:'#111827',border:'1px solid #374151',borderRadius:'8px',color:'#9CA3AF',fontSize:'13px',padding:'4px 8px',textAlign:'center'}});
+    minInp.onchange=()=>saveSklad(sklad.map((it,i)=>i===idx?{...it,minQty:parseInt(minInp.value)||0}:it));
+    r2.appendChild(minInp);
+    card.appendChild(r2);
+
+    if(item.note) card.appendChild(el('div',{style:{color:'#4B5563',fontSize:'12px',marginTop:'4px'}},item.note));
+    wrap.appendChild(card);
+  });
+
+  // ── Pridať novú položku ──────────────────────────────────────────
+  wrap.appendChild(el('div',{style:{borderTop:'1px solid #1F2937',margin:'16px 0 12px'}}));
+  wrap.appendChild(el('div',{style:{color:'#4B5563',fontSize:'11px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'10px'}},'Pridať položku'));
+
+  const addForm=el('div',{style:{background:'#0D1117',border:'1px solid #1F2937',borderRadius:'12px',padding:'14px'}});
+  const nameInp=el('input',{type:'text',placeholder:'Názov položky (napr. Skrutky 4×40)',style:{width:'100%',boxSizing:'border-box',background:'#111827',border:'1px solid #374151',borderRadius:'8px',color:'#F9FAFB',fontSize:'14px',padding:'9px 12px',marginBottom:'8px'}});
+
+  const row2=el('div',{style:{display:'flex',gap:'8px',marginBottom:'8px',alignItems:'center'}});
+  // Unit select in form
+  const unitSelNew=makeSkladUnitSelect('ks',()=>{});
+  const qtyInp=el('input',{type:'number',placeholder:'Množstvo',min:'0',style:{width:'110px',background:'#111827',border:'1px solid #374151',borderRadius:'8px',color:'#F9FAFB',fontSize:'14px',padding:'9px 12px',textAlign:'center'}});
+  row2.append(el('div',{style:{color:'#6B7280',fontSize:'13px'}},'Jednotka:'),unitSelNew,el('div',{style:{color:'#6B7280',fontSize:'13px',marginLeft:'8px'}},'Množstvo:'),qtyInp);
+
+  const row3=el('div',{style:{display:'flex',gap:'8px',alignItems:'center',marginBottom:'8px'}});
+  row3.append(el('div',{style:{color:'#6B7280',fontSize:'13px',whiteSpace:'nowrap'}},'Upozorniť keď zostane menej ako:'));
+  const minQtyInp=el('input',{type:'number',min:'0',value:'1',style:{width:'70px',background:'#111827',border:'1px solid #374151',borderRadius:'8px',color:'#F9FAFB',fontSize:'14px',padding:'9px 12px',textAlign:'center'}});
+  row3.appendChild(minQtyInp);
+
+  const noteInp=el('input',{type:'text',placeholder:'Poznámka (nepovinné)',style:{width:'100%',boxSizing:'border-box',background:'#111827',border:'1px solid #374151',borderRadius:'8px',color:'#6B7280',fontSize:'13px',padding:'9px 12px',marginBottom:'10px'}});
+
+  const addBtn=el('button',{style:{width:'100%',background:'#2563EB',border:'none',borderRadius:'10px',color:'#fff',fontWeight:'700',fontSize:'14px',padding:'11px',cursor:'pointer'}},'+ Pridať do skladu');
+  addBtn.onclick=()=>{
+    const name=nameInp.value.trim();
+    if(!name){ nameInp.focus(); return; }
+    const qty=parseInt(qtyInp.value)||0;
+    const minQty=parseInt(minQtyInp.value)||1;
+    const unit=unitSelNew.value||'ks';
+    const note=noteInp.value.trim();
+    saveSklad([...sklad,{id:'sk'+Date.now(),name,qty,unit,minQty,note,addedAt:Date.now()}]);
+    nameInp.value=''; qtyInp.value=''; minQtyInp.value='1'; noteInp.value='';
+    unitSelNew.value='ks';
+    nameInp.focus();
+  };
+
+  addForm.append(nameInp,row2,row3,noteInp,addBtn);
+  wrap.appendChild(addForm);
+  frag.appendChild(wrap);
+  return frag;
+}
+
+
+// ═══════════════════════════════════
+// MAIN RENDER
+// ═══════════════════════════════════
+function renderApp(){
+  const app=document.getElementById('app');
+  app.innerHTML='';
+
+  // Password disabled
+
+  const {page,subPage} = appState;
+
+  let content;
+  if(subPage==='stats') content=renderStats();
+  else if(subPage==='calendar') content=renderCalendar();
+  else if(subPage==='yearly') content=renderYearly();
+  else if(subPage==='customers') content=renderCustomers();
+  else if(subPage==='archive') content=renderArchive();
+  else if(subPage==='nakup') content=renderNakup();
+  else if(subPage==='nakupOrder') content=renderNakupOrder();
+  else if(subPage==='nakupMerge') content=renderNakupMerge();
+  else if(subPage==='sklad') content=renderSklad();
+  else if(subPage==='backup') content=renderBackup();
+  else if(page==='new'||page==='edit') content=renderForm(page==='edit');
+  else if(page==='detail') content=renderDetail();
+  else content=renderList();
+
+  app.appendChild(content);
+  app.appendChild(renderModals());
+
+  // (scroll to selected card disabled — keeps position static)
+}
+
+// Start
+renderApp();
+</script>
+</body>
+</html>
